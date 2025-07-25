@@ -60,6 +60,7 @@
     "edit_profile": "تعديل الملف الشخصي",
     "notifications": "الإشعارات",
     "settings": "الإعدادات",
+    "Chats": "المحادثات",
     "logout": "تسجيل الخروج",
     "profile_photo": "صورة الملف الشخصي",
     "name": "الاسم",
@@ -70,6 +71,11 @@
     "Terms and conditions": "الشروط والأحكام",
     "Privacy Policy": "سياسة الخصوصية",
     "About the app": "حول التطبيق",
-    "Help and support": "المساعدة والدعم"
+    "Help and support": "المساعدة والدعم",
+    "instructor": {
+      "title": "المدرسون",
+      "searchPlaceholder": "ابحث",
+      "filters": "الفلاتر"
+    }
   }
 }

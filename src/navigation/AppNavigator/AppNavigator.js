@@ -9,6 +9,8 @@ import { fonts } from './../../config/fonts';
 import AuthNavigator from './../AuthNavigator/AuthNavigator';
 import OTPVerification from './../../screens/AuthScreen/OTPVerification';
 import ProfileNavigator from './../ProfileNavigator/ProfileNavigator';
+import ChatScreen from './../../screens/ChatScreen/ChatScreen';
+import Instructors from './../../screens/InstructorScreen/Instructors';
 const Tab = createBottomTabNavigator();
 
 const AppNavigator = ({ navigation }) => {
@@ -54,7 +56,7 @@ const AppNavigator = ({ navigation }) => {
 
       <Tab.Screen
         name="OTPVerification"
-        component={OTPVerification}
+        component={Instructors}
         options={{
           tabBarLabel: t('timetable'),
           tabBarLabelStyle: {
@@ -77,7 +79,7 @@ const AppNavigator = ({ navigation }) => {
 
       <Tab.Screen
         name="AuthNavigator"
-        component={AuthNavigator}
+        component={ChatScreen}
         options={{
           tabBarLabel: t('chats'),
           tabBarLabelStyle: {
