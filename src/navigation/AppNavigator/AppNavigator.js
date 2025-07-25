@@ -3,20 +3,24 @@ import { Image } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import HomeScreen from './../../screens/HomeScreen/HomeScreen';
-import TimeTableScreen from './../../screens/TimeTableScreen/TimeTableScreen';
-import ChatScreen from './../../screens/ChatScreen/ChatScreen';
-import ProfileScreen from './../../screens/ProfileScreen/ProfileScreen';
-
+import { useTranslation } from 'react-i18next';
+import colors from './../../config/colors';
+import { fonts } from './../../config/fonts';
+import AuthNavigator from './../AuthNavigator/AuthNavigator';
+import OTPVerification from './../../screens/AuthScreen/OTPVerification';
+import ProfileNavigator from './../ProfileNavigator/ProfileNavigator';
 const Tab = createBottomTabNavigator();
 
 const AppNavigator = ({ navigation }) => {
+  const { t } = useTranslation();
+
   const insets = useSafeAreaInsets();
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#00204D',
-        tabBarInactiveTintColor: 'gray',
+        tabBarActiveTintColor: colors.button,
+        tabBarInactiveTintColor: colors.bottomtabtext,
         tabBarHideOnKeyboard: true,
         tabBarStyle: {
           height: 70 + insets.bottom,
@@ -29,14 +33,18 @@ const AppNavigator = ({ navigation }) => {
         name="Home"
         component={HomeScreen}
         options={{
-          tabBarLabel: 'Home',
-          tabBarLabelStyle: { fontSize: 10 },
+          tabBarLabel: t('home'),
+          tabBarLabelStyle: {
+            fontSize: 10,
+            fontFamily: fonts.Medium,
+            color: colors.bottomtabtext,
+          },
           tabBarIcon: ({ color, focused }) => (
             <Image
               source={require('../../assets/Images/TabImages/HomeIcon.png')}
               style={{
-                width: 25,
-                height: 25,
+                width: 24,
+                height: 24,
                 resizeMode: 'contain',
               }}
             />
@@ -45,17 +53,21 @@ const AppNavigator = ({ navigation }) => {
       />
 
       <Tab.Screen
-        name="FreeChannelNavigator"
-        component={TimeTableScreen}
+        name="OTPVerification"
+        component={OTPVerification}
         options={{
-          tabBarLabel: 'Time Table',
-          tabBarLabelStyle: { fontSize: 10 },
+          tabBarLabel: t('timetable'),
+          tabBarLabelStyle: {
+            fontSize: 10,
+            fontFamily: fonts.Medium,
+            color: colors.bottomtabtext,
+          },
           tabBarIcon: ({ color, focused }) => (
             <Image
               source={require('../../assets/Images/TabImages/TimeTableIcon.png')}
               style={{
-                width: 25,
-                height: 25,
+                width: 24,
+                height: 24,
                 resizeMode: 'contain',
               }}
             />
@@ -64,17 +76,21 @@ const AppNavigator = ({ navigation }) => {
       />
 
       <Tab.Screen
-        name="PaidChannelsNavigator"
-        component={ChatScreen}
+        name="AuthNavigator"
+        component={AuthNavigator}
         options={{
-          tabBarLabel: 'Chats',
-          tabBarLabelStyle: { fontSize: 10 },
+          tabBarLabel: t('chats'),
+          tabBarLabelStyle: {
+            fontSize: 10,
+            fontFamily: fonts.Medium,
+            color: colors.bottomtabtext,
+          },
           tabBarIcon: ({ color, focused }) => (
             <Image
               source={require('../../assets/Images/TabImages/ChatIcon.png')}
               style={{
-                width: 25,
-                height: 25,
+                width: 24,
+                height: 24,
                 resizeMode: 'contain',
               }}
             />
@@ -83,17 +99,21 @@ const AppNavigator = ({ navigation }) => {
       />
 
       <Tab.Screen
-        name="MySubsNavigator"
-        component={ProfileScreen}
+        name="ProfileNavigator"
+        component={ProfileNavigator}
         options={{
-          tabBarLabel: 'Profile',
-          tabBarLabelStyle: { fontSize: 10 },
+          tabBarLabel: t('profile'),
+          tabBarLabelStyle: {
+            fontSize: 10,
+            fontFamily: fonts.Medium,
+            color: colors.bottomtabtext,
+          },
           tabBarIcon: ({ color, focused }) => (
             <Image
               source={require('../../assets/Images/TabImages/ProfileIcon.png')}
               style={{
-                width: 25,
-                height: 25,
+                width: 24,
+                height: 24,
                 resizeMode: 'contain',
               }}
             />

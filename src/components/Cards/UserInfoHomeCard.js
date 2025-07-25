@@ -1,11 +1,14 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { ProgressBar } from 'react-native-paper';
-
 import RightIcon from '../../assets/Images/Icons/RightIcon.png';
+import { useTranslation } from 'react-i18next';
+import { fonts } from './../../config/fonts';
+import colors from './../../config/colors';
 
 const UserInfoHomeCard = () => {
-  const progress = 0.7;
+  const progress = 0.35;
+  const { t } = useTranslation();
 
   return (
     <View style={styles.card}>
@@ -27,9 +30,11 @@ const UserInfoHomeCard = () => {
 
       <View style={styles.progressSection}>
         <View style={styles.progressHeader}>
-          <Text style={styles.progressLabel}>Overall Progress</Text>
+          <Text style={styles.progressLabel}>
+            {t('userinfohome.overallprogress')}
+          </Text>
           <View style={styles.progressRight}>
-            <Text style={styles.progressPercent}>70%</Text>
+            <Text style={styles.progressPercent}>35%</Text>
             <Image source={RightIcon} style={styles.smallRightIcon} />
           </View>
         </View>
@@ -53,7 +58,7 @@ const styles = StyleSheet.create({
     paddingVertical: 18,
     paddingHorizontal: 18,
     marginHorizontal: 16,
-    marginVertical: 10,
+    marginVertical: 8,
   },
   topRow: {
     flexDirection: 'row',
@@ -66,29 +71,28 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   avatar: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: '#8979FF',
+    width: 40,
+    height: 40,
+    borderRadius: 20,
   },
   name: {
     fontSize: 16,
-    fontWeight: '700',
-    color: '#000',
+    fontFamily: fonts.SemiBold,
+    color: colors.black,
   },
   grade: {
-    fontSize: 14,
-    color: '#444',
-    marginTop: 2,
+    fontSize: 10,
+    color: colors.black,
+    fontFamily: fonts.Regular,
   },
   rightIcon: {
-    width: 16,
-    height: 16,
+    width: 7,
+    height: 14,
     tintColor: '#000',
     resizeMode: 'contain',
   },
   progressSection: {
-    marginTop: 20,
+    marginTop: 16,
   },
   progressHeader: {
     flexDirection: 'row',
@@ -96,29 +100,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   progressLabel: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#1A1A1A',
+    fontSize: 12,
+    fontFamily: fonts.Regular,
+    color: '#111827',
   },
   progressRight: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     gap: 6,
   },
   progressPercent: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#000',
+    fontSize: 12,
+    fontFamily: fonts.Medium,
+    color: '#111827',
   },
   smallRightIcon: {
-    width: 12,
-    height: 12,
-    tintColor: '#000',
+    width: 5,
+    height: 8,
+    tintColor: '#111827',
     resizeMode: 'contain',
   },
   progressBar: {
-    height: 8,
-    borderRadius: 20,
+    height: 5,
+    borderRadius: 3,
     backgroundColor: '#DCDCDC',
     marginTop: 10,
   },

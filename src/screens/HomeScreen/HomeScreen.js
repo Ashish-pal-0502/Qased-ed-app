@@ -6,6 +6,11 @@ import ThoughtOfDayCard from './../../components/Cards/ThoughtOfDayCard';
 import AttendanceHomeScreenCard from './../../components/Cards/AttendanceHomeScreenCard';
 import UserInfoHomeCard from './../../components/Cards/UserInfoHomeCard';
 import HomeSchedule from './../../components/HomeSchedule/HomeSchedule';
+import colors from '../../config/colors';
+import Assignments from './../../components/Assignments/Assignments';
+import Instructors from './../../components/Instructors/Instructors';
+import Modules from './../../components/Modules/Modules';
+import TrainingCenters from './../../components/TrainingCenters/TrainingCenters';
 
 const HomeScreen = () => {
   const dummyData = [{ id: '1' }];
@@ -22,6 +27,10 @@ const HomeScreen = () => {
             <ThoughtOfDayCard />
             <AttendanceHomeScreenCard />
             <HomeSchedule />
+            <Assignments />
+            <Instructors />
+            <Modules />
+            <TrainingCenters />
           </View>
         }
         renderItem={null}
@@ -36,6 +45,6 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F4F4F4',
+    backgroundColor: colors.background,
   },
 });

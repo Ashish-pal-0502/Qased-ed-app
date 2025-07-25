@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import AppNavigator from './src/navigation/AppNavigator/AppNavigator';
-// import AuthContext from './src/auth/context';
-
 import { StyleSheet, View, LogBox, Alert } from 'react-native';
-
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import './src/localization/i18n';
 
 LogBox.ignoreAllLogs(true);
 

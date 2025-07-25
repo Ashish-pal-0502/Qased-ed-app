@@ -1,15 +1,17 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { useTranslation } from 'react-i18next';
+import { fonts } from './../../config/fonts';
+import colors from './../../config/colors';
 
 const ThoughtOfDayCard = () => {
+  const { t } = useTranslation();
   return (
     <View style={styles.cardContainer}>
       <View style={styles.contentContainer}>
-        <Text style={styles.heading}>Thought of the day</Text>
-        <Text style={styles.quote}>
-          “The future belongs to those who dreams.”
-        </Text>
+        <Text style={styles.heading}>{t('thoughtofday.title')}</Text>
+        <Text style={styles.quote}>{t('thoughtofday.desc')}</Text>
       </View>
 
       <LinearGradient
@@ -34,7 +36,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingBottom: 10,
     marginHorizontal: 16,
-    marginTop: 20,
+    marginVertical: 8,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -45,15 +47,16 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   heading: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#333',
-    marginBottom: 6,
+    fontSize: 16,
+    fontFamily: fonts.SemiBold,
+    color: colors.text,
+    marginBottom: 3,
   },
   quote: {
-    fontSize: 14,
-    color: '#333',
+    fontSize: 10,
+    color: colors.text,
     lineHeight: 20,
+    fontFamily: fonts.Regular,
   },
   ribbon: {
     width: 64,
@@ -66,13 +69,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   day: {
-    color: '#fff',
-    fontSize: 22,
-    fontWeight: 'bold',
+    color: colors.white,
+    fontSize: 24,
+    fontFamily: fonts.SemiBold,
   },
   month: {
-    color: '#fff',
-    fontSize: 14,
-    marginTop: 4,
+    color: colors.white,
+    fontSize: 12,
+    fontFamily: fonts.Medium,
   },
 });

@@ -6,8 +6,10 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-
 import ScheduleCard from './../Cards/ScheduleCard';
+import { useTranslation } from 'react-i18next';
+import colors from './../../config/colors';
+import { fonts } from './../../config/fonts';
 
 const dummyData = [
   {
@@ -37,33 +39,17 @@ const dummyData = [
     time: '16 June  |  10:30 AM - 1:30 PM',
     buttonLabel: 'Register',
   },
-  {
-    id: '4',
-    subject: 'React Native',
-    title: 'Lecture on Molecules',
-    professor: 'Prof. John Doe',
-    status: 'UPCOMING',
-    time: '16 June  |  10:30 AM - 1:30 PM',
-    buttonLabel: 'Register',
-  },
-  {
-    id: '5',
-    subject: 'React Native',
-    title: 'Lecture on Molecules',
-    professor: 'Prof. John Doe',
-    status: 'UPCOMING',
-    time: '16 June  |  10:30 AM - 1:30 PM',
-    buttonLabel: 'Register',
-  },
 ];
 
 const HomeSchedule = () => {
+  const { t } = useTranslation();
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Schedule</Text>
+        <Text style={styles.title}>{t('schedule')}</Text>
         <TouchableOpacity>
-          <Text style={styles.viewAll}>View all</Text>
+          <Text style={styles.viewAll}>{t('viewall')}</Text>
         </TouchableOpacity>
       </View>
 
@@ -83,7 +69,7 @@ export default HomeSchedule;
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 16,
-    marginTop: 20,
+    marginTop: 8,
   },
   header: {
     flexDirection: 'row',
@@ -91,13 +77,13 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   title: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#000',
+    fontSize: 16,
+    color: colors.black,
+    fontFamily: fonts.SemiBold,
   },
   viewAll: {
-    fontSize: 14,
-    color: '#000',
-    opacity: 0.6,
+    fontSize: 12,
+    color: colors.black,
+    fontFamily: fonts.Medium,
   },
 });

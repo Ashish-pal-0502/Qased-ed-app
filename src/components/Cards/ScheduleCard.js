@@ -7,9 +7,13 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { fonts } from './../../config/fonts';
+import colors from './../../config/colors';
+import { useTranslation } from 'react-i18next';
 
 const ScheduleCard = ({ item }) => {
   const isLive = item.status === 'LIVE';
+  const { t } = useTranslation();
 
   return (
     <View style={styles.card}>
@@ -44,7 +48,7 @@ const ScheduleCard = ({ item }) => {
           style={styles.button}
         >
           <TouchableOpacity>
-            <Text style={styles.buttonText}>{item.buttonLabel}</Text>
+            <Text style={styles.buttonText}>{t('joinnow')}</Text>
           </TouchableOpacity>
         </LinearGradient>
       </View>
@@ -57,13 +61,13 @@ export default ScheduleCard;
 const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderRadius: 10,
     padding: 10,
     alignItems: 'flex-start',
     gap: 10,
     minHeight: 110,
-    marginBottom: 10,
+    marginBottom: 8,
   },
   imageContainer: {
     width: 132,
@@ -76,7 +80,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   subjectTag: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderTopRightRadius: 10,
@@ -84,9 +88,9 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   subjectText: {
-    fontSize: 12,
-    fontWeight: '700',
-    color: '#333',
+    fontSize: 10,
+    fontFamily: fonts.SemiBold,
+    color: colors.darkbluegray,
   },
   content: {
     flex: 1,
@@ -94,28 +98,30 @@ const styles = StyleSheet.create({
     height: 76,
   },
   title: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: '#333',
+    fontSize: 14,
+    fontFamily: fonts.Medium,
+    color: colors.darkgray,
   },
   professor: {
-    fontSize: 13,
-    color: '#666',
-    marginTop: 2,
+    fontSize: 10,
+    color: colors.darkbluegray,
+    // marginTop: 5,
+    fontFamily: fonts.Regular,
   },
   live: {
-    fontSize: 13,
+    fontSize: 12,
     color: '#F22E32',
-    fontWeight: '600',
-    marginTop: 6,
+    fontFamily: fonts.Regular,
+    // marginTop: 5,
   },
   dot: {
     fontSize: 14,
   },
   time: {
-    fontSize: 13,
-    color: '#333',
-    marginTop: 6,
+    fontSize: 12,
+    color: colors.darkgray,
+    marginTop: 5,
+    fontFamily: fonts.Regular,
   },
   button: {
     alignSelf: 'flex-end',
@@ -124,8 +130,8 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   buttonText: {
-    color: '#fff',
-    fontWeight: '600',
-    fontSize: 13,
+    color: colors.grey,
+    fontFamily: fonts.SemiBold,
+    fontSize: 10,
   },
 });
