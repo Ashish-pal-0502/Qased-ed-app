@@ -71,11 +71,25 @@
     "Terms and conditions": "Terms and conditions",
     "Privacy Policy": "Privacy Policy",
     "About the app": "About the app",
+    "getstarted": "Get Started",
+    "give_details_about_you": "Give details about you",
+    "give_details_about_your_child": "Give details about your child",
     "Help and support": "Help and support",
     "instructor": {
       "title": "Instructors",
       "searchPlaceholder": "Search",
       "filters": "Filters"
-    }
+    },
+
+    "fields_required_note": "Fields marked as * are required",
+
+    "confirm_name": "Confirm Name*",
+    "confirm_email": "Confirm Email address*",
+    "phone_number": "Enter your Phone number here",
+    "no_of_children": "No. of children",
+    "address": "Enter your address here",
+    "state": "State",
+    "city": "City",
+    "state_code": "000000"
   }
 }

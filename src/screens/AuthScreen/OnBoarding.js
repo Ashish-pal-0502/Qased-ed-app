@@ -11,7 +11,7 @@ import colors from './../../config/colors';
 import { fonts } from './../../config/fonts';
 import Button from './../../components/Buttons/Button';
 import { useTranslation } from 'react-i18next';
-
+import Feather from 'react-native-vector-icons/Feather';
 const { width } = Dimensions.get('window');
 
 const OnBoarding = ({ navigation }) => {
@@ -19,12 +19,19 @@ const OnBoarding = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Image
-        source={require('../../assets/Images/AuthImages/Onboarding.png')}
-        style={styles.image}
-        resizeMode="contain"
-      />
-
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Image
+          source={require('../../assets/Images/AuthImages/Onboarding.png')}
+          style={styles.image}
+          resizeMode="contain"
+        />
+      </View>
       <View style={styles.textBlock}>
         <Text style={styles.heading}>Qased ed tech</Text>
         <Text style={styles.description}>
@@ -33,19 +40,22 @@ const OnBoarding = ({ navigation }) => {
         </Text>
       </View>
 
-      <View style={styles.buttonBlock}>
-        <Button
-          title={t('login')}
-          onPress={() => navigation.navigate('Login')}
-        />
-
-        <TouchableOpacity
-          style={styles.registerBtn}
-          onPress={() => navigation.navigate('Register')}
-        >
-          <Text style={styles.registerText}>{t('register')}</Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity
+        style={styles.buttonWrapper}
+        onPress={() => navigation.navigate('Login')}
+      >
+        <View style={styles.gradient}>
+          <View style={styles.textWithIcon}>
+            <Text style={styles.text}>{t('getstarted')}</Text>
+            <Feather
+              name="arrow-right"
+              size={18}
+              color={'white'}
+              style={{ marginLeft: 8 }}
+            />
+          </View>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -58,7 +68,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     paddingHorizontal: 24,
     justifyContent: 'center',
-    alignItems: 'center',
     paddingVertical: 53,
   },
   image: {
@@ -67,9 +76,7 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   textBlock: {
-    alignItems: 'center',
-    marginBottom: 32,
-    paddingHorizontal: 12,
+    marginBottom: 20,
   },
   heading: {
     fontSize: 35,
@@ -81,40 +88,31 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: colors.black,
     fontFamily: fonts.Regular,
-    textAlign: 'center',
     lineHeight: 20,
   },
-  buttonBlock: {
-    width: '100%',
+
+  textWithIcon: {
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
   },
-  loginBtn: {
-    width: '100%',
-    borderRadius: 10,
+
+  buttonWrapper: {
+    width: '50%',
+    borderRadius: 8,
     overflow: 'hidden',
     marginBottom: 16,
+    height: 56,
   },
   gradient: {
     paddingVertical: 14,
+    borderRadius: 42,
     alignItems: 'center',
-    borderRadius: 10,
+    backgroundColor: '#528BD9',
   },
-  loginText: {
-    color: '#fff',
+  text: {
+    color: colors.white,
     fontSize: 16,
     fontFamily: fonts.Medium,
-  },
-  registerBtn: {
-    width: '100%',
-    paddingVertical: 14,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#1E232C',
-    alignItems: 'center',
-  },
-  registerText: {
-    fontSize: 16,
-    fontFamily: fonts.Medium,
-    color: '#1E232C',
   },
 });

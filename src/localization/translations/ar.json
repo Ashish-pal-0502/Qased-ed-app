@@ -66,6 +66,8 @@
     "name": "الاسم",
     "grade": "الصف",
     "section": "القسم",
+    "give_details_about_your_child": "أدخل بيانات طفلك",
+    "getstarted": "ابدأ الآن",
     "parents_name": "اسم الوالد",
     "Account settings": "إعدادات الحساب",
     "Terms and conditions": "الشروط والأحكام",
@@ -76,6 +78,16 @@
       "title": "المدرسون",
       "searchPlaceholder": "ابحث",
       "filters": "الفلاتر"
-    }
+    },
+    "give_details_about_you": "أدخل بياناتك",
+    "fields_required_note": "الحقول المشار إليها بـ * مطلوبة",
+    "confirm_name": "تأكيد الاسم*",
+    "confirm_email": "تأكيد البريد الإلكتروني*",
+    "phone_number": "أدخل رقم هاتفك هنا",
+    "no_of_children": "عدد الأطفال",
+    "address": "أدخل عنوانك هنا",
+    "state": "الولاية",
+    "city": "المدينة",
+    "state_code": "٠٠٠٠٠٠"
   }
 }

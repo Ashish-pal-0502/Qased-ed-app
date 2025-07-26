@@ -11,6 +11,8 @@ import OTPVerification from './../../screens/AuthScreen/OTPVerification';
 import ProfileNavigator from './../ProfileNavigator/ProfileNavigator';
 import ChatScreen from './../../screens/ChatScreen/ChatScreen';
 import Instructors from './../../screens/InstructorScreen/Instructors';
+import RegisterParent from './../../screens/AuthScreen/RegisterParent';
+import RegisterStudent from './../../screens/AuthScreen/RegisterStudent';
 const Tab = createBottomTabNavigator();
 
 const AppNavigator = ({ navigation }) => {
@@ -56,7 +58,7 @@ const AppNavigator = ({ navigation }) => {
 
       <Tab.Screen
         name="OTPVerification"
-        component={Instructors}
+        component={AuthNavigator}
         options={{
           tabBarLabel: t('timetable'),
           tabBarLabelStyle: {
@@ -79,7 +81,7 @@ const AppNavigator = ({ navigation }) => {
 
       <Tab.Screen
         name="AuthNavigator"
-        component={ChatScreen}
+        component={RegisterStudent}
         options={{
           tabBarLabel: t('chats'),
           tabBarLabelStyle: {
