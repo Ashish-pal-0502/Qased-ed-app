@@ -66,6 +66,19 @@
     "Chats": "Chats",
     "grade": "Grade",
     "section": "Section",
+    "view_profile": "View Profile",
+    "add_to_library": "Add to library",
+    "My_Schedule": "My Schedule",
+    "My_Library": "My Library",
+    "proceed_to_book": "Proceed to Book",
+    "time_table": "Time Table",
+    "attendance": "Attendance",
+    "Month": "Month",
+    "Term": "Term",
+    "daily": "Daily",
+    "weekly": "Weekly",
+
+    "proceed_to_booking": "Proceed to Booking",
     "parents_name": "Parent's Name",
     "Account settings": "Account settings",
     "Terms and conditions": "Terms and conditions",
@@ -90,6 +103,15 @@
     "address": "Enter your address here",
     "state": "State",
     "city": "City",
-    "state_code": "000000"
+    "state_code": "State Code",
+    "instructordetails": {
+      "title": "Instructor Details",
+      "students": "Students",
+
+      "experience": "Experience",
+      "description": "Cairo University and has led numerous studies in chemical reactions and catalysis",
+      "reviews": "Reviews",
+      "chemistryProfessor": "CHEMISTRY PROFESSOR"
+    }
   }
 }

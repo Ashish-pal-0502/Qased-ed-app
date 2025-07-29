@@ -2,21 +2,28 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
 import colors from '../../config/colors';
 import { fonts } from '../../config/fonts';
+import { useTranslation } from 'react-i18next';
 
 const InstructorsListCard = ({ instructor }) => {
+  const { t } = useTranslation();
   return (
     <View style={styles.card}>
-      <Image source={instructor.image} style={styles.image} />
+      <View style={styles.imageContainer}>
+        <Image source={instructor.image} style={styles.image} />
+      </View>
 
       <View style={styles.info}>
         <Text style={styles.name}>{instructor.name}</Text>
         <Text style={styles.title}>{instructor.title}</Text>
-        <Text style={styles.desc}>{instructor.description}</Text>
-      </View>
+        <Text numberOfLines={1} style={styles.desc}>
+          {instructor.description}
+        </Text>
 
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>View Profile</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonWrapper}>
+          <Text style={styles.ViewProfileButton}>{t('view_profile')}</Text>
+          <Text style={styles.ProceedButton}>{t('proceed_to_booking')}</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -25,54 +32,72 @@ export default InstructorsListCard;
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: colors.white,
-    borderRadius: 12,
-    padding: 12,
-    marginBottom: 12,
     flexDirection: 'row',
-    alignItems: 'flex-start',
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOpacity: 0.05,
-    shadowRadius: 5,
-    shadowOffset: { width: 0, height: 2 },
+    alignItems: 'center',
+    backgroundColor: colors.white,
+    borderRadius: 10,
+    padding: 10,
+    marginVertical: 5,
+    borderWidth: 1,
+    borderColor: '#D4D2E3',
+    height: 117,
+  },
+  imageContainer: {
+    width: 97,
+    height: 97,
+    backgroundColor: '#FE7122',
+    borderRadius: 10,
+    overflow: 'hidden',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
   },
   image: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    marginRight: 12,
+    width: '100%',
+    height: '100%',
   },
   info: {
     flex: 1,
+    justifyContent: 'space-between',
   },
   name: {
-    fontSize: 14,
-    fontFamily: fonts.Medium,
-    color: '#101828',
+    fontSize: 16,
+    fontFamily: fonts.SemiBold,
+    color: colors.black,
   },
   title: {
     fontSize: 10,
     fontFamily: fonts.Medium,
-    color: '#667085',
+    color: '#919191',
+    textTransform: 'uppercase',
     marginTop: 2,
   },
   desc: {
-    fontSize: 10,
+    fontSize: 8,
     fontFamily: fonts.Regular,
-    color: '#667085',
-    marginTop: 4,
+    color: '#000000',
+    marginTop: 6,
+    marginBottom: 10,
   },
-  button: {
-    backgroundColor: '#FE7122',
-    paddingHorizontal: 10,
+  buttonWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 10,
+    alignSelf: 'flex-end',
+  },
+  ProceedButton: {
+    paddingHorizontal: 14,
     paddingVertical: 6,
-    borderRadius: 8,
-    alignSelf: 'flex-start',
-  },
-  buttonText: {
+    borderRadius: 20,
     fontSize: 10,
-    color: '#fff',
+    color: colors.white,
+    fontFamily: fonts.Medium,
+    backgroundColor: '#528BD9',
+  },
+  ViewProfileButton: {
+    fontSize: 10,
+    color: '#528BD9',
     fontFamily: fonts.Medium,
   },
 });

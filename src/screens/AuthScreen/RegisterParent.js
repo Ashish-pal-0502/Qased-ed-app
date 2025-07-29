@@ -90,6 +90,7 @@ const RegisterParent = () => {
               selectedValue={selectedChildren}
               onValueChange={itemValue => setSelectedChildren(itemValue)}
               style={styles.dropdown}
+              dropdownIconColor="#8391A1"
             >
               {[...Array(10)].map((_, i) => (
                 <Picker.Item key={i} label={`${i}`} value={`${i}`} />
@@ -106,24 +107,33 @@ const RegisterParent = () => {
 
           <View style={styles.row}>
             <View style={styles.flexHalf}>
-              <Text style={styles.labelInside}>{t('state') || 'State'}</Text>
-              <Picker
-                selectedValue={selectedState}
-                onValueChange={itemValue => setSelectedState(itemValue)}
-                style={styles.dropdown}
-              >
-                <Picker.Item label="abcd" value="abcd" />
-              </Picker>
+              <Text style={styles.label}>{t('state') || 'State'}</Text>
+              <View style={styles.dropdownWrapper}>
+                <Picker
+                  selectedValue={selectedState}
+                  onValueChange={itemValue => setSelectedState(itemValue)}
+                  style={styles.dropdown}
+                  dropdownIconColor="#8391A1"
+                >
+                  <Picker.Item label="abcd" value="abcd" />
+                  <Picker.Item label="xyz" value="xyz" />
+                </Picker>
+              </View>
             </View>
+
             <View style={styles.flexHalf}>
-              <Text style={styles.labelInside}>{t('city') || 'City'}</Text>
-              <Picker
-                selectedValue={selectedCity}
-                onValueChange={itemValue => setSelectedCity(itemValue)}
-                style={styles.dropdown}
-              >
-                <Picker.Item label="abcd" value="abcd" />
-              </Picker>
+              <Text style={styles.label}>{t('city') || 'City'}</Text>
+              <View style={styles.dropdownWrapper}>
+                <Picker
+                  selectedValue={selectedCity}
+                  onValueChange={itemValue => setSelectedCity(itemValue)}
+                  style={styles.dropdown}
+                  dropdownIconColor="#8391A1"
+                >
+                  <Picker.Item label="abcd" value="abcd" />
+                  <Picker.Item label="pqr" value="pqr" />
+                </Picker>
+              </View>
             </View>
           </View>
 
@@ -188,13 +198,6 @@ const styles = StyleSheet.create({
     color: colors.black,
     marginBottom: 6,
   },
-  labelInside: {
-    fontSize: 14,
-    fontFamily: fonts.Medium,
-    color: '#1E232C',
-    marginLeft: 12,
-    marginTop: 6,
-  },
   input: {
     height: 44,
     borderWidth: 1,
@@ -205,6 +208,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.Regular,
     backgroundColor: colors.white,
     marginBottom: 16,
+    color: colors.text,
   },
   phoneRow: {
     flexDirection: 'row',
@@ -237,21 +241,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     fontSize: 14,
     fontFamily: fonts.Regular,
+    color: colors.text,
   },
   dropdownWrapper: {
     borderWidth: 1,
     borderColor: '#E8ECF4',
     backgroundColor: colors.white,
     borderRadius: 8,
-    marginBottom: 16,
     overflow: 'hidden',
     height: 44,
     justifyContent: 'center',
+    marginBottom: 16,
   },
   dropdown: {
     height: 44,
     width: '100%',
     paddingHorizontal: 8,
+    color: '#1E232C',
   },
   row: {
     flexDirection: 'row',
@@ -260,13 +266,6 @@ const styles = StyleSheet.create({
   },
   flexHalf: {
     flex: 1,
-    borderWidth: 1,
-    borderColor: '#E8ECF4',
-    backgroundColor: colors.white,
-    borderRadius: 8,
-    overflow: 'hidden',
-    height: 44,
-    color: 'gray',
   },
   registerButton: {
     backgroundColor: '#528BD9',

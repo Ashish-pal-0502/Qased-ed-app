@@ -66,11 +66,24 @@
     "name": "الاسم",
     "grade": "الصف",
     "section": "القسم",
+    "view_profile": "عرض الملف الشخصي",
+    "proceed_to_booking": "المتابعة إلى الحجز",
     "give_details_about_your_child": "أدخل بيانات طفلك",
     "getstarted": "ابدأ الآن",
     "parents_name": "اسم الوالد",
     "Account settings": "إعدادات الحساب",
     "Terms and conditions": "الشروط والأحكام",
+    "add_to_library": "أضف إلى المكتبة",
+    "My_Schedule": "جدولي",
+    "My_Library": " مكتبتي",
+    "proceed_to_book": "المتابعة للحجز",
+    "time_table": "الجدول الزمني",
+    "attendance": "الحضور",
+    "Month": "الشهر",
+    "Term": "الفصل الدراسي",
+    "daily": "يومي",
+    "weekly": "أسبوعي",
+
     "Privacy Policy": "سياسة الخصوصية",
     "About the app": "حول التطبيق",
     "Help and support": "المساعدة والدعم",
@@ -88,6 +101,14 @@
     "address": "أدخل عنوانك هنا",
     "state": "الولاية",
     "city": "المدينة",
-    "state_code": "٠٠٠٠٠٠"
+    "state_code": "٠٠٠٠٠٠",
+    "instructordetails": {
+      "title": "تفاصيل المعلم",
+      "students": "الطلاب",
+      "experience": "الخبرة",
+      "description": "لوريم ايبسوم دولار سيت أميت كونسيكتيتور. كونفاليس است أورنا أديباسنغ فرينجيلا نولا ديام لوريم نون موريس.",
+      "reviews": "المراجعات",
+      "chemistryProfessor": "أستاذ الكيمياء"
+    }
   }
 }

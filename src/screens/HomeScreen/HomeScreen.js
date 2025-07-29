@@ -11,6 +11,7 @@ import Assignments from './../../components/Assignments/Assignments';
 import Instructors from './../../components/Instructors/Instructors';
 import Modules from './../../components/Modules/Modules';
 import TrainingCenters from './../../components/TrainingCenters/TrainingCenters';
+import HomeBanner from './../../components/Banners/HomeBanner';
 
 const HomeScreen = () => {
   const dummyData = [{ id: '1' }];
@@ -23,8 +24,9 @@ const HomeScreen = () => {
         keyExtractor={item => item.id}
         ListFooterComponent={
           <View>
-            <UserInfoHomeCard />
             <ThoughtOfDayCard />
+            <HomeBanner />
+            <UserInfoHomeCard />
             <AttendanceHomeScreenCard />
             <HomeSchedule />
             <Assignments />

@@ -1,127 +1,141 @@
 import React from 'react';
-import { Image } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import HomeScreen from './../../screens/HomeScreen/HomeScreen';
 import { useTranslation } from 'react-i18next';
-import colors from './../../config/colors';
 import { fonts } from './../../config/fonts';
 import AuthNavigator from './../AuthNavigator/AuthNavigator';
-import OTPVerification from './../../screens/AuthScreen/OTPVerification';
+import AttendanceScreen from './../../screens/AttendanceScreen/AttendanceScreen';
 import ProfileNavigator from './../ProfileNavigator/ProfileNavigator';
-import ChatScreen from './../../screens/ChatScreen/ChatScreen';
-import Instructors from './../../screens/InstructorScreen/Instructors';
-import RegisterParent from './../../screens/AuthScreen/RegisterParent';
-import RegisterStudent from './../../screens/AuthScreen/RegisterStudent';
+import colors from './../../config/colors';
+import TimeTableScreen from './../../screens/TimeTableScreen/TimeTableScreen';
+import InstructorDetails from './../../screens/InstructorScreen/InstructorDetails';
+import HomeWithoutLogin from './../../screens/HomeScreen/HomeWithoutLogin';
+import ProgressReportScreen from './../../screens/ProgressReport/ProgressReportScreen';
+import FeedbackTeacher from './../../screens/FeedbackScreen/FeedbackTeacher';
+
 const Tab = createBottomTabNavigator();
 
 const AppNavigator = ({ navigation }) => {
   const { t } = useTranslation();
-
   const insets = useSafeAreaInsets();
+
+  const renderTabIcon = (icon, label, focused) => {
+    if (focused) {
+      return (
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            paddingHorizontal: 15,
+            paddingVertical: 8,
+            borderRadius: 40,
+            backgroundColor: '#C1DBFF',
+            minWidth: 100,
+          }}
+        >
+          <Image
+            source={icon}
+            style={{
+              width: 24,
+              height: 24,
+              resizeMode: 'contain',
+              tintColor: '#1F7EFF',
+              marginRight: 8,
+            }}
+          />
+          <Text
+            style={{
+              fontSize: 12,
+              fontFamily: fonts.Medium,
+              color: '#1F7EFF',
+            }}
+          >
+            {label}
+          </Text>
+        </View>
+      );
+    } else {
+      return (
+        <Image
+          source={icon}
+          style={{
+            width: 24,
+            height: 24,
+            resizeMode: 'contain',
+            tintColor: '#111827',
+          }}
+        />
+      );
+    }
+  };
+
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: colors.button,
-        tabBarInactiveTintColor: colors.bottomtabtext,
         tabBarHideOnKeyboard: true,
         tabBarStyle: {
           height: 70 + insets.bottom,
           paddingBottom: insets.bottom,
+          paddingTop: 15,
+          paddingHorizontal: 10,
           backgroundColor: 'white',
+          borderTopLeftRadius: 30,
+          borderTopRightRadius: 30,
+          position: 'absolute',
         },
+        tabBarShowLabel: false,
       }}
     >
       <Tab.Screen
         name="Home"
         component={HomeScreen}
         options={{
-          tabBarLabel: t('home'),
-          tabBarLabelStyle: {
-            fontSize: 10,
-            fontFamily: fonts.Medium,
-            color: colors.bottomtabtext,
-          },
-          tabBarIcon: ({ color, focused }) => (
-            <Image
-              source={require('../../assets/Images/TabImages/HomeIcon.png')}
-              style={{
-                width: 24,
-                height: 24,
-                resizeMode: 'contain',
-              }}
-            />
-          ),
+          tabBarIcon: ({ focused }) =>
+            renderTabIcon(
+              require('../../assets/Images/TabImages/HomeIcon2.png'),
+              t('home'),
+              focused,
+            ),
         }}
       />
-
       <Tab.Screen
         name="OTPVerification"
         component={AuthNavigator}
         options={{
-          tabBarLabel: t('timetable'),
-          tabBarLabelStyle: {
-            fontSize: 10,
-            fontFamily: fonts.Medium,
-            color: colors.bottomtabtext,
-          },
-          tabBarIcon: ({ color, focused }) => (
-            <Image
-              source={require('../../assets/Images/TabImages/TimeTableIcon.png')}
-              style={{
-                width: 24,
-                height: 24,
-                resizeMode: 'contain',
-              }}
-            />
-          ),
+          tabBarIcon: ({ focused }) =>
+            renderTabIcon(
+              require('../../assets/Images/TabImages/TimeTableIcon.png'),
+              t('timetable'),
+              focused,
+            ),
         }}
       />
-
       <Tab.Screen
         name="AuthNavigator"
-        component={RegisterStudent}
+        component={FeedbackTeacher}
         options={{
-          tabBarLabel: t('chats'),
-          tabBarLabelStyle: {
-            fontSize: 10,
-            fontFamily: fonts.Medium,
-            color: colors.bottomtabtext,
-          },
-          tabBarIcon: ({ color, focused }) => (
-            <Image
-              source={require('../../assets/Images/TabImages/ChatIcon.png')}
-              style={{
-                width: 24,
-                height: 24,
-                resizeMode: 'contain',
-              }}
-            />
-          ),
+          tabBarIcon: ({ focused }) =>
+            renderTabIcon(
+              require('../../assets/Images/TabImages/ChatIcon.png'),
+              t('chats'),
+              focused,
+            ),
         }}
       />
-
       <Tab.Screen
         name="ProfileNavigator"
         component={ProfileNavigator}
         options={{
-          tabBarLabel: t('profile'),
-          tabBarLabelStyle: {
-            fontSize: 10,
-            fontFamily: fonts.Medium,
-            color: colors.bottomtabtext,
-          },
-          tabBarIcon: ({ color, focused }) => (
-            <Image
-              source={require('../../assets/Images/TabImages/ProfileIcon.png')}
-              style={{
-                width: 24,
-                height: 24,
-                resizeMode: 'contain',
-              }}
-            />
-          ),
+          tabBarIcon: ({ focused }) =>
+            renderTabIcon(
+              require('../../assets/Images/TabImages/ProfileIcon.png'),
+              t('profile'),
+              focused,
+            ),
         }}
       />
     </Tab.Navigator>

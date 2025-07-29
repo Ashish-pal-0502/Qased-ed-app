@@ -112,7 +112,7 @@ const Instructors = () => {
           ))}
         </View> */}
 
-        <View style={{ paddingVertical: 12 }}>
+        <View style={{ paddingVertical: 10 }}>
           <FlatList
             data={instructorsData}
             keyExtractor={item => item.id}

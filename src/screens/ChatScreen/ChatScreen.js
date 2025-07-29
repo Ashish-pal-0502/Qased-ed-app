@@ -104,7 +104,7 @@ const ChatScreen = () => {
             onChangeText={setSearch}
           />
         </View>
-        <TouchableOpacity style={styles.filterButton}>
+        {/* <TouchableOpacity style={styles.filterButton}>
           <Text style={styles.filterText}>{t('instructor.filters')}</Text>
           <Ionicons
             name="filter"
@@ -112,7 +112,7 @@ const ChatScreen = () => {
             color="#344054"
             style={{ marginLeft: 4 }}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
       <View style={styles.commonCardWrapper}>
@@ -209,10 +209,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 12,
   },
-  itemBorder: {
-    borderBottomWidth: 1,
-    borderColor: '#A7A8BB',
-  },
+  // itemBorder: {
+  //   borderBottomWidth: 1,
+  //   borderColor: '#A7A8BB',
+  // },
   avatar: {
     width: 42,
     height: 42,
