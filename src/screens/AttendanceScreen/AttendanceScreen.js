@@ -17,32 +17,32 @@ import { ProgressBar } from 'react-native-paper';
 import RightIcon from '../../assets/Images/Icons/RightIcon.png';
 import CustomCalendar from './../../components/Cards/CustomCalender';
 
-const breakdownData = [
-  {
-    id: 1,
-    subject: 'Mathematics',
-    status: 'Present',
-  },
-  {
-    id: 2,
-    subject: 'Chemistry',
-    status: 'Absent',
-  },
-  {
-    id: 3,
-    subject: 'Biology',
-    status: 'Present',
-  },
-];
-
 const AttendanceScreen = ({ navigation }) => {
   const { t } = useTranslation();
 
   const progress = 0.8;
   const [selectedView, setSelectedView] = useState('Month');
 
+  const breakdownData = [
+    {
+      id: 1,
+      subject: 'Mathematics',
+      status: t('present'),
+    },
+    {
+      id: 2,
+      subject: 'Chemistry',
+      status: t('absent'),
+    },
+    {
+      id: 3,
+      subject: 'Biology',
+      status: t('present'),
+    },
+  ];
+
   const renderBreakdownItem = ({ item }) => {
-    const isPresent = item.status === 'Present';
+    const isPresent = item.status === 'Present' || item.status === 'حاضر';
 
     return (
       <View style={styles.breakdownRow}>
@@ -143,7 +143,7 @@ const AttendanceScreen = ({ navigation }) => {
           <CustomCalendar />
         </View>
 
-        <Text style={styles.breakdownTitle}>Daily Breakdown</Text>
+        <Text style={styles.breakdownTitle}>{t('Daily Breakdown')}</Text>
         <View style={styles.breakdownContainer}>
           <FlatList
             data={breakdownData}

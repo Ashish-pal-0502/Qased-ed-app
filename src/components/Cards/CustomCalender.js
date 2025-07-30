@@ -10,6 +10,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
 import { fonts } from './../../config/fonts';
 import colors from './../../config/colors';
+import { useTranslation } from 'react-i18next';
 
 const { width } = Dimensions.get('window');
 const DAY_SIZE = width / 9;
@@ -28,6 +29,7 @@ const absentDates = ['2025-07-02', '2025-07-11', '2025-07-13'];
 const CustomCalendar = () => {
   const [currentMonth, setCurrentMonth] = useState(moment());
   const [selectedDate, setSelectedDate] = useState(null);
+  const { t } = useTranslation();
 
   const startOfMonth = currentMonth.clone().startOf('month').startOf('week');
   const endOfMonth = currentMonth.clone().endOf('month').endOf('week');
@@ -128,15 +130,15 @@ const CustomCalendar = () => {
         <View style={styles.legendContainer}>
           <View style={styles.legendItem}>
             <View style={[styles.dot, { backgroundColor: '#528BD9' }]} />
-            <Text style={styles.legendText}>Total</Text>
+            <Text style={styles.legendText}>{t('total')}</Text>
           </View>
           <View style={styles.legendItem}>
             <View style={[styles.dot, { backgroundColor: '#00958C' }]} />
-            <Text style={styles.legendText}>Present</Text>
+            <Text style={styles.legendText}>{t('present')}</Text>
           </View>
           <View style={styles.legendItem}>
             <View style={[styles.dot, { backgroundColor: '#FF5555' }]} />
-            <Text style={styles.legendText}>Absent</Text>
+            <Text style={styles.legendText}>{t('absent')}</Text>
           </View>
         </View>
       </View>
@@ -147,10 +149,10 @@ const CustomCalendar = () => {
             style={[styles.statusIndicator, { backgroundColor: '#00958C' }]}
           />
           <Text style={[styles.summaryText, { color: '#00958C' }]}>
-            Present
+            {t('present')}
           </Text>
           <Text style={[styles.summaryCount, { color: '#00958C' }]}>
-            15 Days
+            15 {t('days')}
           </Text>
         </View>
 
@@ -158,9 +160,11 @@ const CustomCalendar = () => {
           <View
             style={[styles.statusIndicator, { backgroundColor: '#FE6767' }]}
           />
-          <Text style={[styles.summaryText, { color: '#FE6767' }]}>Absent</Text>
+          <Text style={[styles.summaryText, { color: '#FE6767' }]}>
+            {t('absent')}
+          </Text>
           <Text style={[styles.summaryCount, { color: '#FE6767' }]}>
-            3 Days
+            3 {t('days')}
           </Text>
         </View>
       </View>

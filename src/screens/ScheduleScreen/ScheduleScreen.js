@@ -179,11 +179,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
     paddingHorizontal: 16,
-    paddingBottom: 16,
+    paddingBottom: 60,
   },
 
   scrollContent: {
-    paddingBottom: 20,
+    paddingBottom: 40,
   },
 
   bottomButton: {

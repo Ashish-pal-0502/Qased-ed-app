@@ -12,6 +12,7 @@ import Instructors from './../../components/Instructors/Instructors';
 import Modules from './../../components/Modules/Modules';
 import TrainingCenters from './../../components/TrainingCenters/TrainingCenters';
 import HomeBanner from './../../components/Banners/HomeBanner';
+import HomeNavButtons from './../../components/HomeNavButtons/HomeNavButtons';
 
 const HomeScreen = () => {
   const dummyData = [{ id: '1' }];
@@ -28,6 +29,7 @@ const HomeScreen = () => {
             <HomeBanner />
             <UserInfoHomeCard />
             <AttendanceHomeScreenCard />
+            <HomeNavButtons />
             <HomeSchedule />
             <Assignments />
             <Instructors />

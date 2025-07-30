@@ -9,9 +9,9 @@ import {
 } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import ThoughtOfDayCard from './../../components/Cards/ThoughtOfDayCard';
+import ThoughtOfDayCard from '../../components/Cards/ThoughtOfDayCard';
 import notification from '../../assets/Images/Icons/Notification.png';
-import Button from './../../components/Buttons/Button';
+import Button from '../../components/Buttons/Button';
 
 const dummyData = {
   class: ['Class I', 'Class II', 'Class III'],
@@ -57,7 +57,7 @@ const Dropdown = ({ label, data, selected, onSelect, isOpen, toggleOpen }) => {
   );
 };
 
-const FullScreenWithDropdowns = () => {
+const HomeWithoutLoginDropdown = () => {
   const [selectedClass, setSelectedClass] = useState(null);
   const [selectedBoard, setSelectedBoard] = useState(null);
   const [selectedSchool, setSelectedSchool] = useState(null);
@@ -151,7 +151,7 @@ const FullScreenWithDropdowns = () => {
   );
 };
 
-export default FullScreenWithDropdowns;
+export default HomeWithoutLoginDropdown;
 
 const styles = StyleSheet.create({
   container: {
@@ -220,8 +220,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 14,
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E5E5',
   },
   dropdownLabel: {
     fontSize: 16,

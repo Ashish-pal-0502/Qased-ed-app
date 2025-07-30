@@ -13,7 +13,7 @@ import Banner2 from '../../assets/Images/Banners/BannerImage.png';
 import Banner3 from '../../assets/Images/Banners/BannerImage.png';
 
 const { width } = Dimensions.get('window');
-const ITEM_WIDTH = width * 0.85;
+const ITEM_WIDTH = width * 0.9;
 const SPACER_WIDTH = (width - ITEM_WIDTH) / 2;
 
 const images = [Banner1, Banner2, Banner3];

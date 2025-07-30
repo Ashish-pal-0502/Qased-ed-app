@@ -81,7 +81,8 @@ const dummyData = [
 
 const InstructorDetails = () => {
   const { t } = useTranslation();
-  const [selectedView, setSelectedView] = useState('About');
+  const [selectedView, setSelectedView] = useState('about');
+  const tabs = ['about', 'sessions', 'review'];
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -116,67 +117,39 @@ const InstructorDetails = () => {
 
           <View style={styles.sessionRow}>
             <View style={styles.groupSession}>
-              <Text style={styles.groupSessionText}>Group Session</Text>
+              <Text style={styles.groupSessionText}>{t('group_session')}</Text>
             </View>
             <View style={styles.privateSession}>
-              <Text style={styles.privateSessionText}>1:1 Session</Text>
+              <Text style={styles.privateSessionText}>
+                {t('one_to_one_session')}
+              </Text>
             </View>
           </View>
 
           <View style={styles.toggleContainer}>
-            <TouchableOpacity
-              style={[
-                styles.toggleButton,
-                selectedView === 'About' && styles.toggleActive,
-              ]}
-              onPress={() => setSelectedView('About')}
-            >
-              <Text
+            {tabs.map(tab => (
+              <TouchableOpacity
+                key={tab}
+                onPress={() => setSelectedView(tab)}
                 style={[
-                  styles.toggleText,
-                  selectedView === 'About' && styles.toggleTextActive,
+                  styles.toggleButton,
+                  selectedView === tab && styles.toggleActive,
                 ]}
               >
-                {t('About')}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.toggleButton,
-                selectedView === 'Sessions' && styles.toggleActive,
-              ]}
-              onPress={() => setSelectedView('Sessions')}
-            >
-              <Text
-                style={[
-                  styles.toggleText,
-                  selectedView === 'Sessions' && styles.toggleTextActive,
-                ]}
-              >
-                {t('Sessions')}
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[
-                styles.toggleButton,
-                selectedView === 'Review' && styles.toggleActive,
-              ]}
-              onPress={() => setSelectedView('Review')}
-            >
-              <Text
-                style={[
-                  styles.toggleText,
-                  selectedView === 'Review' && styles.toggleTextActive,
-                ]}
-              >
-                {t('Review')}
-              </Text>
-            </TouchableOpacity>
+                <Text
+                  style={[
+                    styles.toggleText,
+                    selectedView === tab && styles.toggleTextActive,
+                  ]}
+                >
+                  {t(tab)}
+                </Text>
+              </TouchableOpacity>
+            ))}
           </View>
         </View>
 
-        {selectedView === 'Review' ? (
+        {selectedView === 'review' ? (
           <FlatList
             data={reviews}
             keyExtractor={item => item.id}
@@ -184,7 +157,7 @@ const InstructorDetails = () => {
             scrollEnabled={false}
             contentContainerStyle={{ paddingBottom: 40 }}
           />
-        ) : selectedView === 'Sessions' ? (
+        ) : selectedView === 'sessions' ? (
           <FlatList
             data={dummyData}
             keyExtractor={item => item.id}

@@ -3,10 +3,10 @@ import {
   View,
   Text,
   StyleSheet,
-  SafeAreaView,
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  Modal,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -16,9 +16,8 @@ import { useTranslation } from 'react-i18next';
 
 const screenHeight = Dimensions.get('window').height;
 
-const FeedbackStudent = ({ navigation }) => {
+const StudentFeedbackModal = ({ visible, onClose }) => {
   const { t } = useTranslation();
-
   const [ratings, setRatings] = useState([3, 3, 3]);
 
   const handleRating = (index, value) => {
@@ -38,94 +37,80 @@ const FeedbackStudent = ({ navigation }) => {
   ];
 
   return (
-    <SafeAreaView style={styles.wrapper}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.iconWrapper}
-        >
-          <Ionicons name="arrow-back" size={22} color={colors.black} />
-        </TouchableOpacity>
-        <View style={styles.iconWrapper} />
-      </View>
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={visible}
+      onRequestClose={onClose}
+    >
+      <View style={styles.overlay}>
+        <TouchableOpacity style={styles.backdrop} onPress={onClose} />
 
-      <View style={styles.card}>
-        <View style={styles.cardHeader}>
-          <Text style={styles.title}>
-            {/* How was your experience with Student ? */}
-            How was your experience with Teacher ?
-          </Text>
-          <TouchableOpacity>
-            <Ionicons name="close" size={24} color="#000E08" />
-          </TouchableOpacity>
-        </View>
-
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.scrollContent}
-        >
-          {questions.map((question, i) => (
-            <View key={i} style={styles.questionBlock}>
-              <Text style={styles.question}>{question}</Text>
-              <View style={styles.starsRow}>
-                {[1, 2, 3, 4, 5].map(star => (
-                  <TouchableOpacity
-                    key={star}
-                    onPress={() => handleRating(i, star)}
-                  >
-                    <FontAwesome
-                      name={star <= ratings[i] ? 'star' : 'star-o'}
-                      size={20}
-                      color="#F9C144"
-                      style={styles.star}
-                    />
-                  </TouchableOpacity>
-                ))}
-              </View>
-              {i < questions.length - 1 && <View style={styles.divider} />}
-            </View>
-          ))}
-
-          <View style={styles.buttonWrapper}>
-            <TouchableOpacity style={styles.submitButton}>
-              <Text style={styles.submitText}>Submit</Text>
+        <View style={styles.card}>
+          <View style={styles.cardHeader}>
+            <Text style={styles.title}>
+              {t('How was your experience with Teacher ?')}
+            </Text>
+            <TouchableOpacity onPress={onClose}>
+              <Ionicons name="close" size={24} color="#000E08" />
             </TouchableOpacity>
           </View>
-        </ScrollView>
+
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.scrollContent}
+          >
+            {questions.map((question, i) => (
+              <View key={i} style={styles.questionBlock}>
+                <Text style={styles.question}>{question}</Text>
+                <View style={styles.starsRow}>
+                  {[1, 2, 3, 4, 5].map(star => (
+                    <TouchableOpacity
+                      key={star}
+                      onPress={() => handleRating(i, star)}
+                    >
+                      <FontAwesome
+                        name={star <= ratings[i] ? 'star' : 'star-o'}
+                        size={20}
+                        color="#F9C144"
+                        style={styles.star}
+                      />
+                    </TouchableOpacity>
+                  ))}
+                </View>
+                {i < questions.length - 1 && <View style={styles.divider} />}
+              </View>
+            ))}
+
+            <View style={styles.buttonWrapper}>
+              <TouchableOpacity style={styles.submitButton}>
+                <Text style={styles.submitText}>{t('Submit')}</Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+        </View>
       </View>
-    </SafeAreaView>
+    </Modal>
   );
 };
 
-export default FeedbackStudent;
+export default StudentFeedbackModal;
 
 const styles = StyleSheet.create({
-  wrapper: {
+  overlay: {
     flex: 1,
-    backgroundColor: colors.background,
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0,0,0,0.1)',
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingTop: 10,
-  },
-  iconWrapper: {
-    width: 36,
-    height: 36,
-    justifyContent: 'center',
-    alignItems: 'center',
+  backdrop: {
+    flex: 1,
   },
   card: {
-    position: 'absolute',
-    top: screenHeight * 0.35,
-    left: 0,
-    right: 0,
-    bottom: 0,
     backgroundColor: colors.white,
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     padding: 24,
+    maxHeight: screenHeight * 0.65,
   },
   cardHeader: {
     flexDirection: 'row',

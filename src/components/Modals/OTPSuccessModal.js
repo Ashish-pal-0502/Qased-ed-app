@@ -8,14 +8,14 @@ import {
 } from 'react-native';
 import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useTranslation } from 'react-i18next'; // ✅ Import translation hook
+import { useTranslation } from 'react-i18next';
 
-import SuccessIcon from '../../assets/Images/AuthImages/Success.png'; // ✅ Custom image
+import SuccessIcon from '../../assets/Images/AuthImages/Success.png';
 import { fonts } from './../../config/fonts';
 import colors from './../../config/colors';
 
 const OTPSuccessModal = ({ visible, onClose }) => {
-  const { t } = useTranslation(); // ✅ Translation hook
+  const { t } = useTranslation();
 
   return (
     <Modal

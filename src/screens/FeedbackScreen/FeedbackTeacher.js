@@ -28,13 +28,9 @@ const FeedbackTeacher = ({ navigation }) => {
   };
 
   const questions = [
-    t('How well did the teacher communicate your questions or doubts?'),
-    t(
-      "How was the teacher's attitude, engagement, and respect during the session?",
-    ),
-    t(
-      'Did the teacher manage the session time effectively (e.g., teach well, stay on track)?',
-    ),
+    'How actively did the student engage in the session?',
+    'How well did the student grasp the topic discussed today?',
+    'How focused and disciplined was the student during the session?',
   ];
 
   return (
@@ -52,7 +48,7 @@ const FeedbackTeacher = ({ navigation }) => {
       <View style={styles.card}>
         <View style={styles.cardHeader}>
           <Text style={styles.title}>
-            {t('How was your experience with Teacher ?')}
+            {t(' How was your experience with Student ?')}
           </Text>
           <TouchableOpacity>
             <Ionicons name="close" size={24} color="#000E08" />

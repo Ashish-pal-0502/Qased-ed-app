@@ -1,65 +1,84 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  SafeAreaView,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
 
 import TopNavigationHeader from './../../components/Header/TopNavigationHeader';
 import colors from './../../config/colors';
 import { fonts } from './../../config/fonts';
 import { useTranslation } from 'react-i18next';
 
-const notificationsData = [
-  {
-    id: '1',
-    title: 'Maths Homework Received',
-    message: 'Your worksheet was successfully submitted. Great job!',
-    time: '23 min ago',
-    icon: 'atom',
-  },
-  {
-    id: '2',
-    title: 'HMTL Assignment Pending',
-    message: 'Reminder: Your essay is due tomorrow by 8:00 PM.',
-    time: '23 hour ago',
-    icon: 'flask',
-  },
-];
+const notificationsData = {
+  Today: [
+    {
+      id: '1',
+      title: 'Science Homework Recieved',
+      message: 'Your worksheet was successfully submitted. Great job!',
+      time: '2 hours Ago',
+      icon: 'atom',
+    },
+    {
+      id: '2',
+      title: 'Chemistry Assignment Pending',
+      message: 'Reminder: Your essay is due tomorrow by 8:00 PM.',
+      time: '2 hours Ago',
+      icon: 'flask',
+    },
+  ],
+  Monday: [
+    {
+      id: '3',
+      title: 'Physics Quiz Reminder',
+      message: 'Don’t forget the quiz at 3 PM!',
+      time: '1 day Ago',
+      icon: 'atom',
+    },
+  ],
+};
+
+const getIcon = type => {
+  if (type === 'atom') return '🔬';
+  if (type === 'flask') return '⚗️';
+  return '🔔';
+};
 
 const Notifications = () => {
   const { t } = useTranslation();
 
-  const renderItem = ({ item }) => (
-    <View style={styles.card}>
-      <View style={styles.iconArea}>
-        <Text style={styles.iconText}>
-          {item.icon === 'atom' ? '🔬' : '⚗️'}
-        </Text>
+  const renderNotificationItem = (item, isLast) => (
+    <View key={item.id} style={[styles.card, !isLast && styles.withBorder]}>
+      <View style={styles.leftSection}>
+        <View style={styles.iconArea}>
+          <Text style={styles.iconText}>{getIcon(item.icon)}</Text>
+        </View>
+        <View style={styles.textContainer}>
+          <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.message}>{item.message}</Text>
+          <Text style={styles.time}>{item.time}</Text>
+        </View>
       </View>
-      <View style={styles.textContainer}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.message}>{item.message}</Text>
-      </View>
-      <Text style={styles.time}>{item.time}</Text>
     </View>
   );
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={{ marginBottom: 12 }}>
-        <TopNavigationHeader title={t('notifications')} />
+        <TopNavigationHeader title={t('Notifications')} />
       </View>
 
-      <FlatList
-        data={notificationsData}
-        keyExtractor={item => item.id}
-        renderItem={renderItem}
+      <ScrollView
+        showsVerticalScrollIndicator={false}
         contentContainerStyle={{ padding: 16 }}
-      />
+      >
+        {Object.entries(notificationsData).map(([day, items]) => (
+          <View key={day} style={{ marginBottom: 24 }}>
+            <View style={styles.cardWrapper}>
+              <Text style={styles.sectionTitle}>{day}</Text>
+              {items.map((item, index) =>
+                renderNotificationItem(item, index === items.length - 1),
+              )}
+            </View>
+          </View>
+        ))}
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -71,29 +90,40 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
   },
-
+  sectionTitle: {
+    fontSize: 16,
+    fontFamily: fonts.Medium,
+    color: '#171725',
+    marginBottom: 5,
+  },
+  cardWrapper: {
+    backgroundColor: colors.white,
+    borderRadius: 16,
+    paddingHorizontal: 12,
+    paddingTop: 12,
+    paddingBottom: 6,
+  },
   card: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'flex-start',
-    backgroundColor: colors.white,
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
-    borderBottomLeftRadius: 12,
-    borderBottomRightRadius: 12,
-    paddingVertical: 22,
-    paddingHorizontal: 14,
+    paddingVertical: 12,
+  },
+  withBorder: {
     borderBottomWidth: 1,
     borderBottomColor: '#E0E0E0',
   },
-
+  leftSection: {
+    flexDirection: 'row',
+    flex: 1,
+  },
   iconArea: {
     width: 32,
     height: 32,
     borderRadius: 16,
-    // backgroundColor: '#EFF4FF',
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 12,
+    marginRight: 10,
   },
   iconText: {
     fontSize: 18,
@@ -102,9 +132,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontFamily: fonts.Medium,
-    fontSize: 12,
-    color: '#2C2D3A',
+    fontFamily: fonts.Regular,
+    fontSize: 14,
+    color: '#171725',
   },
   message: {
     fontSize: 10,
@@ -113,10 +143,9 @@ const styles = StyleSheet.create({
     fontFamily: fonts.Regular,
   },
   time: {
-    fontSize: 11,
-    color: '#686A8A',
-    marginLeft: 8,
-    alignSelf: 'flex-start',
+    fontSize: 10,
+    color: '#66707A',
     fontFamily: fonts.Medium,
+    alignSelf: 'flex-end',
   },
 });

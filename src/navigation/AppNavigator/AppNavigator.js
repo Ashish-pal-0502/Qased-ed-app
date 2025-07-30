@@ -11,9 +11,15 @@ import ProfileNavigator from './../ProfileNavigator/ProfileNavigator';
 import colors from './../../config/colors';
 import TimeTableScreen from './../../screens/TimeTableScreen/TimeTableScreen';
 import InstructorDetails from './../../screens/InstructorScreen/InstructorDetails';
-import HomeWithoutLogin from './../../screens/HomeScreen/HomeWithoutLogin';
 import ProgressReportScreen from './../../screens/ProgressReport/ProgressReportScreen';
 import FeedbackTeacher from './../../screens/FeedbackScreen/FeedbackTeacher';
+import HomeWithoutLoginDropdown from './../../screens/HomeScreen/HomeWithoutLoginDropdown';
+import Notifications from './../../screens/NotificationScreen/Notifications';
+import EditProfile from './../../screens/ProfileScreen/EditProfile';
+import HomeWithoutLoginMain from './../../screens/HomeScreen/HomeWithoutLoginMain';
+import Instructors from './../../screens/InstructorScreen/Instructors';
+import ScheduleScreen from './../../screens/ScheduleScreen/ScheduleScreen';
+import MyLibrary from './../../screens/MyLibrary/MyLibrary';
 
 const Tab = createBottomTabNavigator();
 
@@ -116,7 +122,7 @@ const AppNavigator = ({ navigation }) => {
       />
       <Tab.Screen
         name="AuthNavigator"
-        component={FeedbackTeacher}
+        component={EditProfile}
         options={{
           tabBarIcon: ({ focused }) =>
             renderTabIcon(

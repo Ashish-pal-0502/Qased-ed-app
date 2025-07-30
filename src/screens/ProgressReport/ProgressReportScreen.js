@@ -122,7 +122,7 @@ const ProgressReportScreen = ({ navigation }) => {
         ListFooterComponent={
           <View>
             <View style={styles.totalMarksBox}>
-              <Text style={styles.totalLabel}>Total Marks</Text>
+              <Text style={styles.totalLabel}>{t('Total Marks')}</Text>
               <Text style={styles.totalValue}>300/400</Text>
             </View>
             <TouchableOpacity style={styles.downloadButton}>
@@ -133,7 +133,9 @@ const ProgressReportScreen = ({ navigation }) => {
                   color="#fff"
                   style={{ marginRight: 6 }}
                 />
-                <Text style={styles.downloadButtonText}>Download Report</Text>
+                <Text style={styles.downloadButtonText}>
+                  {t('Download Report')}
+                </Text>
               </View>
             </TouchableOpacity>
           </View>
