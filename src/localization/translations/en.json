@@ -13,6 +13,7 @@
     "monthlyatt": "Monthly Attendance",
     "schedule": "Schedule",
     "viewall": "View all",
+
     "home": "Home",
     "timetable": "Timetable",
     "chats": "Chats",
@@ -53,7 +54,9 @@
     "create_new_password_title": "Create New Password",
     "create_new_password_subtitle": "Your new password must be unique from those previously used.",
     "new_password": "New password",
-    "confirm_password": "Confirm password",
+    "confirm_password": "Confirm password *",
+    "my_enrolled_childs": "My Enrolled Children",
+    "add_your_children": "Add your children",
     "reset_password": "Reset Password",
     "remember_password": "Remember Password?",
     "passwords_do_not_match": "Passwords do not match",

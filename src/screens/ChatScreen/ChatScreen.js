@@ -14,6 +14,8 @@ import colors from './../../config/colors';
 import { fonts } from './../../config/fonts';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
+import useAuth from './../../auth/useAuth';
+import LoginViewButton from './../../components/NotLoginButton/LoginViewButton';
 
 const chatData = [
   {
@@ -49,13 +51,15 @@ const ChatScreen = () => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const [search, setSearch] = useState('');
+  const { user } = useAuth();
 
   const renderItem = ({ item, index }) => (
-    <View
+    <TouchableOpacity
       style={[
         styles.chatItem,
         index < chatData.length - 1 && styles.itemBorder,
       ]}
+      onPress={() => navigation.navigate('MessageScreen')}
     >
       <Image source={{ uri: item.image }} style={styles.avatar} />
       <View style={styles.textContainer}>
@@ -72,8 +76,16 @@ const ChatScreen = () => {
           <Ionicons name="checkmark-done" size={18} color="#C7C7CC" />
         )}
       </View>
-    </View>
+    </TouchableOpacity>
   );
+
+  if (!user) {
+    return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
+        <LoginViewButton />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>

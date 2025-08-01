@@ -40,22 +40,47 @@ const OnBoarding = ({ navigation }) => {
         </Text>
       </View>
 
-      <TouchableOpacity
-        style={styles.buttonWrapper}
-        onPress={() => navigation.navigate('Login')}
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          gap: 5,
+        }}
       >
-        <View style={styles.gradient}>
-          <View style={styles.textWithIcon}>
-            <Text style={styles.text}>{t('getstarted')}</Text>
-            <Feather
-              name="arrow-right"
-              size={18}
-              color={'white'}
-              style={{ marginLeft: 8 }}
-            />
+        <TouchableOpacity
+          style={styles.buttonWrapper}
+          onPress={() => navigation.navigate('RegisterParent')}
+        >
+          <View style={styles.gradient}>
+            <View style={styles.textWithIcon}>
+              <Text style={styles.text}>{t('getstarted')}</Text>
+              <Feather
+                name="arrow-right"
+                size={18}
+                color={'white'}
+                style={{ marginLeft: 8 }}
+              />
+            </View>
           </View>
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.buttonWrapper}
+          onPress={() => navigation.navigate('Login')}
+        >
+          <View style={styles.gradient}>
+            <View style={styles.textWithIcon}>
+              <Text style={styles.text}>{t('login')}</Text>
+              <Feather
+                name="arrow-right"
+                size={18}
+                color={'white'}
+                style={{ marginLeft: 8 }}
+              />
+            </View>
+          </View>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };

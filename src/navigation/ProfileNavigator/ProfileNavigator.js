@@ -1,5 +1,4 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import OnBoarding from './../../screens/AuthScreen/OnBoarding';
 import ProfileScreen from './../../screens/ProfileScreen/ProfileScreen';
 import Notifications from './../../screens/NotificationScreen/Notifications';
 import Settings from './../../screens/Settings/Settings';

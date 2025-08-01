@@ -2,24 +2,12 @@ import React from 'react';
 import { View, Text, Image } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import HomeScreen from './../../screens/HomeScreen/HomeScreen';
 import { useTranslation } from 'react-i18next';
 import { fonts } from './../../config/fonts';
-import AuthNavigator from './../AuthNavigator/AuthNavigator';
-import AttendanceScreen from './../../screens/AttendanceScreen/AttendanceScreen';
 import ProfileNavigator from './../ProfileNavigator/ProfileNavigator';
-import colors from './../../config/colors';
-import TimeTableScreen from './../../screens/TimeTableScreen/TimeTableScreen';
-import InstructorDetails from './../../screens/InstructorScreen/InstructorDetails';
-import ProgressReportScreen from './../../screens/ProgressReport/ProgressReportScreen';
-import FeedbackTeacher from './../../screens/FeedbackScreen/FeedbackTeacher';
-import HomeWithoutLoginDropdown from './../../screens/HomeScreen/HomeWithoutLoginDropdown';
-import Notifications from './../../screens/NotificationScreen/Notifications';
-import EditProfile from './../../screens/ProfileScreen/EditProfile';
-import HomeWithoutLoginMain from './../../screens/HomeScreen/HomeWithoutLoginMain';
-import Instructors from './../../screens/InstructorScreen/Instructors';
-import ScheduleScreen from './../../screens/ScheduleScreen/ScheduleScreen';
-import MyLibrary from './../../screens/MyLibrary/MyLibrary';
+import HomeNavigator from './../HomeNavigator/HomeNavigator';
+import ChatNavigator from './../ChatNavigator/ChatNavigator';
+import TimeTableNavigator from './../TimeTableNavigator/TimeTableNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -91,14 +79,14 @@ const AppNavigator = ({ navigation }) => {
           backgroundColor: 'white',
           borderTopLeftRadius: 30,
           borderTopRightRadius: 30,
-          position: 'absolute',
+          // position: 'absolute',
         },
         tabBarShowLabel: false,
       }}
     >
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        component={HomeNavigator}
         options={{
           tabBarIcon: ({ focused }) =>
             renderTabIcon(
@@ -109,8 +97,8 @@ const AppNavigator = ({ navigation }) => {
         }}
       />
       <Tab.Screen
-        name="OTPVerification"
-        component={AuthNavigator}
+        name="TimeTableNavigator"
+        component={TimeTableNavigator}
         options={{
           tabBarIcon: ({ focused }) =>
             renderTabIcon(
@@ -121,8 +109,8 @@ const AppNavigator = ({ navigation }) => {
         }}
       />
       <Tab.Screen
-        name="AuthNavigator"
-        component={EditProfile}
+        name="ChatNavigator"
+        component={ChatNavigator}
         options={{
           tabBarIcon: ({ focused }) =>
             renderTabIcon(

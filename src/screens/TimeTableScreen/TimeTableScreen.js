@@ -13,11 +13,14 @@ import colors from './../../config/colors';
 import { fonts } from './../../config/fonts';
 import { useTranslation } from 'react-i18next';
 import MyLibraryCard from './../../components/Cards/MyLibraryCard';
+import useAuth from './../../auth/useAuth';
+import LoginViewButton from './../../components/NotLoginButton/LoginViewButton';
 
 const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday'];
 
 const TimeTableScreen = ({ navigation }) => {
   const { t } = useTranslation();
+  const { user } = useAuth();
 
   const [selectedView, setSelectedView] = useState('Daily');
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -121,6 +124,14 @@ const TimeTableScreen = ({ navigation }) => {
       ))}
     </ScrollView>
   );
+
+  if (!user) {
+    return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
+        <LoginViewButton />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.wrapper}>

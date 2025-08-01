@@ -20,17 +20,59 @@ import LinearGradient from 'react-native-linear-gradient';
 import MaskedView from '@react-native-masked-view/masked-view';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Button from './../../components/Buttons/Button';
-
+import apiClient from './../../api/client';
+import useAuth from './../../auth/useAuth';
+import ToastPopupModal from './../../components/Modals/ToastPopupModal';
+import { useNavigation } from '@react-navigation/native';
+import { CommonActions } from '@react-navigation/native';
 const { width } = Dimensions.get('window');
 
-const Login = ({ navigation }) => {
+const Login = () => {
+  const navigation = useNavigation();
   const { t } = useTranslation();
+  const { logIn } = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [showToastPopupModal, setShowToastPopupModal] = useState(false);
+  const [loginAsStudent, setLoginAsStudent] = useState(false);
 
-  const handleLogin = () => {};
+  const handleLogin = async () => {
+    const endpoint = loginAsStudent
+      ? '/user/login-student'
+      : '/parents/parent-login';
+
+    const response = await apiClient.post(endpoint, {
+      email,
+      password,
+    });
+
+    if (response.ok) {
+      logIn(response.data.token);
+
+      setShowToastPopupModal(true);
+      setTimeout(() => {
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [
+              {
+                name: 'Home',
+                state: {
+                  routes: [
+                    {
+                      name: 'HomeScreen',
+                    },
+                  ],
+                },
+              },
+            ],
+          }),
+        );
+      }, 1000);
+    }
+  };
 
   const GradientText = ({ text, style }) => (
     <MaskedView
@@ -101,6 +143,23 @@ const Login = ({ navigation }) => {
               </View>
             </View>
 
+            <TouchableOpacity
+              style={styles.roleToggle}
+              onPress={() => setLoginAsStudent(prev => !prev)}
+              activeOpacity={0.8}
+            >
+              <View
+                style={[styles.checkbox, loginAsStudent && styles.checkedBox]}
+              >
+                {loginAsStudent && (
+                  <Ionicons name="checkmark" size={14} color="#fff" />
+                )}
+              </View>
+              <Text style={styles.checkboxLabel}>
+                {loginAsStudent ? 'Login as Student' : 'Login as Parent'}
+              </Text>
+            </TouchableOpacity>
+
             <Button title={t('login') || 'Login'} onPress={handleLogin} />
 
             <Text style={styles.orText}>
@@ -133,7 +192,9 @@ const Login = ({ navigation }) => {
             <Text style={styles.haveAccount}>
               {t('dont_have_account') || 'Don’t have an account?'}
             </Text>
-            <TouchableOpacity onPress={() => navigation.replace('Register')}>
+            <TouchableOpacity
+              onPress={() => navigation.replace('RegisterParent')}
+            >
               <GradientText
                 text={` ${t('register_now')}`}
                 style={styles.registerNow}
@@ -142,6 +203,13 @@ const Login = ({ navigation }) => {
           </View>
         </View>
       </KeyboardAvoidingView>
+
+      <ToastPopupModal
+        visible={showToastPopupModal}
+        onClose={() => setShowToastPopupModal(false)}
+        title="Login success"
+        desc="You have been logged in successfully"
+      />
     </SafeAreaView>
   );
 };
@@ -254,5 +322,33 @@ const styles = StyleSheet.create({
     fontFamily: fonts.Medium,
     fontSize: 14,
     marginLeft: 4,
+  },
+
+  roleToggle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+
+  checkbox: {
+    width: 18,
+    height: 18,
+    borderRadius: 4,
+    borderWidth: 1.5,
+    borderColor: '#528BD9',
+    marginRight: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  checkedBox: {
+    backgroundColor: '#528BD9',
+    borderColor: '#528BD9',
+  },
+
+  checkboxLabel: {
+    fontSize: 14,
+    fontFamily: fonts.Medium,
+    color: '#1E232C',
   },
 });

@@ -12,6 +12,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import ThoughtOfDayCard from '../../components/Cards/ThoughtOfDayCard';
 import notification from '../../assets/Images/Icons/Notification.png';
 import Button from '../../components/Buttons/Button';
+import { useNavigation } from '@react-navigation/native';
 
 const dummyData = {
   class: ['Class I', 'Class II', 'Class III'],
@@ -63,7 +64,7 @@ const HomeWithoutLoginDropdown = () => {
   const [selectedSchool, setSelectedSchool] = useState(null);
   const [selectedGender, setSelectedGender] = useState(null);
   const [selectedSubject, setSelectedSubject] = useState(null);
-
+  const navigation = useNavigation();
   const [openDropdown, setOpenDropdown] = useState(null);
 
   const toggleDropdown = type => {
@@ -73,7 +74,7 @@ const HomeWithoutLoginDropdown = () => {
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.header}>
+        {/* <View style={styles.header}>
           <Image
             source={{
               uri: 'https://cdn-icons-png.flaticon.com/128/3845/3845897.png',
@@ -85,7 +86,7 @@ const HomeWithoutLoginDropdown = () => {
 
         <View style={{ marginBottom: 8 }}>
           <ThoughtOfDayCard />
-        </View>
+        </View> */}
 
         <Dropdown
           label="Class"
@@ -144,7 +145,10 @@ const HomeWithoutLoginDropdown = () => {
         />
 
         <View style={styles.continueButton}>
-          <Button title="Continue" />
+          <Button
+            title="Continue"
+            onPress={() => navigation.navigate('Instructors')}
+          />
         </View>
       </ScrollView>
     </View>

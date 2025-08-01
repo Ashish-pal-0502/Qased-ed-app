@@ -3,9 +3,18 @@ import React from 'react';
 import colors from '../../config/colors';
 import { fonts } from '../../config/fonts';
 import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
 
 const InstructorsListCard = ({ instructor }) => {
+  const navigation = useNavigation();
+
   const { t } = useTranslation();
+  const handleNavigatetoListenerProfile = () => {
+    navigation.navigate('InstructorDetails');
+  };
+  const handleNavigatetoBooking = () => {
+    navigation.replace('MyLibrary');
+  };
   return (
     <View style={styles.card}>
       <View style={styles.imageContainer}>
@@ -20,8 +29,15 @@ const InstructorsListCard = ({ instructor }) => {
         </Text>
 
         <TouchableOpacity style={styles.buttonWrapper}>
-          <Text style={styles.ViewProfileButton}>{t('view_profile')}</Text>
-          <Text style={styles.ProceedButton}>{t('proceed_to_booking')}</Text>
+          <Text
+            style={styles.ViewProfileButton}
+            onPress={handleNavigatetoListenerProfile}
+          >
+            {t('view_profile')}
+          </Text>
+          <Text style={styles.ProceedButton} onPress={handleNavigatetoBooking}>
+            {t('proceed_to_booking')}
+          </Text>
         </TouchableOpacity>
       </View>
     </View>

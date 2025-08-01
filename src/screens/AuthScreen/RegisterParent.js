@@ -9,21 +9,103 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Image,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Picker } from '@react-native-picker/picker';
+import { launchImageLibrary } from 'react-native-image-picker';
 import colors from './../../config/colors';
 import { fonts } from './../../config/fonts';
 import AuthBackButton from './../../components/Buttons/AuthBackButton';
+import apiClient from './../../api/client';
+import useAuth from './../../auth/useAuth';
+import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 
 const RegisterParent = () => {
   const { t } = useTranslation();
+  const navigation = useNavigation();
+  const { logIn } = useAuth();
+
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
+  const [stateCode, setStateCode] = useState('');
   const [selectedChildren, setSelectedChildren] = useState('1');
   const [selectedState, setSelectedState] = useState('abcd');
   const [selectedCity, setSelectedCity] = useState('abcd');
+  const [profileImage, setProfileImage] = useState(null);
+
+  const handleSelectImage = () => {
+    launchImageLibrary({ mediaType: 'photo' }, response => {
+      if (response?.assets && response.assets.length > 0) {
+        setProfileImage(response.assets[0]);
+      }
+    });
+  };
+
+  const uploadImage = async () => {
+    if (profileImage) {
+      const formData = new FormData();
+
+      formData.append('image', {
+        uri: profileImage.uri,
+        type: profileImage.type,
+        name: profileImage.fileName,
+      });
+
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      };
+
+      const { data } = await apiClient.post(
+        '/uploads/uploadSingleImage',
+        formData,
+        config,
+      );
+
+      return data;
+    }
+  };
+
+  const registerParent = async () => {
+    const parentProfileImage = await uploadImage();
+
+    const payload = {
+      name,
+      email,
+      password,
+      phone,
+      address: {
+        state: selectedState,
+        city: selectedCity,
+        pincode: stateCode,
+      },
+
+      children: selectedChildren,
+
+      profileImage: parentProfileImage,
+    };
+
+    const response = await apiClient.post('/parents/register-parent', payload);
+
+    if (response.ok) {
+      logIn(response.data.token);
+
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Home' }],
+      });
+    } else {
+      console.log('Registration failed', response.data);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -34,6 +116,7 @@ const RegisterParent = () => {
         <ScrollView
           contentContainerStyle={styles.scrollWrapper}
           keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
         >
           <AuthBackButton />
 
@@ -44,7 +127,16 @@ const RegisterParent = () => {
             {t('fields_required_note') || 'Fields marked as * are required'}
           </Text>
 
-          <View style={styles.profilePhotoPlaceholder} />
+          <TouchableOpacity onPress={handleSelectImage}>
+            {profileImage ? (
+              <Image
+                source={{ uri: profileImage?.uri }}
+                style={styles.profilePhotoPlaceholder}
+              />
+            ) : (
+              <View style={styles.profilePhotoPlaceholder} />
+            )}
+          </TouchableOpacity>
           <Text style={styles.profilePhotoText}>
             {t('profile_photo') || 'Profile photo'}
           </Text>
@@ -53,16 +145,30 @@ const RegisterParent = () => {
             {t('confirm_name') || 'Confirm Name*'}
           </Text>
           <TextInput
+            value={name}
+            onChangeText={setName}
             placeholder={t('confirm_name') || 'Enter your name here'}
             style={styles.input}
             placeholderTextColor="#8391A1"
           />
 
           <Text style={styles.label}>
-            {t('confirm_email') || 'Confirm Email address*'}
+            {t('confirm_email') || 'Confirm Email*'}
           </Text>
           <TextInput
+            value={email}
+            onChangeText={setEmail}
             placeholder={t('confirm_email') || 'Enter your email here'}
+            style={styles.input}
+            placeholderTextColor="#8391A1"
+          />
+          <Text style={styles.label}>
+            {t('confirm_password') || 'Confirm Password*'}
+          </Text>
+          <TextInput
+            value={password}
+            onChangeText={setPassword}
+            placeholder={t('confirm_password') || 'Enter your password here'}
             style={styles.input}
             placeholderTextColor="#8391A1"
           />
@@ -75,6 +181,8 @@ const RegisterParent = () => {
               <Text style={styles.codeText}>+91</Text>
             </View>
             <TextInput
+              value={phone}
+              onChangeText={setPhone}
               placeholder={t('phone_number') || 'Enter your Phone number here'}
               style={styles.phoneInput}
               keyboardType="phone-pad"
@@ -88,7 +196,7 @@ const RegisterParent = () => {
           <View style={styles.dropdownWrapper}>
             <Picker
               selectedValue={selectedChildren}
-              onValueChange={itemValue => setSelectedChildren(itemValue)}
+              onValueChange={setSelectedChildren}
               style={styles.dropdown}
               dropdownIconColor="#8391A1"
             >
@@ -100,6 +208,8 @@ const RegisterParent = () => {
 
           <Text style={styles.label}>{t('address') || 'Address'}</Text>
           <TextInput
+            value={address}
+            onChangeText={setAddress}
             placeholder={t('address') || 'Enter your address here'}
             style={styles.input}
             placeholderTextColor="#8391A1"
@@ -111,7 +221,7 @@ const RegisterParent = () => {
               <View style={styles.dropdownWrapper}>
                 <Picker
                   selectedValue={selectedState}
-                  onValueChange={itemValue => setSelectedState(itemValue)}
+                  onValueChange={setSelectedState}
                   style={styles.dropdown}
                   dropdownIconColor="#8391A1"
                 >
@@ -126,7 +236,7 @@ const RegisterParent = () => {
               <View style={styles.dropdownWrapper}>
                 <Picker
                   selectedValue={selectedCity}
-                  onValueChange={itemValue => setSelectedCity(itemValue)}
+                  onValueChange={setSelectedCity}
                   style={styles.dropdown}
                   dropdownIconColor="#8391A1"
                 >
@@ -137,14 +247,19 @@ const RegisterParent = () => {
             </View>
           </View>
 
-          <Text style={styles.label}>{t('state_code') || 'State'}</Text>
+          <Text style={styles.label}>{t('state_code') || 'State Code'}</Text>
           <TextInput
+            value={stateCode}
+            onChangeText={setStateCode}
             placeholder={t('state_code') || '000000'}
             style={styles.input}
             placeholderTextColor="#8391A1"
           />
 
-          <TouchableOpacity style={styles.registerButton}>
+          <TouchableOpacity
+            style={styles.registerButton}
+            onPress={registerParent}
+          >
             <Text style={styles.registerText}>
               {t('register') || 'Register'}
             </Text>
@@ -243,21 +358,21 @@ const styles = StyleSheet.create({
     fontFamily: fonts.Regular,
     color: colors.text,
   },
+
   dropdownWrapper: {
     borderWidth: 1,
     borderColor: '#E8ECF4',
     backgroundColor: colors.white,
     borderRadius: 8,
-    overflow: 'hidden',
     height: 44,
     justifyContent: 'center',
     marginBottom: 16,
   },
   dropdown: {
-    height: 44,
     width: '100%',
-    paddingHorizontal: 8,
     color: '#1E232C',
+    marginTop: Platform.OS === 'android' ? -10 : 0,
+    marginBottom: Platform.OS === 'android' ? -10 : 0,
   },
   row: {
     flexDirection: 'row',

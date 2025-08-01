@@ -1,33 +1,29 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import OnBoarding from './../../screens/AuthScreen/OnBoarding';
-import Register from './../../screens/AuthScreen/Register';
+
+import ChatScreen from './../../screens/ChatScreen/ChatScreen';
+import MessageScreen from './../../screens/ChatScreen/MessageScreen';
 import Login from './../../screens/AuthScreen/Login';
-import ForgetPassword from './../../screens/AuthScreen/ForgetPassword';
 import RegisterParent from './../../screens/AuthScreen/RegisterParent';
 
 const Stack = createStackNavigator();
 
-const AuthNavigator = () => {
+const ChatNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="OnBoarding"
-        component={OnBoarding}
+        name="ChatScreen"
+        component={ChatScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Register"
-        component={Register}
+        name="MessageScreen"
+        component={MessageScreen}
         options={{ headerShown: false }}
       />
+
       <Stack.Screen
         name="Login"
         component={Login}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="ForgetPassword"
-        component={ForgetPassword}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -39,4 +35,4 @@ const AuthNavigator = () => {
   );
 };
 
-export default AuthNavigator;
+export default ChatNavigator;

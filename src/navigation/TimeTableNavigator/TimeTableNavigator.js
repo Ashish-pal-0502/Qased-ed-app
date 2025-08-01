@@ -1,33 +1,34 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import OnBoarding from './../../screens/AuthScreen/OnBoarding';
-import Register from './../../screens/AuthScreen/Register';
+
+import TimeTableScreen from './../../screens/TimeTableScreen/TimeTableScreen';
+import AttendanceScreen from './../../screens/AttendanceScreen/AttendanceScreen';
+import ProgressReportScreen from './../../screens/ProgressReport/ProgressReportScreen';
 import Login from './../../screens/AuthScreen/Login';
-import ForgetPassword from './../../screens/AuthScreen/ForgetPassword';
 import RegisterParent from './../../screens/AuthScreen/RegisterParent';
 
 const Stack = createStackNavigator();
 
-const AuthNavigator = () => {
+const TimeTableNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="OnBoarding"
-        component={OnBoarding}
+        name="TimeTableScreen"
+        component={TimeTableScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Register"
-        component={Register}
+        name="AttendanceScreen"
+        component={AttendanceScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ProgressReportScreen"
+        component={ProgressReportScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Login"
         component={Login}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="ForgetPassword"
-        component={ForgetPassword}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -39,4 +40,4 @@ const AuthNavigator = () => {
   );
 };
 
-export default AuthNavigator;
+export default TimeTableNavigator;

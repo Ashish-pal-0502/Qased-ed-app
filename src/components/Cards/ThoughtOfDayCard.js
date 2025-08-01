@@ -4,9 +4,11 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useTranslation } from 'react-i18next';
 import { fonts } from './../../config/fonts';
 import colors from './../../config/colors';
+import useAuth from './../../auth/useAuth';
 
 const ThoughtOfDayCard = () => {
   const { t } = useTranslation();
+
   return (
     <View style={styles.cardContainer}>
       <View style={styles.contentContainer}>

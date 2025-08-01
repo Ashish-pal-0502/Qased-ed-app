@@ -14,14 +14,14 @@ import { useTranslation } from 'react-i18next';
 
 import PasswordSuccessIcon from '../../assets/Images/Icons/Homebutton1.png';
 
-const ToastPopupModal = ({ visible, onClose }) => {
+const ToastPopupModal = ({ visible, onClose, title, desc }) => {
   const { t } = useTranslation();
   useEffect(() => {
     let timer;
     if (visible) {
       timer = setTimeout(() => {
         onClose();
-      }, 3000);
+      }, 4000);
     }
     return () => clearTimeout(timer);
   }, [visible]);
@@ -45,16 +45,12 @@ const ToastPopupModal = ({ visible, onClose }) => {
 
           <View style={styles.textContainer}>
             <View style={styles.headerRow}>
-              <Text style={styles.title}>{t('New Modal got opened!!')}</Text>
+              <Text style={styles.title}>{t(title)}</Text>
               <TouchableOpacity onPress={onClose}>
                 <Ionicons name="close" size={16} color="#A3A3A3" />
               </TouchableOpacity>
             </View>
-            <Text style={styles.subtitle}>
-              {t(
-                'There the description of the modal is shown for qased application all type, basically it works like toast.',
-              )}
-            </Text>
+            <Text style={styles.subtitle}>{t(desc)}</Text>
           </View>
         </View>
       </View>

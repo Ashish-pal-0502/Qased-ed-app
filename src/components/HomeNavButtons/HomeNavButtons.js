@@ -4,9 +4,13 @@ import { useTranslation } from 'react-i18next';
 import colors from './../../config/colors';
 import { fonts } from './../../config/fonts';
 import Feather from 'react-native-vector-icons/Feather';
+import useAuth from './../../auth/useAuth';
+import { useNavigation } from '@react-navigation/native';
 
 const HomeNavButtons = () => {
   const { t } = useTranslation();
+  const { user } = useAuth();
+  const navigation = useNavigation();
 
   const cardData = [
     {
@@ -46,6 +50,12 @@ const HomeNavButtons = () => {
           <TouchableOpacity
             key={item.id}
             style={[styles.card, { backgroundColor: item.bgColor }]}
+            onPress={() => {
+              if (!user) {
+                navigation.navigate('Login');
+              } else {
+              }
+            }}
           >
             <Image
               source={item.icon}

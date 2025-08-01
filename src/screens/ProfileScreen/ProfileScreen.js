@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -15,10 +15,35 @@ import { useNavigation } from '@react-navigation/native';
 import colors from './../../config/colors';
 import { fonts } from './../../config/fonts';
 import Feather from 'react-native-vector-icons/Feather';
+import useAuth from './../../auth/useAuth';
+import ToastPopupModal from './../../components/Modals/ToastPopupModal';
+import LoginViewButton from './../../components/NotLoginButton/LoginViewButton';
 
 const ProfileScreen = () => {
   const { t } = useTranslation();
   const navigation = useNavigation();
+  const { logOut, user } = useAuth();
+  const [showToastPopupModal, setShowToastPopupModal] = useState(false);
+
+  const handleLogout = () => {
+    setShowToastPopupModal(true);
+    logOut();
+
+    setTimeout(() => {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Home' }],
+      });
+    }, 1500);
+  };
+
+  if (!user) {
+    return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
+        <LoginViewButton />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -89,12 +114,18 @@ const ProfileScreen = () => {
           />
           <ProfileListItem
             label={t('logout') || 'Logout'}
-            // onPress={() => navigation.navigate('Notifications')}
-
+            onPress={handleLogout}
             danger
           />
         </View>
       </ScrollView>
+
+      <ToastPopupModal
+        visible={showToastPopupModal}
+        onClose={() => setShowToastPopupModal(false)}
+        title="Logout success"
+        desc="You have been logged out successfully!!"
+      />
     </SafeAreaView>
   );
 };
