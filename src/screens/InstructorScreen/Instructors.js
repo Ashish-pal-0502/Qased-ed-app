@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -14,6 +14,7 @@ import { fonts } from '../../config/fonts';
 import InstructorsListCard from './../../components/Cards/InstructorsListCard';
 
 import { useTranslation } from 'react-i18next';
+import apiClient from './../../api/client';
 
 const filters = ['All', 'Chemistry', 'Maths', 'English'];
 
@@ -52,6 +53,18 @@ const Instructors = () => {
   const [search, setSearch] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('All');
   const { t } = useTranslation();
+  const [teachers, setTeachers] = useState([]);
+
+  const getAllInstructors = async () => {
+    const response = await apiClient.get('/teacher/get-teachers');
+    if (response.ok) {
+      setTeachers(response.data.teachers);
+    }
+  };
+
+  useEffect(() => {
+    getAllInstructors();
+  }, []);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -114,10 +127,17 @@ const Instructors = () => {
 
         <View style={{ paddingVertical: 10 }}>
           <FlatList
-            data={instructorsData}
+            data={teachers}
             keyExtractor={item => item.id}
             renderItem={({ item }) => <InstructorsListCard instructor={item} />}
-            contentContainerStyle={{ paddingBottom: 100 }}
+            contentContainerStyle={{ paddingBottom: 100, flexGrow: 1 }}
+            ListEmptyComponent={
+              <View style={{ alignItems: 'center', marginTop: 20 }}>
+                <Text style={{ fontSize: 16, color: 'gray' }}>
+                  No instructors found.
+                </Text>
+              </View>
+            }
           />
         </View>
       </View>

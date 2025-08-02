@@ -5,9 +5,10 @@ import { StyleSheet, View, LogBox, Alert } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import './src/localization/i18n';
 import AuthContext from './src/auth/context';
-
 import colors from './src/config/colors';
 import cache from './src/utility/cache';
+import Toast from 'react-native-toast-message';
+import { toastConfig } from './src/components/Modals/CustomToast';
 
 LogBox.ignoreAllLogs(true);
 
@@ -40,6 +41,7 @@ function App() {
           <View style={styles.appView}>
             <>{<AppNavigator />}</>
           </View>
+          <Toast config={toastConfig} />
         </NavigationContainer>
       </SafeAreaProvider>
     </AuthContext.Provider>

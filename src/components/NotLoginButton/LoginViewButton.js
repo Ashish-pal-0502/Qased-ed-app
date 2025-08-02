@@ -10,15 +10,17 @@ import { useNavigation } from '@react-navigation/native';
 import { fonts } from './../../config/fonts';
 import colors from './../../config/colors';
 import Feather from 'react-native-vector-icons/Feather';
+import { useTranslation } from 'react-i18next';
 
 const { width } = Dimensions.get('window');
 
 const LoginViewButton = () => {
   const navigation = useNavigation();
+  const { t } = useTranslation();
 
   return (
     <View style={styles.container}>
-      <Text style={styles.promptText}>Not logged in?</Text>
+      <Text style={styles.promptText}>{t('not_logged_in')}</Text>
 
       <TouchableOpacity
         style={styles.buttonWrapper}
@@ -27,7 +29,7 @@ const LoginViewButton = () => {
       >
         <View style={styles.gradient}>
           <View style={styles.textWithIcon}>
-            <Text style={styles.text}>Login Now</Text>
+            <Text style={styles.text}>{t('login_now')}</Text>
             <Feather
               name="arrow-right"
               size={18}
@@ -49,7 +51,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: colors.background,
   },
   promptText: {
     fontSize: 18,

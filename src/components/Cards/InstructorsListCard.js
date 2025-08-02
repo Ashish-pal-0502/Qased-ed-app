@@ -8,9 +8,11 @@ import { useNavigation } from '@react-navigation/native';
 const InstructorsListCard = ({ instructor }) => {
   const navigation = useNavigation();
 
+  console.log(instructor);
+
   const { t } = useTranslation();
   const handleNavigatetoListenerProfile = () => {
-    navigation.navigate('InstructorDetails');
+    navigation.navigate('InstructorDetails', { instructor: instructor });
   };
   const handleNavigatetoBooking = () => {
     navigation.replace('MyLibrary');
@@ -18,14 +20,19 @@ const InstructorsListCard = ({ instructor }) => {
   return (
     <View style={styles.card}>
       <View style={styles.imageContainer}>
-        <Image source={instructor.image} style={styles.image} />
+        <Image
+          source={{ uri: instructor?.profileImage }}
+          style={styles.image}
+        />
       </View>
 
       <View style={styles.info}>
-        <Text style={styles.name}>{instructor.name}</Text>
-        <Text style={styles.title}>{instructor.title}</Text>
+        <Text style={styles.name}>{instructor?.name}</Text>
+        <Text style={styles.title} numberOfLines={1}>
+          {instructor?.qualifications[0]}
+        </Text>
         <Text numberOfLines={1} style={styles.desc}>
-          {instructor.description}
+          {instructor?.bio}
         </Text>
 
         <TouchableOpacity style={styles.buttonWrapper}>

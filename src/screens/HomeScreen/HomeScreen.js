@@ -23,11 +23,13 @@ import { fonts } from './../../config/fonts';
 import colors from './../../config/colors';
 import Feather from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
+import useAuth from './../../auth/useAuth';
 
 const HomeScreen = () => {
   const dummyData = [{ id: '1' }];
   const { t } = useTranslation();
   const navigation = useNavigation();
+  const { user } = useAuth();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -38,20 +40,26 @@ const HomeScreen = () => {
         ListFooterComponent={
           <View>
             <ThoughtOfDayCard />
-            <TouchableOpacity
-              style={styles.loginButton}
-              onPress={() => navigation.navigate('RegisterStudent')}
-            >
-              <Text style={styles.loginText}>{t('add_your_children')}</Text>
-              <Feather name="chevron-right" size={18} color="#000" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.loginButton}
-              onPress={() => navigation.navigate('MyChildrenScreen')}
-            >
-              <Text style={styles.loginText}>{t('my_enrolled_childs')}</Text>
-              <Feather name="chevron-right" size={18} color="#000" />
-            </TouchableOpacity>
+            {user.type === 'Parent' && (
+              <>
+                <TouchableOpacity
+                  style={styles.loginButton}
+                  onPress={() => navigation.navigate('RegisterStudent')}
+                >
+                  <Text style={styles.loginText}>{t('add_your_children')}</Text>
+                  <Feather name="chevron-right" size={18} color="#000" />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.loginButton}
+                  onPress={() => navigation.navigate('MyChildrenScreen')}
+                >
+                  <Text style={styles.loginText}>
+                    {t('my_enrolled_childs')}
+                  </Text>
+                  <Feather name="chevron-right" size={18} color="#000" />
+                </TouchableOpacity>
+              </>
+            )}
             <HomeBanner />
             <UserInfoHomeCard />
             <AttendanceHomeScreenCard />

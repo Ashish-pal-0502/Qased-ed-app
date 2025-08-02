@@ -3,6 +3,9 @@ import ProfileScreen from './../../screens/ProfileScreen/ProfileScreen';
 import Notifications from './../../screens/NotificationScreen/Notifications';
 import Settings from './../../screens/Settings/Settings';
 import EditProfile from './../../screens/ProfileScreen/EditProfile';
+import Login from './../../screens/AuthScreen/Login';
+import RegisterParent from './../../screens/AuthScreen/RegisterParent';
+import RegisterStudent from './../../screens/AuthScreen/RegisterStudent';
 
 const Stack = createStackNavigator();
 
@@ -27,6 +30,22 @@ const ProfileNavigator = () => {
       <Stack.Screen
         name="EditProfile"
         component={EditProfile}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="RegisterParent"
+        component={RegisterParent}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="RegisterStudent"
+        component={RegisterStudent}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

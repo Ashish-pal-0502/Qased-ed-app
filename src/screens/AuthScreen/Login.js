@@ -26,6 +26,7 @@ import ToastPopupModal from './../../components/Modals/ToastPopupModal';
 import { useNavigation } from '@react-navigation/native';
 import { CommonActions } from '@react-navigation/native';
 const { width } = Dimensions.get('window');
+import Toast from 'react-native-toast-message';
 
 const Login = () => {
   const navigation = useNavigation();
@@ -35,7 +36,6 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [showToastPopupModal, setShowToastPopupModal] = useState(false);
   const [loginAsStudent, setLoginAsStudent] = useState(false);
 
   const handleLogin = async () => {
@@ -51,7 +51,13 @@ const Login = () => {
     if (response.ok) {
       logIn(response.data.token);
 
-      setShowToastPopupModal(true);
+      Toast.show({
+        type: 'customToast',
+        text1: 'Login success ',
+        text2: 'You have been logged in successfully!!',
+        position: 'bottom',
+        visibilityTime: 2000,
+      });
       setTimeout(() => {
         navigation.dispatch(
           CommonActions.reset({
@@ -156,7 +162,9 @@ const Login = () => {
                 )}
               </View>
               <Text style={styles.checkboxLabel}>
-                {loginAsStudent ? 'Login as Student' : 'Login as Parent'}
+                {loginAsStudent
+                  ? 'Uncheck for Parent Login'
+                  : 'Check for Student Login'}
               </Text>
             </TouchableOpacity>
 
@@ -203,13 +211,6 @@ const Login = () => {
           </View>
         </View>
       </KeyboardAvoidingView>
-
-      <ToastPopupModal
-        visible={showToastPopupModal}
-        onClose={() => setShowToastPopupModal(false)}
-        title="Login success"
-        desc="You have been logged in successfully"
-      />
     </SafeAreaView>
   );
 };

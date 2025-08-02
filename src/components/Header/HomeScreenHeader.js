@@ -8,8 +8,10 @@ import { fonts } from './../../config/fonts';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
+import useAuth from './../../auth/useAuth';
 
 const HomeScreenHeader = () => {
+  const { user } = useAuth();
   const navigation = useNavigation();
   const { t, i18n } = useTranslation();
   const [showDropdown, setShowDropdown] = useState(false);
@@ -36,7 +38,12 @@ const HomeScreenHeader = () => {
         />
       </TouchableOpacity>
 
-      <Text style={styles.welcomeText}>{t('navhome.welcome')}</Text>
+      <Text style={styles.welcomeText}>
+        {user?.name
+          ? `${t('navhome.welcome')} ${user.name}`
+          : t('navhome.welcome_user')}
+      </Text>
+
       <View style={styles.headerRight}>
         <View style={{ position: 'relative' }}>
           <TouchableOpacity

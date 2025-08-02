@@ -67,7 +67,7 @@ def enableProguardInReleaseBuilds = false
  * For example, to use the international variant, you can use:
  * `def jscFlavor = io.github.react-native-community:jsc-android-intl:2026004.+`
  *
- * The international variant includes ICU i18n library and necessary data
+ * The international variant includes ICU i18n library and necessary dataz
  * allowing to use e.g. `Date.toLocaleString` and `String.localeCompare` that
  * give correct results when using with locales other than en-US. Note that
  * this variant is about 6MiB larger per architecture than default.
@@ -110,7 +110,6 @@ android {
 }
 
 dependencies {
-    // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
 
     if (hermesEnabled.toBoolean()) {
@@ -118,4 +117,10 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+
+    // ✅ Exclude legacy support library from transitive dependencies
+    implementation("androidx.core:core:1.16.0") {
+        exclude group: "com.android.support", module: "support-compat"
+    }
 }
+

@@ -18,20 +18,74 @@ import { useTranslation } from 'react-i18next';
 import Icon from 'react-native-vector-icons/Ionicons';
 import EditProfileUserImage from '../../assets/Images/ProfileImages/EditProfileUserImage.png';
 import pencil from '../../assets/Images/Icons/pencil.png';
-import ToastPopupModal from './../../components/Modals/ToastPopupModal';
-import TeacherFeedbackModal from './../../components/Modals/TeacherFeebackModal';
+
+import Button from './../../components/Buttons/Button';
+import apiClient from './../../api/client';
+import useAuth from './../../auth/useAuth';
+import Toast from 'react-native-toast-message';
 
 const countryCodes = ['+1 (US)', '+91 (IN)', '+44 (UK)', '+61 (AU)'];
 const genders = ['Male', 'Female', 'Other'];
 
-const EditProfile = () => {
+const EditProfile = ({ route }) => {
+  const { student } = route.params;
   const { t } = useTranslation();
-  const [selectedGender, setSelectedGender] = useState('Male');
-  const [genderModalVisible, setGenderModalVisible] = useState(false);
+  const { user } = useAuth();
 
-  const [selectedCountryCode, setSelectedCountryCode] = useState('+1 (US)');
+  const [genderModalVisible, setGenderModalVisible] = useState(false);
   const [countryModalVisible, setCountryModalVisible] = useState(false);
-  const [showToast, setShowToast] = useState(false);
+
+  const [name, setName] = useState(student.name || '');
+  const [dob, setDob] = useState(student.dob || '');
+  const [email, setEmail] = useState(student.email || '');
+  const [phone, setPhone] = useState(student.address?.mobile || '');
+  const [selectedGender, setSelectedGender] = useState(
+    student.gender || 'Select',
+  );
+  const [selectedCountryCode, setSelectedCountryCode] = useState('+1 (US)');
+
+  const handleSubmit = async () => {
+    const response = await apiClient.post('/user/update-user', {
+      userId: user.id,
+      email,
+      name,
+      phone,
+    });
+
+    if (response.ok) {
+      Toast.show({
+        type: 'customToast',
+        text1: response.data.message,
+        text2: 'Profile updated successfully!',
+        position: 'bottom',
+        visibilityTime: 2000,
+      });
+    }
+    if (!response.ok) {
+      Toast.show({
+        type: 'customToast',
+        text1: response.data.message,
+        text2: 'Error occured, Profile not updated!',
+        position: 'bottom',
+        visibilityTime: 2000,
+      });
+    }
+  };
+
+  // userId,
+  // parentId,
+  // email,
+  // classNames,
+  // subjects,
+  // name,
+  // password,
+  // phone,
+  // profileImage,
+  // status,
+  // type,
+  // address,
+  // documents,
+  // preferredLanguage
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#F8F8F8' }}>
@@ -62,6 +116,8 @@ const EditProfile = () => {
               style={styles.input}
               placeholder="Albert Flores"
               placeholderTextColor="#A0A0A0"
+              value={name}
+              onChangeText={setName}
             />
           </View>
 
@@ -76,6 +132,8 @@ const EditProfile = () => {
               style={styles.input}
               placeholder="01/01/1988"
               placeholderTextColor="#A0A0A0"
+              value={dob}
+              onChangeText={setDob}
             />
           </View>
 
@@ -91,6 +149,8 @@ const EditProfile = () => {
               placeholder="albertflores@mail.com"
               placeholderTextColor="#A0A0A0"
               keyboardType="email-address"
+              value={email}
+              onChangeText={setEmail}
             />
           </View>
 
@@ -108,6 +168,8 @@ const EditProfile = () => {
                 placeholder="(888) 888-8888"
                 placeholderTextColor="#A0A0A0"
                 keyboardType="phone-pad"
+                value={phone}
+                onChangeText={setPhone}
               />
             </View>
           </View>
@@ -126,6 +188,10 @@ const EditProfile = () => {
               style={styles.iconRight}
             />
           </TouchableOpacity>
+        </View>
+
+        <View style={{ marginVertical: 20 }}>
+          <Button onPress={handleSubmit} title={t('submit')} />
         </View>
 
         <Modal visible={genderModalVisible} transparent animationType="fade">
@@ -173,8 +239,6 @@ const EditProfile = () => {
             </View>
           </TouchableOpacity>
         </Modal>
-
-        {/* <TeacherFeedbackModal /> */}
       </View>
     </SafeAreaView>
   );

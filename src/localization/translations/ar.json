@@ -1,7 +1,8 @@
 {
   "translation": {
     "navhome": {
-      "welcome": "مرحبًا بك، المستخدم!!"
+      "welcome": "مرحبًا",
+      "welcome_user": "مرحبًا بك"
     },
     "userinfohome": {
       "overallprogress": "التقدم العام"
@@ -14,6 +15,7 @@
     "schedule": "الجدول",
     "viewall": "عرض الكل",
     "add_your_children": "أضف أطفالك",
+    "not_logged_in": "لم يتم تسجيل الدخول؟",
     "home": "الرئيسية",
     "my_enrolled_childs": "أطفالي المسجلين",
     "timetable": "الجدول الزمني",
@@ -147,6 +149,28 @@
     "How was the teacher's attitude, engagement, and respect during the session?": "كيف كان سلوك المعلم وتفاعله واحترامه خلال الجلسة؟",
     "Did the teacher manage the session time effectively (e.g., teach well, stay on track)?": "هل أدار المعلم وقت الجلسة بشكل فعال (مثل الشرح الجيد والالتزام بالموضوع)؟",
     "How was your experience with Student ?": "كيف كانت تجربتك مع الطالب؟",
-    "How was your experience with Teacher ?": "كيف كانت تجربتك مع المعلم؟"
+    "How was your experience with Teacher ?": "كيف كانت تجربتك مع المعلم؟",
+    "select": "اختر",
+    "class": "الصف",
+    "subject": "المادة",
+    "board": "المنهج",
+    "school": "المدرسة",
+    "preferred_gender": "الجنس المفضل للمدرس",
+    "continue": "متابعة",
+    "Class I": "الصف الأول",
+    "Class II": "الصف الثاني",
+    "Class III": "الصف الثالث",
+    "CBSE": "منهج CBSE",
+    "ICSE": "منهج ICSE",
+    "State Board": "المنهج الحكومي",
+    "DPS": "مدرسة DPS",
+    "National Public School": "المدرسة الوطنية العامة",
+    "Kendriya Vidyalaya": "كيندريا فيديالايا",
+    "Male": "ذكر",
+    "Female": "أنثى",
+    "Any": "أي",
+    "Math": "الرياضيات",
+    "Science": "العلوم",
+    "English": "اللغة الإنجليزية"
   }
 }

@@ -1,7 +1,8 @@
 {
   "translation": {
     "navhome": {
-      "welcome": "Welcome User!!"
+      "welcome": "Welcome",
+      "welcome_user": "Welcome User"
     },
     "userinfohome": {
       "overallprogress": "Overall Progress"
@@ -55,6 +56,7 @@
     "create_new_password_subtitle": "Your new password must be unique from those previously used.",
     "new_password": "New password",
     "confirm_password": "Confirm password *",
+    "not_logged_in": "Not logged in?",
     "my_enrolled_childs": "My Enrolled Children",
     "add_your_children": "Add your children",
     "reset_password": "Reset Password",
@@ -152,6 +154,28 @@
     "How was the teacher's attitude, engagement, and respect during the session?": "How was the teacher's attitude, engagement, and respect during the session?",
     "Did the teacher manage the session time effectively (e.g., teach well, stay on track)?": "Did the teacher manage the session time effectively (e.g., teach well, stay on track)?",
     "How was your experience with Student ?": "How was your experience with Student?",
-    "How was your experience with Teacher ?": "How was your experience with Teacher?"
+    "How was your experience with Teacher ?": "How was your experience with Teacher?",
+    "select": "Select",
+    "class": "Class",
+    "subject": "Subject",
+    "board": "Board",
+    "school": "School",
+    "preferred_gender": "Preferred instructor gender",
+    "continue": "Continue",
+    "Class I": "Class I",
+    "Class II": "Class II",
+    "Class III": "Class III",
+    "CBSE": "CBSE",
+    "ICSE": "ICSE",
+    "State Board": "State Board",
+    "DPS": "DPS",
+    "National Public School": "National Public School",
+    "Kendriya Vidyalaya": "Kendriya Vidyalaya",
+    "Male": "Male",
+    "Female": "Female",
+    "Any": "Any",
+    "Math": "Math",
+    "Science": "Science",
+    "English": "English"
   }
 }

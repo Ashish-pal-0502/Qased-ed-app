@@ -17,6 +17,8 @@ import { useTranslation } from 'react-i18next';
 import ProfileVerifiedTick from '../../assets/Images/Icons/IntructorVerifiedTick.png';
 import ScheduleCard from './../../components/Cards/ScheduleCard';
 
+import { useRoute } from '@react-navigation/native';
+
 const instructor = {
   id: '1',
   name: 'Prof. jessica',
@@ -80,6 +82,8 @@ const dummyData = [
 ];
 
 const InstructorDetails = () => {
+  const route = useRoute();
+  const { instructor } = route.params;
   const { t } = useTranslation();
   const [selectedView, setSelectedView] = useState('about');
   const tabs = ['about', 'sessions', 'review'];
@@ -96,7 +100,10 @@ const InstructorDetails = () => {
         </View>
 
         <View style={styles.profileContainer}>
-          <Image source={instructor.image} style={styles.profileImage} />
+          <Image
+            source={{ uri: instructor.profileImage }}
+            style={styles.profileImage}
+          />
           <Text style={styles.name}>{instructor.name}</Text>
           <View
             style={{
@@ -106,9 +113,7 @@ const InstructorDetails = () => {
               gap: 5,
             }}
           >
-            <Text style={styles.title}>
-              {t('instructordetails.chemistryProfessor')}
-            </Text>
+            <Text style={styles.title}>{instructor.qualifications[0]}</Text>
             <Image
               source={ProfileVerifiedTick}
               style={styles.profileImageVerify}
@@ -173,7 +178,9 @@ const InstructorDetails = () => {
                 <Text style={styles.statLabel}>Years of Exp</Text>
               </View>
               <View style={styles.statItem}>
-                <Text style={styles.statValue}>150+</Text>
+                <Text style={styles.statValue}>
+                  {instructor?.studentsMentored}+
+                </Text>
                 <Text style={styles.statLabel}>Students mentored</Text>
               </View>
               <View style={styles.statItem}>
@@ -182,18 +189,7 @@ const InstructorDetails = () => {
               </View>
             </View>
 
-            <Text style={styles.descriptionText}>
-              Lorem ipsum dolor sit amet consectetur. Convallis est urna
-              adipiscing fringilla nulla diam lorem non mauris. Ultrices aliquet
-              at quam adipiscing feugiat interdum mattis. Placerat donec risus
-              diam sed et. A in ullamcorper ipsum justo vestibulum sit cursus.
-            </Text>
-            <Text style={styles.descriptionText}>
-              Lorem ipsum dolor sit amet consectetur. Convallis est urna
-              adipiscing fringilla nulla diam lorem non mauris. Ultrices aliquet
-              at quam adipiscing feugiat interdum mattis. Placerat donec risus
-              diam sed et. A in ullamcorper ipsum justo vestibulum sit cursus.
-            </Text>
+            <Text style={styles.descriptionText}>{instructor?.bio}</Text>
           </View>
         )}
       </ScrollView>
@@ -287,7 +283,7 @@ const styles = StyleSheet.create({
   descriptionText: {
     fontSize: 12,
     color: '#000',
-    textAlign: 'center',
+    textAlign: 'start',
     fontFamily: fonts.Regular,
     marginBottom: 12,
     lineHeight: 18,

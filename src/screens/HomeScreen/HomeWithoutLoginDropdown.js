@@ -4,15 +4,13 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  Image,
   ScrollView,
 } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import ThoughtOfDayCard from '../../components/Cards/ThoughtOfDayCard';
-import notification from '../../assets/Images/Icons/Notification.png';
 import Button from '../../components/Buttons/Button';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 const dummyData = {
   class: ['Class I', 'Class II', 'Class III'],
@@ -23,13 +21,14 @@ const dummyData = {
 };
 
 const Dropdown = ({ label, data, selected, onSelect, isOpen, toggleOpen }) => {
+  const { t } = useTranslation();
   return (
     <View style={styles.dropdownContainer}>
       <TouchableOpacity style={styles.dropdownHeader} onPress={toggleOpen}>
         <Text
           style={[styles.dropdownLabel, selected ? styles.activeLabel : null]}
         >
-          {selected || `Select ${label}`}
+          {selected || `${t('select')} ${t(label)}`}
         </Text>
         <Ionicons
           name={isOpen ? 'chevron-up' : 'chevron-down'}
@@ -46,7 +45,7 @@ const Dropdown = ({ label, data, selected, onSelect, isOpen, toggleOpen }) => {
               style={styles.dropdownItem}
               onPress={() => onSelect(item)}
             >
-              <Text style={styles.itemText}>{item}</Text>
+              <Text style={styles.itemText}>{t(item)}</Text>
               {selected === item && (
                 <Ionicons name="checkmark" size={20} color="#7F56D9" />
               )}
@@ -66,6 +65,7 @@ const HomeWithoutLoginDropdown = () => {
   const [selectedSubject, setSelectedSubject] = useState(null);
   const navigation = useNavigation();
   const [openDropdown, setOpenDropdown] = useState(null);
+  const { t } = useTranslation();
 
   const toggleDropdown = type => {
     setOpenDropdown(prev => (prev === type ? null : type));
@@ -74,22 +74,8 @@ const HomeWithoutLoginDropdown = () => {
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        {/* <View style={styles.header}>
-          <Image
-            source={{
-              uri: 'https://cdn-icons-png.flaticon.com/128/3845/3845897.png',
-            }}
-            style={styles.logo}
-          />
-          <Image source={notification} style={styles.notificationDot} />
-        </View>
-
-        <View style={{ marginBottom: 8 }}>
-          <ThoughtOfDayCard />
-        </View> */}
-
         <Dropdown
-          label="Class"
+          label="class"
           data={dummyData.class}
           selected={selectedClass}
           onSelect={val => {
@@ -100,7 +86,7 @@ const HomeWithoutLoginDropdown = () => {
           toggleOpen={() => toggleDropdown('class')}
         />
         <Dropdown
-          label="Subject"
+          label="subject"
           data={dummyData.subject}
           selected={selectedSubject}
           onSelect={val => {
@@ -111,7 +97,7 @@ const HomeWithoutLoginDropdown = () => {
           toggleOpen={() => toggleDropdown('subject')}
         />
         <Dropdown
-          label="Board"
+          label="board"
           data={dummyData.board}
           selected={selectedBoard}
           onSelect={val => {
@@ -122,7 +108,7 @@ const HomeWithoutLoginDropdown = () => {
           toggleOpen={() => toggleDropdown('board')}
         />
         <Dropdown
-          label="School"
+          label="school"
           data={dummyData.school}
           selected={selectedSchool}
           onSelect={val => {
@@ -133,7 +119,7 @@ const HomeWithoutLoginDropdown = () => {
           toggleOpen={() => toggleDropdown('school')}
         />
         <Dropdown
-          label="Preferred instructor gender"
+          label="preferred_gender"
           data={dummyData.gender}
           selected={selectedGender}
           onSelect={val => {
@@ -146,7 +132,7 @@ const HomeWithoutLoginDropdown = () => {
 
         <View style={styles.continueButton}>
           <Button
-            title="Continue"
+            title={t('continue')}
             onPress={() => navigation.navigate('Instructors')}
           />
         </View>

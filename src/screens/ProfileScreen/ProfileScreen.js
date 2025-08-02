@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -18,24 +18,48 @@ import Feather from 'react-native-vector-icons/Feather';
 import useAuth from './../../auth/useAuth';
 import ToastPopupModal from './../../components/Modals/ToastPopupModal';
 import LoginViewButton from './../../components/NotLoginButton/LoginViewButton';
+import Toast from 'react-native-toast-message';
+import apiClient from './../../api/client';
 
 const ProfileScreen = () => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const { logOut, user } = useAuth();
-  const [showToastPopupModal, setShowToastPopupModal] = useState(false);
+  const [student, setStudent] = useState('');
+
+  console.log('stu', student);
 
   const handleLogout = () => {
-    setShowToastPopupModal(true);
-    logOut();
+    Toast.show({
+      type: 'customToast',
+      text1: 'Logout success',
+      text2: 'You have been logged out successfully!!',
+      position: 'bottom',
+      visibilityTime: 2000,
+    });
 
     setTimeout(() => {
+      logOut();
       navigation.reset({
         index: 0,
         routes: [{ name: 'Home' }],
       });
-    }, 1500);
+    }, 2100);
   };
+
+  const getStudentById = async () => {
+    const response = await apiClient.get('/user/get-user-by-id', {
+      id: user.id,
+    });
+
+    if (response.ok) {
+      setStudent(response.data);
+    }
+  };
+
+  useEffect(() => {
+    getStudentById();
+  }, []);
 
   if (!user) {
     return (
@@ -70,19 +94,21 @@ const ProfileScreen = () => {
           <View style={styles.imageContainer}>
             <View style={styles.profileImageWrapper}>
               <Image
-                source={require('../../assets/Images/Icons/UserIcon.png')}
+                source={{ uri: student?.profileImage }}
                 style={styles.profileImage}
                 resizeMode="contain"
               />
             </View>
           </View>
 
-          <Text style={styles.nameText}>John Doe</Text>
-          <Text style={styles.classText}>STD - IX</Text>
+          <Text style={styles.nameText}>{student?.name || 'John'}</Text>
+          <Text style={styles.classText}>STD - {student?.grade || 'IX'}</Text>
 
           <TouchableOpacity
             style={styles.editButton}
-            onPress={() => navigation.navigate('EditProfile')}
+            onPress={() =>
+              navigation.navigate('EditProfile', { student: student })
+            }
           >
             <LinearGradient
               colors={['#528BD9', '#FFC7D2']}
@@ -119,13 +145,6 @@ const ProfileScreen = () => {
           />
         </View>
       </ScrollView>
-
-      <ToastPopupModal
-        visible={showToastPopupModal}
-        onClose={() => setShowToastPopupModal(false)}
-        title="Logout success"
-        desc="You have been logged out successfully!!"
-      />
     </SafeAreaView>
   );
 };
