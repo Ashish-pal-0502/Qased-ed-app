@@ -103,7 +103,6 @@ const RegisterStudent = () => {
       subjects: form.subjects.split(',').map(s => s.trim()),
       type: 'Student',
       status: 'active',
-
       parentId: user.id,
     };
 

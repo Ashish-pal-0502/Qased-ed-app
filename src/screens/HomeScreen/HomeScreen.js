@@ -24,6 +24,7 @@ import colors from './../../config/colors';
 import Feather from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
 import useAuth from './../../auth/useAuth';
+import ModeOfLearning from './../../components/ModeOfLearning/ModeOfLearning';
 
 const HomeScreen = () => {
   const dummyData = [{ id: '1' }];
@@ -63,6 +64,7 @@ const HomeScreen = () => {
             <HomeBanner />
             <UserInfoHomeCard />
             <AttendanceHomeScreenCard />
+            <ModeOfLearning />
             <HomeNavButtons />
             <HomeSchedule />
             <Assignments />

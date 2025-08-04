@@ -23,12 +23,14 @@ import Button from './../../components/Buttons/Button';
 import apiClient from './../../api/client';
 import useAuth from './../../auth/useAuth';
 import Toast from 'react-native-toast-message';
+import { useNavigation } from '@react-navigation/native';
 
 const countryCodes = ['+1 (US)', '+91 (IN)', '+44 (UK)', '+61 (AU)'];
 const genders = ['Male', 'Female', 'Other'];
 
-const EditProfile = ({ route }) => {
+const EditStudentProfile = ({ route }) => {
   const { student } = route.params;
+  const navigation = useNavigation();
   const { t } = useTranslation();
   const { user } = useAuth();
 
@@ -38,7 +40,7 @@ const EditProfile = ({ route }) => {
   const [name, setName] = useState(student.name || '');
   const [dob, setDob] = useState(student.dob || '');
   const [email, setEmail] = useState(student.email || '');
-  const [phone, setPhone] = useState(student.address?.mobile || '');
+  const [phone, setPhone] = useState(student.phone || '');
   const [selectedGender, setSelectedGender] = useState(
     student.gender || 'Select',
   );
@@ -46,10 +48,13 @@ const EditProfile = ({ route }) => {
 
   const handleSubmit = async () => {
     const response = await apiClient.post('/user/update-user', {
-      userId: user.id,
+      userId: student?._id,
       email,
       name,
       phone,
+      dob,
+      gender: selectedGender,
+      parentId: user?.id,
     });
 
     if (response.ok) {
@@ -60,6 +65,8 @@ const EditProfile = ({ route }) => {
         position: 'bottom',
         visibilityTime: 2000,
       });
+
+      navigation.replace('HomeScreen');
     }
     if (!response.ok) {
       Toast.show({
@@ -71,21 +78,6 @@ const EditProfile = ({ route }) => {
       });
     }
   };
-
-  // userId,
-  // parentId,
-  // email,
-  // classNames,
-  // subjects,
-  // name,
-  // password,
-  // phone,
-  // profileImage,
-  // status,
-  // type,
-  // address,
-  // documents,
-  // preferredLanguage
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#F8F8F8' }}>
@@ -244,7 +236,7 @@ const EditProfile = ({ route }) => {
   );
 };
 
-export default EditProfile;
+export default EditStudentProfile;
 
 const styles = StyleSheet.create({
   container: {

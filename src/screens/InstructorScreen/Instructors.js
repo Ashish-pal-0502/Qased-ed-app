@@ -49,7 +49,8 @@ const instructorsData = [
   },
 ];
 
-const Instructors = () => {
+const Instructors = ({ route }) => {
+  const { type } = route.params;
   const [search, setSearch] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('All');
   const { t } = useTranslation();
@@ -129,7 +130,9 @@ const Instructors = () => {
           <FlatList
             data={teachers}
             keyExtractor={item => item.id}
-            renderItem={({ item }) => <InstructorsListCard instructor={item} />}
+            renderItem={({ item }) => (
+              <InstructorsListCard instructor={item} type={type} />
+            )}
             contentContainerStyle={{ paddingBottom: 100, flexGrow: 1 }}
             ListEmptyComponent={
               <View style={{ alignItems: 'center', marginTop: 20 }}>

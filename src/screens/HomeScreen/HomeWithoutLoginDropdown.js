@@ -5,12 +5,15 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  Image,
 } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Button from '../../components/Buttons/Button';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
+import notification from '../../assets/Images/Icons/Notification.png';
+import ThoughtOfDayCard from './../../components/Cards/ThoughtOfDayCard';
 
 const dummyData = {
   class: ['Class I', 'Class II', 'Class III'],
@@ -22,6 +25,7 @@ const dummyData = {
 
 const Dropdown = ({ label, data, selected, onSelect, isOpen, toggleOpen }) => {
   const { t } = useTranslation();
+
   return (
     <View style={styles.dropdownContainer}>
       <TouchableOpacity style={styles.dropdownHeader} onPress={toggleOpen}>
@@ -57,7 +61,9 @@ const Dropdown = ({ label, data, selected, onSelect, isOpen, toggleOpen }) => {
   );
 };
 
-const HomeWithoutLoginDropdown = () => {
+const HomeWithoutLoginDropdown = ({ route }) => {
+  const { type } = route.params;
+
   const [selectedClass, setSelectedClass] = useState(null);
   const [selectedBoard, setSelectedBoard] = useState(null);
   const [selectedSchool, setSelectedSchool] = useState(null);
@@ -74,6 +80,19 @@ const HomeWithoutLoginDropdown = () => {
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.header}>
+          <Image
+            source={{
+              uri: 'https://cdn-icons-png.flaticon.com/128/3845/3845897.png',
+            }}
+            style={styles.logo}
+          />
+          <Image source={notification} style={styles.notificationDot} />
+        </View>
+
+        <View style={{ marginBottom: 8 }}>
+          <ThoughtOfDayCard />
+        </View>
         <Dropdown
           label="class"
           data={dummyData.class}
@@ -133,7 +152,7 @@ const HomeWithoutLoginDropdown = () => {
         <View style={styles.continueButton}>
           <Button
             title={t('continue')}
-            onPress={() => navigation.navigate('Instructors')}
+            onPress={() => navigation.navigate('Instructors', { type: type })}
           />
         </View>
       </ScrollView>

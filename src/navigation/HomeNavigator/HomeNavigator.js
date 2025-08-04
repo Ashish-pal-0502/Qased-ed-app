@@ -13,6 +13,7 @@ import Notifications from './../../screens/NotificationScreen/Notifications';
 import Login from './../../screens/AuthScreen/Login';
 import RegisterParent from './../../screens/AuthScreen/RegisterParent';
 import useAuth from './../../auth/useAuth';
+import EditStudentProfile from './../../screens/ProfileScreen/EditStudentProfile';
 
 const Stack = createStackNavigator();
 
@@ -86,6 +87,11 @@ const HomeNavigator = () => {
       <Stack.Screen
         name="RegisterStudent"
         component={RegisterStudent}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="EditStudentProfile"
+        component={EditStudentProfile}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

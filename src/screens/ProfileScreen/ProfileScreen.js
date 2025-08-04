@@ -27,8 +27,6 @@ const ProfileScreen = () => {
   const { logOut, user } = useAuth();
   const [student, setStudent] = useState('');
 
-  console.log('stu', student);
-
   const handleLogout = () => {
     Toast.show({
       type: 'customToast',
@@ -57,9 +55,27 @@ const ProfileScreen = () => {
     }
   };
 
+  const getParentById = async () => {
+    const response = await apiClient.get('/parents/get-parent-by-id', {
+      _id: user.id,
+    });
+
+    if (response.ok) {
+      setStudent(response.data);
+    }
+  };
+
+  const fetchProfileData = () => {
+    if (user?.type === 'Parent') {
+      getParentById();
+    } else if (user?.type === 'Student') {
+      getStudentById();
+    }
+  };
+
   useEffect(() => {
-    getStudentById();
-  }, []);
+    fetchProfileData();
+  }, [user]);
 
   if (!user) {
     return (
@@ -102,31 +118,59 @@ const ProfileScreen = () => {
           </View>
 
           <Text style={styles.nameText}>{student?.name || 'John'}</Text>
-          <Text style={styles.classText}>STD - {student?.grade || 'IX'}</Text>
+          {user?.type === 'Student' && (
+            <Text style={styles.classText}>STD - {student?.grade || 'IX'}</Text>
+          )}
 
-          <TouchableOpacity
-            style={styles.editButton}
-            onPress={() =>
-              navigation.navigate('EditProfile', { student: student })
-            }
-          >
-            <LinearGradient
-              colors={['#528BD9', '#FFC7D2']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-              style={styles.gradientButton}
+          {user?.type === 'Parent' && (
+            <TouchableOpacity
+              style={styles.editButton}
+              onPress={() =>
+                navigation.navigate('EditParentProfile', {
+                  student: student,
+                  onProfileUpdated: fetchProfileData,
+                })
+              }
             >
-              <Text style={styles.editButtonText}>
-                {t('edit_profile') || 'Edit Profile'}{' '}
-                <Feather
-                  name="edit-3"
-                  size={16}
-                  color="#fff"
-                  style={{ paddingLeft: 5 }}
-                />
-              </Text>
-            </LinearGradient>
-          </TouchableOpacity>
+              <LinearGradient
+                colors={['#528BD9', '#FFC7D2']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={styles.gradientButton}
+              >
+                <Text style={styles.editButtonText}>
+                  {t('edit_profile') || 'Edit Profile'}{' '}
+                  <Feather
+                    name="edit-3"
+                    size={16}
+                    color="#fff"
+                    style={{ paddingLeft: 5 }}
+                  />
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          )}
+          {user.type === 'Student' && (
+            <TouchableOpacity
+              style={styles.editButton}
+              onPress={() =>
+                navigation.navigate('StudentViewProfileOnly', {
+                  student: student,
+                })
+              }
+            >
+              <LinearGradient
+                colors={['#528BD9', '#FFC7D2']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={styles.gradientButton}
+              >
+                <Text style={styles.editButtonText}>
+                  {t('view_profile') || 'Edit Profile'}{' '}
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          )}
         </View>
 
         <View style={styles.listWrapper}>

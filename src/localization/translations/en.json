@@ -14,7 +14,7 @@
     "monthlyatt": "Monthly Attendance",
     "schedule": "Schedule",
     "viewall": "View all",
-
+    "my_children": "My Children",
     "home": "Home",
     "timetable": "Timetable",
     "chats": "Chats",
@@ -176,6 +176,16 @@
     "Any": "Any",
     "Math": "Math",
     "Science": "Science",
-    "English": "English"
+    "English": "English",
+    "age": "Age",
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female",
+    "date_of_birth": "Date of Birth",
+    "howWouldYouLikeToLearn": "How Would You Like to Learn?",
+    "choosePreferredMode": "Choose your preferred learning mode. We’ve got options that fit your schedule, style, and comfort!",
+    "onlineSessions": "Online Sessions",
+    "offlineAtTrainingCentres": "Offline at Training Centres",
+    "homeTuitions": "Home Tuitions"
   }
 }

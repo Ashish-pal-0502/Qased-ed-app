@@ -20,6 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import useAuth from './../../auth/useAuth';
 import HomeWithoutLoginDropdown from './HomeWithoutLoginDropdown';
+import ModeOfLearning from './../../components/ModeOfLearning/ModeOfLearning';
 
 const HomeWithoutLoginMain = () => {
   const navigation = useNavigation();
@@ -101,13 +102,16 @@ const HomeWithoutLoginMain = () => {
         <View style={{ marginBottom: 8 }}>
           <HomeBanner />
         </View>
+        <View style={{ marginBottom: 8 }}>
+          <ModeOfLearning />
+        </View>
 
         <View style={{ marginBottom: 8 }}>
           <HomeNavButtons />
         </View>
-        <View style={{ marginBottom: 8 }}>
+        {/* <View style={{ marginBottom: 8 }}>
           <HomeWithoutLoginDropdown />
-        </View>
+        </View> */}
       </ScrollView>
     </View>
   );

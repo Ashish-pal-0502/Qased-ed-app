@@ -43,6 +43,7 @@
     "or_login_with": "أو سجل الدخول بواسطة",
     "already_have_account": "هل لديك حساب بالفعل؟",
     "dont_have_account": "ليس لديك حساب؟",
+    "my_children": "أطفالي",
     "login_now": "سجل الدخول الآن",
     "login_title": "مرحبًا بعودتك! سعيد برؤيتك مرة أخرى!",
     "forgot_password_title": "هل نسيت كلمة المرور؟",
@@ -171,6 +172,16 @@
     "Any": "أي",
     "Math": "الرياضيات",
     "Science": "العلوم",
-    "English": "اللغة الإنجليزية"
+    "English": "اللغة الإنجليزية",
+    "age": "العمر",
+    "gender": "الجنس",
+    "male": "ذكر",
+    "female": "أنثى",
+    "date_of_birth": "تاريخ الميلاد",
+    "howWouldYouLikeToLearn": "كيف تفضل أن تتعلم؟",
+    "choosePreferredMode": "اختر وضع التعلم المفضل لديك. لدينا خيارات تناسب جدولك وأسلوبك وراحتك!",
+    "onlineSessions": "جلسات عبر الإنترنت",
+    "offlineAtTrainingCentres": "في المراكز التدريبية",
+    "homeTuitions": "دروس خصوصية في المنزل"
   }
 }

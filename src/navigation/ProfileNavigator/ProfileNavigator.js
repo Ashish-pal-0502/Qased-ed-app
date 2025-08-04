@@ -2,10 +2,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 import ProfileScreen from './../../screens/ProfileScreen/ProfileScreen';
 import Notifications from './../../screens/NotificationScreen/Notifications';
 import Settings from './../../screens/Settings/Settings';
-import EditProfile from './../../screens/ProfileScreen/EditProfile';
+import EditParentProfile from '../../screens/ProfileScreen/EditParentProfile';
 import Login from './../../screens/AuthScreen/Login';
 import RegisterParent from './../../screens/AuthScreen/RegisterParent';
 import RegisterStudent from './../../screens/AuthScreen/RegisterStudent';
+import StudentViewProfileOnly from './../../screens/ProfileScreen/StudentViewProfileOnly';
 
 const Stack = createStackNavigator();
 
@@ -28,8 +29,13 @@ const ProfileNavigator = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="EditProfile"
-        component={EditProfile}
+        name="EditParentProfile"
+        component={EditParentProfile}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="StudentViewProfileOnly"
+        component={StudentViewProfileOnly}
         options={{ headerShown: false }}
       />
 

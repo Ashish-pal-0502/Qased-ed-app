@@ -83,7 +83,7 @@ const dummyData = [
 
 const InstructorDetails = () => {
   const route = useRoute();
-  const { instructor } = route.params;
+  const { instructor, type } = route.params;
   const { t } = useTranslation();
   const [selectedView, setSelectedView] = useState('about');
   const tabs = ['about', 'sessions', 'review'];

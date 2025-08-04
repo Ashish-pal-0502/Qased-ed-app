@@ -3,8 +3,13 @@ import React, { useEffect, useState } from 'react';
 import MyChildrenCard from './../../components/Cards/MyChildrenCard';
 import useAuth from './../../auth/useAuth';
 import apiClient from './../../api/client';
+import { fonts } from './../../config/fonts';
+import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
 
 const MyChildrenScreen = () => {
+  const { t } = useTranslation();
+  const navigation = useNavigation();
   const { user } = useAuth();
   const [myChildrens, setMyChildrens] = useState([
     {
@@ -29,14 +34,23 @@ const MyChildrenScreen = () => {
     getMyChildrens();
   }, []);
 
+  const handleNavigateStudentEditProfile = child => {
+    navigation.navigate('EditStudentProfile', { student: child });
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>My Children</Text>
+      <Text style={styles.heading}>{t('my_children')}</Text>
       <FlatList
         data={myChildrens}
         keyExtractor={item => item.id}
         contentContainerStyle={{ gap: 10 }}
-        renderItem={({ item }) => <MyChildrenCard child={item} />}
+        renderItem={({ item }) => (
+          <MyChildrenCard
+            child={item}
+            onEdit={handleNavigateStudentEditProfile}
+          />
+        )}
       />
     </View>
   );
@@ -52,8 +66,9 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: fonts.SemiBold,
     marginBottom: 10,
     color: '#00204D',
+    textAlign: 'center',
   },
 });

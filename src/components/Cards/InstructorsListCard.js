@@ -5,14 +5,15 @@ import { fonts } from '../../config/fonts';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 
-const InstructorsListCard = ({ instructor }) => {
+const InstructorsListCard = ({ instructor, type }) => {
   const navigation = useNavigation();
-
-  console.log(instructor);
 
   const { t } = useTranslation();
   const handleNavigatetoListenerProfile = () => {
-    navigation.navigate('InstructorDetails', { instructor: instructor });
+    navigation.navigate('InstructorDetails', {
+      instructor: instructor,
+      type: type,
+    });
   };
   const handleNavigatetoBooking = () => {
     navigation.replace('MyLibrary');
