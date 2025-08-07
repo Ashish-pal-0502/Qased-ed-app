@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -14,6 +14,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import notification from '../../assets/Images/Icons/Notification.png';
 import ThoughtOfDayCard from './../../components/Cards/ThoughtOfDayCard';
+import apiClient from './../../api/client';
 
 const dummyData = {
   class: ['Class I', 'Class II', 'Class III'],
@@ -65,6 +66,7 @@ const HomeWithoutLoginDropdown = ({ route }) => {
   const { type } = route.params;
 
   const [selectedClass, setSelectedClass] = useState(null);
+  const [data, setData] = useState(null);
   const [selectedBoard, setSelectedBoard] = useState(null);
   const [selectedSchool, setSelectedSchool] = useState(null);
   const [selectedGender, setSelectedGender] = useState(null);
@@ -76,6 +78,17 @@ const HomeWithoutLoginDropdown = ({ route }) => {
   const toggleDropdown = type => {
     setOpenDropdown(prev => (prev === type ? null : type));
   };
+
+  const getInputData = async () => {
+    const response = await apiClient.get('/teacher/get-form-data');
+    if (response.ok) {
+      setData(response.data);
+    }
+  };
+
+  useEffect(() => {
+    getInputData();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -95,7 +108,7 @@ const HomeWithoutLoginDropdown = ({ route }) => {
         </View>
         <Dropdown
           label="class"
-          data={dummyData.class}
+          data={data?.classes?.map(item => item.name) || []}
           selected={selectedClass}
           onSelect={val => {
             setSelectedClass(val);
@@ -106,7 +119,7 @@ const HomeWithoutLoginDropdown = ({ route }) => {
         />
         <Dropdown
           label="subject"
-          data={dummyData.subject}
+          data={data?.subjects?.map(item => item.name) || []}
           selected={selectedSubject}
           onSelect={val => {
             setSelectedSubject(val);
@@ -117,7 +130,7 @@ const HomeWithoutLoginDropdown = ({ route }) => {
         />
         <Dropdown
           label="board"
-          data={dummyData.board}
+          data={data?.schools?.map(item => item.name) || []}
           selected={selectedBoard}
           onSelect={val => {
             setSelectedBoard(val);

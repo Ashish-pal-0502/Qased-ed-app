@@ -5,7 +5,7 @@ import colors from '../../config/colors';
 import { fonts } from '../../config/fonts';
 import { useTranslation } from 'react-i18next';
 
-const MyChildrenCard = ({ child, onEdit }) => {
+const MyChildrenCard = ({ child, onEdit, goToLibrary }) => {
   const { t } = useTranslation();
   return (
     <View style={styles.card}>
@@ -23,12 +23,29 @@ const MyChildrenCard = ({ child, onEdit }) => {
           {t('age')}: {child.age} | {t('gender')}: {child.gender}
         </Text>
 
-        <TouchableOpacity
-          style={styles.editProfileContainer}
-          onPress={() => onEdit(child)}
-        >
-          <Icon name="pencil-outline" size={14} color={colors.primary} />
-          <Text style={styles.editProfileText}>{t('edit_profile')}</Text>
+        <TouchableOpacity style={styles.editProfileContainer}>
+          <TouchableOpacity
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => onEdit(child)}
+          >
+            <Icon name="pencil-outline" size={14} color={colors.primary} />
+            <Text style={styles.editProfileText}>{t('edit_profile')}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => goToLibrary(child)}
+          >
+            <Icon name="pencil-outline" size={14} color={colors.primary} />
+            <Text style={styles.editProfileText}>{t('My_Library')}</Text>
+          </TouchableOpacity>
         </TouchableOpacity>
       </View>
 
@@ -84,6 +101,7 @@ const styles = StyleSheet.create({
   editProfileContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 10,
     marginTop: 6,
   },
   editProfileText: {

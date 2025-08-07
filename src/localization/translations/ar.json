@@ -182,6 +182,13 @@
     "choosePreferredMode": "اختر وضع التعلم المفضل لديك. لدينا خيارات تناسب جدولك وأسلوبك وراحتك!",
     "onlineSessions": "جلسات عبر الإنترنت",
     "offlineAtTrainingCentres": "في المراكز التدريبية",
-    "homeTuitions": "دروس خصوصية في المنزل"
+    "homeTuitions": "دروس خصوصية في المنزل",
+    "packages": "الباقات",
+    "How Would You Like to Learn?": "كيف تود أن تتعلم؟",
+    "Choose your preferred learning mode. We’ve got options that fit your schedule, style, and comfort!": "اختر طريقة التعلم المفضلة لديك. لدينا خيارات تناسب جدولك وأسلوبك وراحتك!",
+    "Online Sessions": "جلسات عبر الإنترنت",
+    "Offline at Training Centres": "دورات تدريبية في المراكز",
+    "Home Tuitions": "دروس خصوصية في المنزل",
+    "No_Items_Found": "لم يتم العثور على أي عناصر في مكتبتك."
   }
 }

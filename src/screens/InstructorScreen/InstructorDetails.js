@@ -81,7 +81,7 @@ const dummyData = [
   },
 ];
 
-const InstructorDetails = () => {
+const InstructorDetails = ({ navigation }) => {
   const route = useRoute();
   const { instructor, type } = route.params;
   const { t } = useTranslation();
@@ -120,16 +120,45 @@ const InstructorDetails = () => {
             />
           </View>
 
-          <View style={styles.sessionRow}>
-            <View style={styles.groupSession}>
-              <Text style={styles.groupSessionText}>{t('group_session')}</Text>
+          {type === 'online' && (
+            <View style={styles.sessionRow2}>
+              <View style={{ flex: 1, marginRight: 6 }}>
+                <TouchableOpacity style={styles.groupSession}>
+                  <Text style={styles.groupSessionText}>
+                    {t('group_session')}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={{ flex: 1, marginLeft: 6 }}>
+                <TouchableOpacity
+                  style={styles.privateSession}
+                  onPress={() =>
+                    navigation.navigate('ScheduleScreen', {
+                      teacherId: instructor?._id,
+                    })
+                  }
+                >
+                  <Text style={styles.privateSessionText}>
+                    {t('one_to_one_session')}
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
-            <View style={styles.privateSession}>
-              <Text style={styles.privateSessionText}>
-                {t('one_to_one_session')}
-              </Text>
+          )}
+
+          {type === 'offline' && (
+            <View style={styles.sessionRow2}>
+              <TouchableOpacity
+                style={styles.privateSession}
+                onPress={() => navigation.navigate('ScheduleScreen')}
+              >
+                <Text style={styles.privateSessionText}>
+                  {t('Select slot')}
+                </Text>
+              </TouchableOpacity>
             </View>
-          </View>
+          )}
 
           <View style={styles.toggleContainer}>
             {tabs.map(tab => (
@@ -295,9 +324,10 @@ const styles = StyleSheet.create({
     color: '#101828',
     marginBottom: 12,
   },
-  sessionRow: {
+
+  sessionRow2: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 12,
     width: '100%',
@@ -317,11 +347,19 @@ const styles = StyleSheet.create({
     color: '#528BD9',
   },
 
+  groupSession: {
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#538CD9',
+    paddingVertical: 10,
+    alignItems: 'center',
+  },
+
   privateSession: {
     borderRadius: 30,
     backgroundColor: '#538CD9',
-    paddingHorizontal: 50,
     paddingVertical: 10,
+    alignItems: 'center',
   },
 
   privateSessionText: {

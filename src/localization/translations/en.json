@@ -186,6 +186,13 @@
     "choosePreferredMode": "Choose your preferred learning mode. We’ve got options that fit your schedule, style, and comfort!",
     "onlineSessions": "Online Sessions",
     "offlineAtTrainingCentres": "Offline at Training Centres",
-    "homeTuitions": "Home Tuitions"
+    "homeTuitions": "Home Tuitions",
+    "packages": "Packages",
+    "How Would You Like to Learn?": "How Would You Like to Learn?",
+    "Choose your preferred learning mode. We’ve got options that fit your schedule, style, and comfort!": "Choose your preferred learning mode. We’ve got options that fit your schedule, style, and comfort!",
+    "Online Sessions": "Online Sessions",
+    "Offline at Training Centres": "Offline at Training Centres",
+    "Home Tuitions": "Home Tuitions",
+    "No_Items_Found": "No items found in your library."
   }
 }

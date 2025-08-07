@@ -14,6 +14,8 @@ import Login from './../../screens/AuthScreen/Login';
 import RegisterParent from './../../screens/AuthScreen/RegisterParent';
 import useAuth from './../../auth/useAuth';
 import EditStudentProfile from './../../screens/ProfileScreen/EditStudentProfile';
+import LearningPackagesScreen from './../../screens/LearningPackagesScreen/LearningPackagesScreen';
+import ChildrenParentLibrary from './../../screens/MyLibrary/ChildrenParentLibrary';
 
 const Stack = createStackNavigator();
 
@@ -70,6 +72,11 @@ const HomeNavigator = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
+        name="ChildrenParentLibrary"
+        component={ChildrenParentLibrary}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name="Notifications"
         component={Notifications}
         options={{ headerShown: false }}
@@ -92,6 +99,11 @@ const HomeNavigator = () => {
       <Stack.Screen
         name="EditStudentProfile"
         component={EditStudentProfile}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="LearningPackagesScreen"
+        component={LearningPackagesScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

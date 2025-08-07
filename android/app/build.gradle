@@ -118,9 +118,14 @@ dependencies {
         implementation jscFlavor
     }
 
-    // ✅ Exclude legacy support library from transitive dependencies
+    // Keep core androidx
     implementation("androidx.core:core:1.16.0") {
-        exclude group: "com.android.support", module: "support-compat"
+        exclude group: "com.android.support"
+    }
+
+    // ✅ Globally exclude all support libraries from all dependencies
+    configurations.all {
+        exclude group: "com.android.support"
     }
 }
 

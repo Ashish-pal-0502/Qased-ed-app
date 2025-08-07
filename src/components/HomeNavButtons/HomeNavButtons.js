@@ -83,7 +83,7 @@ export default HomeNavButtons;
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 16,
-    marginVertical: 8,
+    marginTop: 8,
   },
   grid: {
     flexDirection: 'row',

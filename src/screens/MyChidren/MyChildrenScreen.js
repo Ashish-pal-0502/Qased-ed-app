@@ -37,6 +37,9 @@ const MyChildrenScreen = () => {
   const handleNavigateStudentEditProfile = child => {
     navigation.navigate('EditStudentProfile', { student: child });
   };
+  const handleNavigatetoMyLibrary = child => {
+    navigation.navigate('ChildrenParentLibrary', { student: child });
+  };
 
   return (
     <View style={styles.container}>
@@ -49,6 +52,7 @@ const MyChildrenScreen = () => {
           <MyChildrenCard
             child={item}
             onEdit={handleNavigateStudentEditProfile}
+            goToLibrary={handleNavigatetoMyLibrary}
           />
         )}
       />

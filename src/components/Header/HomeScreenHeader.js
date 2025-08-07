@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 
 import NotificationIcon from '../../assets/Images/Icons/Notification.png';
+import LibraryIcon from '../../assets/Images/Icons/LibraryIcon.jpg';
 import { useTranslation } from 'react-i18next';
 import colors from './../../config/colors';
 import { fonts } from './../../config/fonts';
@@ -12,6 +13,8 @@ import useAuth from './../../auth/useAuth';
 
 const HomeScreenHeader = () => {
   const { user } = useAuth();
+
+  console.log(user);
   const navigation = useNavigation();
   const { t, i18n } = useTranslation();
   const [showDropdown, setShowDropdown] = useState(false);
@@ -68,6 +71,11 @@ const HomeScreenHeader = () => {
           )}
         </View>
 
+        {user?.type === 'Student' && (
+          <TouchableOpacity onPress={() => navigation.navigate('MyLibrary')}>
+            <Image source={LibraryIcon} style={styles.libraryIcon} />
+          </TouchableOpacity>
+        )}
         <TouchableOpacity onPress={() => navigation.navigate('Notifications')}>
           <Image source={NotificationIcon} style={styles.notificationDot} />
         </TouchableOpacity>
@@ -148,8 +156,15 @@ const styles = StyleSheet.create({
   },
 
   notificationDot: {
-    width: 24,
-    height: 24,
+    width: 22,
+    height: 22,
     borderRadius: 12,
+    resizeMode: 'contain',
+  },
+  libraryIcon: {
+    width: 22,
+    height: 22,
+    borderRadius: 12,
+    resizeMode: 'contain',
   },
 });

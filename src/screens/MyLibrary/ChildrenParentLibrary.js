@@ -20,25 +20,72 @@ import { useEffect } from 'react';
 import useAuth from './../../auth/useAuth';
 import { useState } from 'react';
 
-const MyLibrary = ({ navigation }) => {
+const dummyData = [
+  {
+    id: '1',
+    subject: 'Java',
+    title: 'Lecture on Molecules',
+    professor: 'Prof. John Doe',
+    status: 'LIVE',
+    time: '',
+    buttonLabel: 'Join Now',
+  },
+  {
+    id: '2',
+    subject: 'HTML',
+    title: 'Lecture on Molecules',
+    professor: 'Prof. John Doe',
+    status: 'UPCOMING',
+    time: '16 June  |  10:30 AM - 1:30 PM',
+    buttonLabel: 'Register',
+  },
+  {
+    id: '3',
+    subject: 'React Native',
+    title: 'Lecture on Molecules',
+    professor: 'Prof. John Doe',
+    status: 'UPCOMING',
+    time: '16 June  |  10:30 AM - 1:30 PM',
+    buttonLabel: 'Register',
+  },
+];
+const ChildrenParentLibrary = ({ navigation, route }) => {
   const { t } = useTranslation();
-
+  const { student } = route.params;
   const { user } = useAuth();
   const [cartItem, setCartItem] = useState();
 
   const getMyLibraryData = async () => {
     const response = await apiClient.get('/slotcart/get-items', {
-      studentId: user?.id,
+      parentId: user.id,
+      studentId: student?._id,
     });
 
     if (response.ok) {
       setCartItem(response.data.cartItems);
     }
   };
-
   useEffect(() => {
     getMyLibraryData();
   }, []);
+
+  const bookSession = async slotId => {
+    try {
+      const response = await apiClient.post('/booking/book-session', {
+        parentId: user.id,
+        studentId: student?._id,
+        slotId: slotId,
+      });
+
+      if (response.ok) {
+        console.log('Session booked successfully');
+      } else {
+        console.log('Booking failed:', response.data);
+      }
+    } catch (error) {
+      console.error('Booking error:', error);
+    }
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -58,7 +105,9 @@ const MyLibrary = ({ navigation }) => {
           <FlatList
             data={cartItem}
             keyExtractor={item => item._id}
-            renderItem={({ item }) => <MyLibraryCard item={item} />}
+            renderItem={({ item }) => (
+              <MyLibraryCard item={item} onPress={bookSession} />
+            )}
             contentContainerStyle={{
               gap: 12,
               paddingHorizontal: 10,
@@ -71,12 +120,16 @@ const MyLibrary = ({ navigation }) => {
             <Text style={styles.emptyText}>{t('No_Items_Found')}</Text>
           </View>
         )}
+
+        <View style={styles.bottomButton}>
+          <Button title={t('proceed_to_book')} />
+        </View>
       </View>
     </SafeAreaView>
   );
 };
 
-export default MyLibrary;
+export default ChildrenParentLibrary;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -120,6 +173,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 10,
   },
+
   emptyState: {
     flex: 1,
     justifyContent: 'center',

@@ -5,21 +5,35 @@ import { fonts } from './../../config/fonts';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const ScheduleScreenCard = ({
-  className = 'Lecture on Atoms',
-  roman = 'IX',
-  time = '9:00 AM TO 12:00 PM',
+  // className = 'Lecture on Atoms',
+  // roman = 'IX',
+  // time = '9:00 AM TO 12:00 PM',
   selected = false,
+  item,
   onPress,
 }) => {
+  const formatTime = isoString => {
+    const date = new Date(isoString);
+    return date.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    });
+  };
+
+  const formattedTime = `${formatTime(item.startTime)} TO ${formatTime(
+    item.endTime,
+  )}`;
+
   return (
     <TouchableOpacity style={styles.card} onPress={onPress}>
       <View style={styles.iconCircle}>
-        <Text style={styles.romanText}>{roman}</Text>
+        <Text style={styles.romanText}>{'IX'}</Text>
       </View>
 
       <View style={styles.textWrapper}>
-        <Text style={styles.className}>{className}</Text>
-        <Text style={styles.description}>{time}</Text>
+        <Text style={styles.className}>{'Subject name - sst'}</Text>
+        <Text style={styles.description}>{formattedTime}</Text>
       </View>
 
       <View style={styles.radio}>

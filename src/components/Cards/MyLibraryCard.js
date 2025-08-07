@@ -12,7 +12,7 @@ import { fonts } from './../../config/fonts';
 import colors from './../../config/colors';
 import Icon from 'react-native-vector-icons/Feather';
 
-const MyLibraryCard = ({ isJoin }) => {
+const MyLibraryCard = ({ isJoin, item, onPress }) => {
   const { t } = useTranslation();
 
   return (
@@ -26,14 +26,14 @@ const MyLibraryCard = ({ isJoin }) => {
 
       <View style={styles.infoContainer}>
         <View style={styles.headerRow}>
-          <Text style={styles.professor}>PROF. MARY DOE</Text>
+          <Text style={styles.professor}>PROF. </Text>
           <TouchableOpacity>
             <Icon name="x" size={16} color="#7F56D9" />
           </TouchableOpacity>
         </View>
 
-        <Text style={styles.title}>Lecture on Atoms</Text>
-        <Text style={styles.time}>11:00 AM TO 12:00 PM</Text>
+        <Text style={styles.title}>{item?.slot?.subject}</Text>
+        <Text style={styles.time}>{item?.slot?.subject}</Text>
 
         <View
           style={{

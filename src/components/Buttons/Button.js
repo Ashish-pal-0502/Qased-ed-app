@@ -5,11 +5,15 @@ import { fonts } from './../../config/fonts';
 import colors from './../../config/colors';
 import { useTranslation } from 'react-i18next';
 
-const Button = ({ title, onPress }) => {
+const Button = ({ title, onPress, disabled }) => {
   const { t } = useTranslation();
 
   return (
-    <TouchableOpacity style={styles.buttonWrapper} onPress={onPress}>
+    <TouchableOpacity
+      style={styles.buttonWrapper}
+      onPress={onPress}
+      disabled={disabled}
+    >
       <View
         // colors={['#528BD9', '#FFC7D2']}
         // start={{ x: 0, y: 0 }}

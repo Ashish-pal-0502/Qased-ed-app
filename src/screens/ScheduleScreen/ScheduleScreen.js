@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   FlatList,
   ScrollView,
+  Alert,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import colors from './../../config/colors';
@@ -14,33 +15,136 @@ import { fonts } from './../../config/fonts';
 import { useTranslation } from 'react-i18next';
 import ScheduleScreenCard from './../../components/Cards/ScheduleScreenCard';
 import Button from './../../components/Buttons/Button';
+import apiClient from './../../api/client';
+import useAuth from './../../auth/useAuth';
+import { useNavigation } from '@react-navigation/native';
 
-const days = [
-  { date: '14', day: 'TUE' },
-  { date: '15', day: 'WED' },
-  { date: '16', day: 'THU' },
-  { date: '17', day: 'FRI' },
-];
-
-const scheduleData = [
-  {
-    id: '1',
-    className: 'Lecture on Atoms',
-    roman: 'IX',
-    time: '9:00 AM TO 12:00 PM',
-  },
-  {
-    id: '2',
-    className: 'Lecture on Chemical Reactions',
-    roman: 'VIII',
-    time: '1:00 PM TO 4:00 PM',
-  },
-];
-
-const ScheduleScreen = ({ navigation }) => {
+const ScheduleScreen = ({ route }) => {
+  const { teacherId } = route.params;
+  const navigation = useNavigation();
   const { t } = useTranslation();
-  const [selectedDate, setSelectedDate] = useState('15');
+  const [availableSlots, setAvailableSlots] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
+  const [days, setDays] = useState([]);
+  const [visibleDays, setVisibleDays] = useState([]);
+  const [startIndex, setStartIndex] = useState(0);
+  const [selectedDate, setSelectedDate] = useState('');
+  const { user } = useAuth();
+
+  const generateDays = (count = 30) => {
+    const options = { weekday: 'short' };
+    const today = new Date();
+    const result = [];
+
+    for (let i = 0; i < count; i++) {
+      const current = new Date();
+      current.setDate(today.getDate() + i - 1);
+      result.push({
+        date: current.getDate().toString(),
+        day: current.toLocaleDateString('en-US', options).toUpperCase(),
+        fullDate: current.toISOString(),
+      });
+    }
+
+    setDays(result);
+    setStartIndex(1);
+    setVisibleDays(result.slice(1, 5));
+    setSelectedDate(result[1].date);
+  };
+
+  useEffect(() => {
+    const generateNextDays = (count = 4) => {
+      const options = { weekday: 'short' };
+      const today = new Date();
+      const result = [];
+
+      for (let i = 0; i < count; i++) {
+        const current = new Date();
+        current.setDate(today.getDate() + i);
+
+        result.push({
+          date: current.getDate().toString(),
+          day: current.toLocaleDateString('en-US', options).toUpperCase(),
+        });
+      }
+
+      setDays(result);
+
+      setSelectedDate(today.getDate().toString());
+    };
+
+    generateNextDays();
+  }, []);
+
+  const getAvailableSlots = async () => {
+    const response = await apiClient.get('/slot/get-available-slots', {
+      teacherId: teacherId,
+      // date: new Date.now(),
+      // type: 'online',
+      // mode: 'single',
+      // sessionPurpose: 'homework',
+      // isPackage: false,
+      // createdBy: {
+      //   creator: teacherId,
+      //   createdBy: 'Teacher',
+      // },
+      // className,
+      // subject,
+      // minPrice,
+      // maxPrice,
+      // pageNumber : 1,
+      // pageSize : 1
+    });
+
+    if (response.ok) {
+      setAvailableSlots(response.data.slots);
+    }
+  };
+  const handleAddSlot = async () => {
+    if (!selectedId) {
+      Alert.alert('Please select a slot first');
+      return;
+    }
+
+    const response = await apiClient.post('/slotcart/add-slot', {
+      slotId: selectedId,
+      studentId: '688cca64513c9beedd8a55f2',
+      parentId: user.id,
+    });
+
+    if (response.ok) {
+      navigation.replace('MyLibrary');
+    }
+
+    if (response.ok) {
+      Alert.alert('Slot booked successfully!');
+      console.log(response.data);
+    } else {
+      Alert.alert('Failed to book slot. Please try again.');
+      console.log(response.problem);
+    }
+  };
+
+  useEffect(() => {
+    generateDays();
+    getAvailableSlots();
+  }, []);
+
+  const handlePrev = () => {
+    if (startIndex > 0) {
+      const newIndex = startIndex - 1;
+      setStartIndex(newIndex);
+      setVisibleDays(days.slice(newIndex, newIndex + 4));
+    }
+  };
+
+  const handleNext = () => {
+    if (startIndex + 4 < days.length) {
+      const newIndex = startIndex + 1;
+      setStartIndex(newIndex);
+      setVisibleDays(days.slice(newIndex, newIndex + 4));
+    }
+  };
 
   const renderDateCard = item => {
     const isSelected = item.date === selectedDate;
@@ -75,11 +179,13 @@ const ScheduleScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.dateNavRow}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handlePrev}>
           <Ionicons name="chevron-back" size={18} color="#2E220E" />
         </TouchableOpacity>
-        <View style={styles.datesRow}>{days.map(renderDateCard)}</View>
-        <TouchableOpacity>
+
+        <View style={styles.datesRow}>{visibleDays.map(renderDateCard)}</View>
+
+        <TouchableOpacity onPress={handleNext}>
           <Ionicons name="chevron-forward" size={18} color="#2E220E" />
         </TouchableOpacity>
       </View>
@@ -90,14 +196,12 @@ const ScheduleScreen = ({ navigation }) => {
           showsVerticalScrollIndicator={false}
         >
           <View style={{ marginTop: 20 }}>
-            {scheduleData.map(item => (
-              <View key={item.id} style={{ marginBottom: 12 }}>
+            {availableSlots?.map(item => (
+              <View key={item._id} style={{ marginBottom: 12 }}>
                 <ScheduleScreenCard
-                  className={item.className}
-                  roman={item.roman}
-                  time={item.time}
-                  selected={selectedId === item.id}
-                  onPress={() => setSelectedId(item.id)}
+                  item={item}
+                  selected={selectedId === item._id}
+                  onPress={() => setSelectedId(item._id)}
                 />
               </View>
             ))}
@@ -105,7 +209,11 @@ const ScheduleScreen = ({ navigation }) => {
         </ScrollView>
 
         <View style={styles.bottomButton}>
-          <Button title={t('add_to_library')} />
+          <Button
+            title={t('add_to_library')}
+            onPress={handleAddSlot}
+            disabled={!selectedId}
+          />
         </View>
       </View>
     </SafeAreaView>
