@@ -4,14 +4,7 @@ import colors from './../../config/colors';
 import { fonts } from './../../config/fonts';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const ScheduleScreenCard = ({
-  // className = 'Lecture on Atoms',
-  // roman = 'IX',
-  // time = '9:00 AM TO 12:00 PM',
-  selected = false,
-  item,
-  onPress,
-}) => {
+const ScheduleScreenCard = ({ selected = false, item, onPress }) => {
   const formatTime = isoString => {
     const date = new Date(isoString);
     return date.toLocaleTimeString('en-US', {
@@ -38,7 +31,7 @@ const ScheduleScreenCard = ({
 
       <View style={styles.radio}>
         <Icon
-          name={selected ? 'radiobox-marked' : 'radiobox-blank'}
+          name={selected ? 'checkbox-marked' : 'checkbox-blank-outline'}
           size={22}
           color={selected ? '#528BD9' : '#C4C4C4'}
         />

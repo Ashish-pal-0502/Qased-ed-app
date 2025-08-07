@@ -18,18 +18,22 @@ import Button from './../../components/Buttons/Button';
 import apiClient from './../../api/client';
 import useAuth from './../../auth/useAuth';
 import { useNavigation } from '@react-navigation/native';
+import TopNavigationHeader from './../../components/Header/TopNavigationHeader';
 
 const ScheduleScreen = ({ route }) => {
   const { teacherId } = route.params;
   const navigation = useNavigation();
   const { t } = useTranslation();
   const [availableSlots, setAvailableSlots] = useState([]);
-  const [selectedId, setSelectedId] = useState(null);
+  const [selectedIds, setSelectedIds] = useState([]);
+
   const [days, setDays] = useState([]);
   const [visibleDays, setVisibleDays] = useState([]);
   const [startIndex, setStartIndex] = useState(0);
   const [selectedDate, setSelectedDate] = useState('');
   const { user } = useAuth();
+
+  console.log(selectedDate);
 
   const generateDays = (count = 30) => {
     const options = { weekday: 'short' };
@@ -49,7 +53,7 @@ const ScheduleScreen = ({ route }) => {
     setDays(result);
     setStartIndex(1);
     setVisibleDays(result.slice(1, 5));
-    setSelectedDate(result[1].date);
+    setSelectedDate(result[1].fullDate);
   };
 
   useEffect(() => {
@@ -79,21 +83,10 @@ const ScheduleScreen = ({ route }) => {
   const getAvailableSlots = async () => {
     const response = await apiClient.get('/slot/get-available-slots', {
       teacherId: teacherId,
-      // date: new Date.now(),
-      // type: 'online',
-      // mode: 'single',
-      // sessionPurpose: 'homework',
-      // isPackage: false,
-      // createdBy: {
-      //   creator: teacherId,
-      //   createdBy: 'Teacher',
-      // },
-      // className,
-      // subject,
-      // minPrice,
-      // maxPrice,
-      // pageNumber : 1,
-      // pageSize : 1
+      // date: selectedDate,
+      type: 'group', // send type me group or single
+      mode: 'offline', // mode me offline online
+      sessionPurpose: 'exam-feedback',
     });
 
     if (response.ok) {
@@ -101,15 +94,10 @@ const ScheduleScreen = ({ route }) => {
     }
   };
   const handleAddSlot = async () => {
-    if (!selectedId) {
-      Alert.alert('Please select a slot first');
-      return;
-    }
-
     const response = await apiClient.post('/slotcart/add-slot', {
-      slotId: selectedId,
-      studentId: '688cca64513c9beedd8a55f2',
-      parentId: user.id,
+      slotIds: selectedIds,
+      studentId: user.id,
+      parentId: user.parentId,
     });
 
     if (response.ok) {
@@ -117,10 +105,9 @@ const ScheduleScreen = ({ route }) => {
     }
 
     if (response.ok) {
-      Alert.alert('Slot booked successfully!');
       console.log(response.data);
     } else {
-      Alert.alert('Failed to book slot. Please try again.');
+      Alert.alert('Failed to Add slot. Please try again.');
       console.log(response.problem);
     }
   };
@@ -147,12 +134,13 @@ const ScheduleScreen = ({ route }) => {
   };
 
   const renderDateCard = item => {
-    const isSelected = item.date === selectedDate;
+    const isSelected = item.fullDate === selectedDate;
+
     return (
       <TouchableOpacity
         key={item.date}
         style={[styles.dateCard, isSelected && styles.selectedDateCard]}
-        onPress={() => setSelectedDate(item.date)}
+        onPress={() => setSelectedDate(item.fullDate)}
       >
         <Text style={[styles.dateText, isSelected && styles.selectedDateText]}>
           {item.date}
@@ -166,17 +154,7 @@ const ScheduleScreen = ({ route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.headerContainer}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.iconWrapper}
-        >
-          <Ionicons name="arrow-back" size={20} color={colors.black} />
-        </TouchableOpacity>
-        <Text style={styles.headerText}>{t('My_Schedule')}</Text>
-
-        <View style={styles.iconWrapper} />
-      </View>
+      <TopNavigationHeader title={t('My_Schedule')} />
 
       <View style={styles.dateNavRow}>
         <TouchableOpacity onPress={handlePrev}>
@@ -196,25 +174,39 @@ const ScheduleScreen = ({ route }) => {
           showsVerticalScrollIndicator={false}
         >
           <View style={{ marginTop: 20 }}>
-            {availableSlots?.map(item => (
-              <View key={item._id} style={{ marginBottom: 12 }}>
-                <ScheduleScreenCard
-                  item={item}
-                  selected={selectedId === item._id}
-                  onPress={() => setSelectedId(item._id)}
-                />
-              </View>
-            ))}
+            {availableSlots && availableSlots.length > 0 ? (
+              availableSlots.map(item => (
+                <View key={item._id} style={{ marginBottom: 12 }}>
+                  <ScheduleScreenCard
+                    item={item}
+                    selected={selectedIds.includes(item._id)}
+                    onPress={() => {
+                      if (selectedIds.includes(item._id)) {
+                        setSelectedIds(prev =>
+                          prev.filter(id => id !== item._id),
+                        ); // deselect
+                      } else {
+                        setSelectedIds(prev => [...prev, item._id]);
+                      }
+                    }}
+                  />
+                </View>
+              ))
+            ) : (
+              <Text
+                style={{ textAlign: 'center', marginTop: 60, color: 'gray' }}
+              >
+                No slots are available
+              </Text>
+            )}
           </View>
         </ScrollView>
 
-        <View style={styles.bottomButton}>
-          <Button
-            title={t('add_to_library')}
-            onPress={handleAddSlot}
-            disabled={!selectedId}
-          />
-        </View>
+        {availableSlots?.length > 0 && user?.type === 'Student' && (
+          <View style={styles.bottomButton}>
+            <Button title={t('add_to_library')} onPress={handleAddSlot} />
+          </View>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -251,6 +243,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: 20,
+    marginTop: 16,
   },
   datesRow: {
     flexDirection: 'row',
@@ -287,14 +280,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
     paddingHorizontal: 16,
-    paddingBottom: 60,
   },
 
   scrollContent: {
     paddingBottom: 40,
   },
 
-  bottomButton: {
-    paddingTop: 12,
-  },
+  bottomButton: {},
 });

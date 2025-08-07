@@ -187,7 +187,7 @@ const RegisterStudent = () => {
             onChangeText={v => handleChange('preferredLanguage', v)}
           />
 
-          <Text style={styles.label}>{t('address')}</Text>
+          <Text style={styles.label2}>{t('address')}</Text>
           <Input
             label={t('area')}
             value={form.address.area}
@@ -301,6 +301,12 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 13,
     fontFamily: fonts.Regular,
+    color: colors.black,
+    marginBottom: 6,
+  },
+  label2: {
+    fontSize: 14,
+    fontFamily: fonts.SemiBold,
     color: colors.black,
     marginBottom: 6,
   },

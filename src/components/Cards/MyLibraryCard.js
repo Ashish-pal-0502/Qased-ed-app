@@ -12,7 +12,7 @@ import { fonts } from './../../config/fonts';
 import colors from './../../config/colors';
 import Icon from 'react-native-vector-icons/Feather';
 
-const MyLibraryCard = ({ isJoin, item, onPress }) => {
+const MyLibraryCard = ({ isJoin, item, removeSingleItem }) => {
   const { t } = useTranslation();
 
   return (
@@ -27,7 +27,7 @@ const MyLibraryCard = ({ isJoin, item, onPress }) => {
       <View style={styles.infoContainer}>
         <View style={styles.headerRow}>
           <Text style={styles.professor}>PROF. </Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => removeSingleItem(item?._id)}>
             <Icon name="x" size={16} color="#7F56D9" />
           </TouchableOpacity>
         </View>

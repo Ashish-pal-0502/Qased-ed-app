@@ -6,19 +6,13 @@ import apiClient from './../../api/client';
 import { fonts } from './../../config/fonts';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
+import TopNavigationHeader from './../../components/Header/TopNavigationHeader';
 
 const MyChildrenScreen = () => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const { user } = useAuth();
-  const [myChildrens, setMyChildrens] = useState([
-    {
-      id: '1',
-      name: 'Ayaan Khan',
-      age: 6,
-      gender: 'Male',
-    },
-  ]);
+  const [myChildrens, setMyChildrens] = useState([{}]);
 
   useEffect(() => {
     const getMyChildrens = async () => {
@@ -42,20 +36,22 @@ const MyChildrenScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>{t('my_children')}</Text>
-      <FlatList
-        data={myChildrens}
-        keyExtractor={item => item.id}
-        contentContainerStyle={{ gap: 10 }}
-        renderItem={({ item }) => (
-          <MyChildrenCard
-            child={item}
-            onEdit={handleNavigateStudentEditProfile}
-            goToLibrary={handleNavigatetoMyLibrary}
-          />
-        )}
-      />
+    <View style={{ flex: 1 }}>
+      <TopNavigationHeader title={t('my_children')} />
+      <View style={styles.container}>
+        <FlatList
+          data={myChildrens}
+          keyExtractor={item => item.id}
+          contentContainerStyle={{ gap: 10 }}
+          renderItem={({ item }) => (
+            <MyChildrenCard
+              child={item}
+              onEdit={handleNavigateStudentEditProfile}
+              goToLibrary={handleNavigatetoMyLibrary}
+            />
+          )}
+        />
+      </View>
     </View>
   );
 };
@@ -65,7 +61,7 @@ export default MyChildrenScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    padding: 10,
     backgroundColor: '#F5F6F7',
   },
   heading: {

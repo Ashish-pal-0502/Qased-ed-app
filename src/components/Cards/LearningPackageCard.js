@@ -10,10 +10,12 @@ import {
 import colors from './../../config/colors';
 import { fonts } from './../../config/fonts';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 const screenWidth = Dimensions.get('window').width;
 
 const LearningPackageCard = ({ item }) => {
+  const { t } = useTranslation();
   const navigation = useNavigation();
   return (
     <View style={styles.card}>
@@ -25,21 +27,22 @@ const LearningPackageCard = ({ item }) => {
               source={require('../../assets/Images/Icons/BestValue.png')}
               style={styles.bestValueImage}
             />
-            <Text style={styles.bestValueText}>BEST VALUE</Text>
           </View>
         )}
       </View>
 
       <View style={styles.details}>
         <View style={styles.rowBetween}>
-          <Text style={styles.plan}>{item.plan}</Text>
+          <View>
+            <Text style={styles.plan}>{item.plan}</Text>
+            <Text style={styles.professor}>{item.professor}</Text>
+          </View>
           <View style={{ alignItems: 'flex-end' }}>
             <Text style={styles.price}>{item.price}</Text>
             <Text style={styles.sessions}>{item.sessions}</Text>
           </View>
         </View>
 
-        <Text style={styles.professor}>{item.professor}</Text>
         <Text style={styles.description}>{item.description}</Text>
 
         <View style={styles.rowBetween}>
@@ -48,11 +51,11 @@ const LearningPackageCard = ({ item }) => {
               style={styles.moreDetails}
               onPress={() => navigation.navigate('LearningPackagesScreen')}
             >
-              View More Details &gt;
+              {t('view_more_details')} &gt;
             </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.bookNow}>
-            <Text style={styles.bookNowText}>Book now</Text>
+            <Text style={styles.bookNowText}>{t('book_now')}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -65,7 +68,7 @@ export default LearningPackageCard;
 const styles = StyleSheet.create({
   card: {
     backgroundColor: '#fff',
-    borderRadius: 16,
+    borderRadius: 15,
     overflow: 'hidden',
     width: screenWidth * 0.88,
     marginRight: 16,
@@ -73,7 +76,7 @@ const styles = StyleSheet.create({
   imageWrapper: {
     position: 'relative',
     width: '100%',
-    height: 160,
+    height: 150,
   },
   image: {
     width: '100%',
@@ -81,21 +84,14 @@ const styles = StyleSheet.create({
   },
   bestValueTag: {
     position: 'absolute',
-    bottom: 10,
-    right: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    borderRadius: 20,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    elevation: 2,
+    bottom: -10,
+    right: -5,
   },
   bestValueImage: {
-    width: 14,
-    height: 14,
+    width: 79,
+    height: 31,
     marginRight: 4,
-    tintColor: 'red',
+    resizeMode: 'cover',
   },
   bestValueText: {
     color: 'red',
@@ -113,40 +109,39 @@ const styles = StyleSheet.create({
   plan: {
     fontSize: 16,
     fontFamily: fonts.SemiBold,
-    color: colors.black,
+    color: '#2A2A2A',
   },
   price: {
-    fontSize: 16,
-    fontFamily: fonts.Bold,
+    fontSize: 20,
+    fontFamily: fonts.SemiBold,
     color: colors.black,
   },
   sessions: {
-    fontSize: 11,
+    fontSize: 12,
     fontFamily: fonts.Medium,
-    color: colors.gray,
+    color: '#696969',
   },
   professor: {
-    fontSize: 13,
-    fontFamily: fonts.Regular,
-    color: colors.gray,
-    marginTop: 6,
-  },
-  description: {
     fontSize: 12,
     fontFamily: fonts.Regular,
-    color: colors.gray,
+    color: '#696969',
+  },
+  description: {
+    fontSize: 10,
+    fontFamily: fonts.Light,
+    color: '#191D23',
     marginVertical: 10,
   },
   moreDetails: {
     fontSize: 12,
     fontFamily: fonts.Medium,
-    color: colors.primary,
+    color: '#2A2A2A',
   },
   bookNow: {
-    backgroundColor: colors.primary,
+    backgroundColor: '#538CD9',
     paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 20,
+    paddingHorizontal: 30,
+    borderRadius: 30,
   },
   bookNowText: {
     fontSize: 12,

@@ -11,47 +11,55 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { fonts } from './../../config/fonts';
 import colors from './../../config/colors';
+import TopNavigationHeader from './../../components/Header/TopNavigationHeader';
+import { useTranslation } from 'react-i18next';
+import ScheduleCard from './../../components/Cards/ScheduleCard';
+import Button from './../../components/Buttons/Button';
 
-const sessions = [
+const dummyData = [
   {
     id: '1',
-    title: 'Lecture on Atoms–I',
-    date: 'MONDAY, 27 JULY',
-    time: '11:00 AM TO 12:00 PM',
-    image:
-      'https://img.icons8.com/external-flat-juicy-fish/2x/external-atom-education-flat-juicy-fish.png',
+    subject: 'Java',
+    title: 'Lecture on Molecules',
+    professor: 'Prof. John Doe',
+    status: 'LIVE',
+    time: '',
+    buttonLabel: 'Join Now',
   },
   {
     id: '2',
-    title: 'Lecture on Atoms–II',
-    date: 'TUESDAY, 28 JULY',
-    time: '11:00 AM TO 12:00 PM',
-    image:
-      'https://img.icons8.com/external-flat-juicy-fish/2x/external-atom-education-flat-juicy-fish.png',
+    subject: 'HTML',
+    title: 'Lecture on Molecules',
+    professor: 'Prof. John Doe',
+    status: 'UPCOMING',
+    time: '16 June  |  10:30 AM - 1:30 PM',
+    buttonLabel: 'Register',
+  },
+  {
+    id: '3',
+    subject: 'React Native',
+    title: 'Lecture on Molecules',
+    professor: 'Prof. John Doe',
+    status: 'UPCOMING',
+    time: '16 June  |  10:30 AM - 1:30 PM',
+    buttonLabel: 'Register',
   },
 ];
 
 const LearningPackagesScreen = ({ navigation }) => {
+  const { t } = useTranslation();
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={22} color={colors.black} />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Packages</Text>
-        <View style={{ width: 22 }} /> {/* Placeholder for right icon */}
+      <TopNavigationHeader title={t('Packages')} />
+      <View style={{ paddingHorizontal: 16, marginTop: 15 }}>
+        <Image
+          source={{
+            uri: 'https://images.pexels.com/photos/4145197/pexels-photo-4145197.jpeg',
+          }}
+          style={styles.bannerImage}
+        />
       </View>
 
-      {/* Image Banner */}
-      <Image
-        source={{
-          uri: 'https://images.pexels.com/photos/4145197/pexels-photo-4145197.jpeg',
-        }}
-        style={styles.bannerImage}
-      />
-
-      {/* Plan Info */}
       <View style={styles.content}>
         <Text style={styles.planName}>Plan Name</Text>
 
@@ -61,7 +69,6 @@ const LearningPackagesScreen = ({ navigation }) => {
         </View>
         <Text style={styles.perSession}>Per 10 sessions</Text>
 
-        {/* Professor Card */}
         <TouchableOpacity style={styles.professorCard}>
           <Image
             source={{
@@ -76,34 +83,24 @@ const LearningPackagesScreen = ({ navigation }) => {
           <Ionicons name="chevron-forward" size={20} color={colors.black} />
         </TouchableOpacity>
 
-        {/* Description */}
         <Text style={styles.description}>
           Lorem ipsum dolor sit amet consectetur. Convallis est urna adipiscing
           fringilla nulla diam lorem non mauris. Ultrices aliquet.
         </Text>
 
-        {/* Sessions */}
-        <Text style={styles.sectionTitle}>Sessions</Text>
+        <Text style={styles.sectionTitle}>{t('sessions')}</Text>
+
         <FlatList
-          data={sessions}
+          data={dummyData}
           keyExtractor={item => item.id}
-          renderItem={({ item }) => (
-            <View style={styles.sessionCard}>
-              <Image source={{ uri: item.image }} style={styles.sessionImage} />
-              <View style={styles.sessionInfo}>
-                <Text style={styles.sessionDate}>{item.date}</Text>
-                <Text style={styles.sessionTitle}>{item.title}</Text>
-                <Text style={styles.sessionTime}>{item.time}</Text>
-              </View>
-            </View>
-          )}
-          scrollEnabled={false}
+          renderItem={({ item }) => <ScheduleCard item={item} />}
+          contentContainerStyle={{}}
+          showsVerticalScrollIndicator={false}
         />
       </View>
 
-      {/* Footer Button */}
       <TouchableOpacity style={styles.footerButton}>
-        <Text style={styles.footerButtonText}>Add to library</Text>
+        <Button title={t('add_to_library')} />
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -133,9 +130,11 @@ const styles = StyleSheet.create({
   },
   bannerImage: {
     width: '100%',
-    height: 160,
+    height: 146,
     resizeMode: 'cover',
+    borderRadius: 5,
   },
+
   content: {
     paddingHorizontal: 16,
     paddingTop: 16,
@@ -144,36 +143,35 @@ const styles = StyleSheet.create({
   planName: {
     fontSize: 18,
     fontFamily: fonts.Medium,
-    color: colors.black,
+    color: '#0B0B0B',
   },
   priceRow: {
     flexDirection: 'row',
     alignItems: 'baseline',
-    marginTop: 6,
   },
   price: {
-    fontSize: 16,
-    fontFamily: fonts.Bold,
-    color: colors.black,
+    fontSize: 20,
+    fontFamily: fonts.Regular,
+    color: '#3D3D3D',
   },
   discount: {
-    fontSize: 12,
-    fontFamily: fonts.Medium,
-    color: '#3DBA4A',
-    marginLeft: 8,
+    fontSize: 10,
+    fontFamily: fonts.Regular,
+    color: '#0D9F1C',
+    marginLeft: 5,
   },
   perSession: {
-    fontSize: 12,
-    color: '#777',
-    marginTop: 4,
+    fontSize: 10,
+    color: '#3D3D3D',
+
     fontFamily: fonts.Regular,
   },
   professorCard: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 12,
+    borderRadius: 10,
+    padding: 10,
     marginTop: 16,
     elevation: 1,
     shadowColor: '#00000011',
@@ -193,16 +191,17 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
   professorSubject: {
-    fontSize: 12,
+    fontSize: 10,
     fontFamily: fonts.Regular,
-    color: '#777',
+    color: '#919191',
   },
   description: {
-    fontSize: 13,
-    color: '#444',
+    fontSize: 12,
+    color: '#919191',
     marginVertical: 16,
     fontFamily: fonts.Regular,
     lineHeight: 20,
+    textAlign: 'center',
   },
   sectionTitle: {
     fontSize: 16,
@@ -244,11 +243,6 @@ const styles = StyleSheet.create({
   },
   footerButton: {
     marginHorizontal: 16,
-    marginBottom: 16,
-    paddingVertical: 14,
-    backgroundColor: '#1779F3',
-    borderRadius: 30,
-    alignItems: 'center',
   },
   footerButtonText: {
     color: '#fff',

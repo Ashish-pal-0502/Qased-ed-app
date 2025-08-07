@@ -98,12 +98,6 @@ const EditStudentProfile = ({ route }) => {
 
         <View style={styles.form}>
           <View style={styles.inputWrapper}>
-            <Icon
-              name="person-outline"
-              size={22}
-              color="#0B0B0B"
-              style={styles.iconLeft}
-            />
             <TextInput
               style={styles.input}
               placeholder="Albert Flores"
@@ -114,12 +108,6 @@ const EditStudentProfile = ({ route }) => {
           </View>
 
           <View style={styles.inputWrapper}>
-            <Icon
-              name="calendar-outline"
-              size={22}
-              color="#0B0B0B"
-              style={styles.iconLeft}
-            />
             <TextInput
               style={styles.input}
               placeholder="01/01/1988"
@@ -130,12 +118,6 @@ const EditStudentProfile = ({ route }) => {
           </View>
 
           <View style={styles.inputWrapper}>
-            <Icon
-              name="mail-outline"
-              size={22}
-              color="#0B0B0B"
-              style={styles.iconLeft}
-            />
             <TextInput
               style={styles.input}
               placeholder="albertflores@mail.com"

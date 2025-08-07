@@ -15,44 +15,11 @@ import InstructorsListCard from './../../components/Cards/InstructorsListCard';
 
 import { useTranslation } from 'react-i18next';
 import apiClient from './../../api/client';
-
-const filters = ['All', 'Chemistry', 'Maths', 'English'];
-
-const instructorsData = [
-  {
-    id: '1',
-    name: 'Prof. Mary Doe',
-    title: 'CHEMISTRY PROFESSOR',
-    description: 'Lorem ipsum dolor sit amet consectetur...',
-    image: require('../../assets/Images/ProfileImages/InstructorImage.png'),
-  },
-  {
-    id: '2',
-    name: 'Prof. Mary Doe',
-    title: 'CHEMISTRY PROFESSOR',
-    description: 'Lorem ipsum dolor sit amet consectetur...',
-    image: require('../../assets/Images/ProfileImages/InstructorImage.png'),
-  },
-  {
-    id: '3',
-    name: 'Prof. Mary Doe',
-    title: 'CHEMISTRY PROFESSOR',
-    description: 'Lorem ipsum dolor sit amet consectetur...',
-    image: require('../../assets/Images/ProfileImages/InstructorImage.png'),
-  },
-  {
-    id: '4',
-    name: 'Prof. Mary Doe',
-    title: 'CHEMISTRY PROFESSOR',
-    description: 'Lorem ipsum dolor sit amet consectetur...',
-    image: require('../../assets/Images/ProfileImages/InstructorImage.png'),
-  },
-];
+import TopNavigationHeader from './../../components/Header/TopNavigationHeader';
 
 const Instructors = ({ route }) => {
   const { type } = route.params;
   const [search, setSearch] = useState('');
-  const [selectedFilter, setSelectedFilter] = useState('All');
   const { t } = useTranslation();
   const [teachers, setTeachers] = useState([]);
 
@@ -69,13 +36,8 @@ const Instructors = ({ route }) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.headerContainer}>
-        <TouchableOpacity style={styles.iconWrapper}>
-          <Ionicons name="arrow-back" size={20} color={colors.black} />
-        </TouchableOpacity>
-        <Text style={styles.headerText}>{t('instructor.title')}</Text>
-        <View style={styles.iconWrapper} />
-      </View>
+      <TopNavigationHeader title={t('instructor.title')} />
+
       <View style={styles.container}>
         <View style={styles.searchContainer}>
           <View style={styles.searchBox}>
@@ -103,28 +65,6 @@ const Instructors = ({ route }) => {
             />
           </TouchableOpacity>
         </View>
-
-        {/* <View style={styles.filterChips}>
-          {filters.map(filter => (
-            <TouchableOpacity
-              key={filter}
-              style={[
-                styles.chip,
-                selectedFilter === filter && styles.activeChip,
-              ]}
-              onPress={() => setSelectedFilter(filter)}
-            >
-              <Text
-                style={[
-                  styles.chipText,
-                  selectedFilter === filter && styles.activeChipText,
-                ]}
-              >
-                {filter}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View> */}
 
         <View style={{ paddingVertical: 10 }}>
           <FlatList
@@ -155,6 +95,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
     paddingHorizontal: 10,
+    paddingVertical: 20,
   },
   headerContainer: {
     flexDirection: 'row',

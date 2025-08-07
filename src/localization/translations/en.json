@@ -112,6 +112,7 @@
 
     "login_to_continue": "Login to continue",
     "proceed_to_booking": "Proceed to Booking",
+    "book_now": "Book now",
     "parents_name": "Parent's Name",
     "Account settings": "Account settings",
     "Terms and conditions": "Terms and conditions",
@@ -193,6 +194,7 @@
     "Online Sessions": "Online Sessions",
     "Offline at Training Centres": "Offline at Training Centres",
     "Home Tuitions": "Home Tuitions",
-    "No_Items_Found": "No items found in your library."
+    "No_Items_Found": "No items found in your library.",
+    "view_more_details": "View More Details"
   }
 }

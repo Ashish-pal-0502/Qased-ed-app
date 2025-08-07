@@ -148,12 +148,12 @@ const EditParentProfile = ({ route }) => {
         </View>
 
         <View style={styles.inputWrapper}>
-          <Icon
+          {/* <Icon
             name="person-outline"
             size={22}
             color="#0B0B0B"
             style={styles.iconLeft}
-          />
+          /> */}
           <TextInput
             style={styles.input}
             placeholder="Albert Flores"
@@ -164,12 +164,12 @@ const EditParentProfile = ({ route }) => {
         </View>
 
         <View style={styles.inputWrapper}>
-          <Icon
+          {/* <Icon
             name="mail-outline"
             size={22}
             color="#0B0B0B"
             style={styles.iconLeft}
-          />
+          /> */}
           <TextInput
             style={styles.input}
             placeholder="Email"
@@ -200,12 +200,12 @@ const EditParentProfile = ({ route }) => {
         </View>
 
         <View style={styles.inputWrapper}>
-          <Icon
+          {/* <Icon
             name="people-outline"
             size={22}
             color="#0B0B0B"
             style={styles.iconLeft}
-          />
+          /> */}
           <TextInput
             style={styles.input}
             placeholder="Children Count"
@@ -218,12 +218,12 @@ const EditParentProfile = ({ route }) => {
 
         {Object.keys(address).map(key => (
           <View style={styles.inputWrapper} key={key}>
-            <Icon
+            {/* <Icon
               name="location-outline"
               size={22}
               color="#0B0B0B"
               style={styles.iconLeft}
-            />
+            /> */}
             <TextInput
               style={styles.input}
               placeholder={key.charAt(0).toUpperCase() + key.slice(1)}

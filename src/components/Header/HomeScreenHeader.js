@@ -14,7 +14,6 @@ import useAuth from './../../auth/useAuth';
 const HomeScreenHeader = () => {
   const { user } = useAuth();
 
-  console.log(user);
   const navigation = useNavigation();
   const { t, i18n } = useTranslation();
   const [showDropdown, setShowDropdown] = useState(false);

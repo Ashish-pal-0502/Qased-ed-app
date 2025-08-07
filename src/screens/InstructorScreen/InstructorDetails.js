@@ -18,6 +18,7 @@ import ProfileVerifiedTick from '../../assets/Images/Icons/IntructorVerifiedTick
 import ScheduleCard from './../../components/Cards/ScheduleCard';
 
 import { useRoute } from '@react-navigation/native';
+import TopNavigationHeader from './../../components/Header/TopNavigationHeader';
 
 const instructor = {
   id: '1',
@@ -90,15 +91,9 @@ const InstructorDetails = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView contentContainerStyle={styles.container}>
-        <View style={styles.headerContainer}>
-          <TouchableOpacity style={styles.iconWrapper}>
-            <Ionicons name="arrow-back" size={20} color={colors.black} />
-          </TouchableOpacity>
-          <Text style={styles.headerText}>{t('instructordetails.title')}</Text>
-          <View style={styles.iconWrapper} />
-        </View>
+      <TopNavigationHeader title={t('instructordetails.title')} />
 
+      <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.profileContainer}>
           <Image
             source={{ uri: instructor.profileImage }}
@@ -123,7 +118,14 @@ const InstructorDetails = ({ navigation }) => {
           {type === 'online' && (
             <View style={styles.sessionRow2}>
               <View style={{ flex: 1, marginRight: 6 }}>
-                <TouchableOpacity style={styles.groupSession}>
+                <TouchableOpacity
+                  style={styles.groupSession}
+                  onPress={() =>
+                    navigation.navigate('ScheduleScreen', {
+                      teacherId: instructor?._id,
+                    })
+                  }
+                >
                   <Text style={styles.groupSessionText}>
                     {t('group_session')}
                   </Text>
@@ -147,7 +149,7 @@ const InstructorDetails = ({ navigation }) => {
             </View>
           )}
 
-          {type === 'offline' && (
+          {(type === 'offline' || type === 'homeTuition') && (
             <View style={styles.sessionRow2}>
               <TouchableOpacity
                 style={styles.privateSession}
@@ -359,6 +361,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     backgroundColor: '#538CD9',
     paddingVertical: 10,
+    paddingHorizontal: 50,
     alignItems: 'center',
   },
 

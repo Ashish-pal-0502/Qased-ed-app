@@ -74,6 +74,14 @@ const HomeWithoutLoginDropdown = ({ route }) => {
   const navigation = useNavigation();
   const [openDropdown, setOpenDropdown] = useState(null);
   const { t } = useTranslation();
+  const [showErrors, setShowErrors] = useState(false);
+
+  const formIncomplete =
+    !selectedClass ||
+    !selectedSubject ||
+    !selectedBoard ||
+    !selectedSchool ||
+    !selectedGender;
 
   const toggleDropdown = type => {
     setOpenDropdown(prev => (prev === type ? null : type));
@@ -117,6 +125,12 @@ const HomeWithoutLoginDropdown = ({ route }) => {
           isOpen={openDropdown === 'class'}
           toggleOpen={() => toggleDropdown('class')}
         />
+        {showErrors && !selectedClass && (
+          <Text style={{ color: 'red', marginLeft: 20, marginBottom: 8 }}>
+            {t('Please select class')}
+          </Text>
+        )}
+
         <Dropdown
           label="subject"
           data={data?.subjects?.map(item => item.name) || []}
@@ -128,6 +142,11 @@ const HomeWithoutLoginDropdown = ({ route }) => {
           isOpen={openDropdown === 'subject'}
           toggleOpen={() => toggleDropdown('subject')}
         />
+        {showErrors && !selectedSubject && (
+          <Text style={{ color: 'red', marginLeft: 20, marginBottom: 8 }}>
+            {t('Please select subject')}
+          </Text>
+        )}
         <Dropdown
           label="board"
           data={data?.schools?.map(item => item.name) || []}
@@ -139,6 +158,11 @@ const HomeWithoutLoginDropdown = ({ route }) => {
           isOpen={openDropdown === 'board'}
           toggleOpen={() => toggleDropdown('board')}
         />
+        {showErrors && !selectedBoard && (
+          <Text style={{ color: 'red', marginLeft: 20, marginBottom: 8 }}>
+            {t('Please select board')}
+          </Text>
+        )}
         <Dropdown
           label="school"
           data={dummyData.school}
@@ -150,6 +174,11 @@ const HomeWithoutLoginDropdown = ({ route }) => {
           isOpen={openDropdown === 'school'}
           toggleOpen={() => toggleDropdown('school')}
         />
+        {showErrors && !selectedSchool && (
+          <Text style={{ color: 'red', marginLeft: 20, marginBottom: 8 }}>
+            {t('Please select school')}
+          </Text>
+        )}
         <Dropdown
           label="preferred_gender"
           data={dummyData.gender}
@@ -161,11 +190,25 @@ const HomeWithoutLoginDropdown = ({ route }) => {
           isOpen={openDropdown === 'gender'}
           toggleOpen={() => toggleDropdown('gender')}
         />
+        {showErrors && !selectedGender && (
+          <Text style={{ color: 'red', marginLeft: 20, marginBottom: 8 }}>
+            {t('Please select gender')}
+          </Text>
+        )}
 
         <View style={styles.continueButton}>
           <Button
             title={t('continue')}
-            onPress={() => navigation.navigate('Instructors', { type: type })}
+            disabled={formIncomplete}
+            onPress={() => {
+              if (formIncomplete) {
+                setShowErrors(true);
+                return;
+              }
+
+              setShowErrors(false);
+              navigation.navigate('Instructors', { type: type });
+            }}
           />
         </View>
       </ScrollView>

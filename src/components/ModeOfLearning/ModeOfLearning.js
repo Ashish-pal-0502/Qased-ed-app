@@ -26,7 +26,7 @@ const ModeOfLearning = () => {
     {
       id: 3,
       title: t('Home Tuitions'),
-      type: 'homeTution',
+      type: 'homeTuition',
 
       image: require('../../assets/Images/LearningModes/home.png'),
     },

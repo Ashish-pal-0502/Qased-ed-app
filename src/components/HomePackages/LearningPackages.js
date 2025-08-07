@@ -1,4 +1,3 @@
-// screens/LearningPackages.js
 import React from 'react';
 import {
   View,
@@ -11,8 +10,9 @@ import { useTranslation } from 'react-i18next';
 import { fonts } from './../../config/fonts';
 import LearningPackageCard from './../Cards/LearningPackageCard';
 import colors from './../../config/colors';
+import apiClient from './../../api/client';
+import { useEffect } from 'react';
 
-// Dummy data
 const learningPackages = [
   {
     id: '1',
@@ -23,7 +23,7 @@ const learningPackages = [
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod...',
     image:
-      'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8aG90ZWwlMjByb29tfGVufDB8fDB8fHww', // Replace with actual image
+      'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8aG90ZWwlMjByb29tfGVufDB8fDB8fHww',
     bestValue: true,
   },
   {
@@ -41,10 +41,18 @@ const learningPackages = [
 const LearningPackages = () => {
   const { t } = useTranslation();
 
+  const getLearningPackages = async () => {
+    const response = await apiClient.get('/slot/get-package-slot');
+  };
+
+  useEffect(() => {
+    getLearningPackages();
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text>{t('packages')}</Text>
+        <Text style={styles.title}>{t('packages')}</Text>
         <TouchableOpacity>
           <Text style={styles.viewAll}>{t('viewall')}</Text>
         </TouchableOpacity>

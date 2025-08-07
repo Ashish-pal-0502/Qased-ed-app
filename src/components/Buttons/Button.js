@@ -12,15 +12,12 @@ const Button = ({ title, onPress, disabled }) => {
     <TouchableOpacity
       style={styles.buttonWrapper}
       onPress={onPress}
-      disabled={disabled}
+      activeOpacity={disabled ? 1 : 0.7}
     >
-      <View
-        // colors={['#528BD9', '#FFC7D2']}
-        // start={{ x: 0, y: 0 }}
-        // end={{ x: 1, y: 0 }}
-        style={styles.gradient}
-      >
-        <Text style={styles.text}>{title}</Text>
+      <View style={[styles.gradient, disabled && styles.disabled]}>
+        <Text style={[styles.text, disabled && styles.disabledText]}>
+          {title}
+        </Text>
       </View>
     </TouchableOpacity>
   );
@@ -46,5 +43,13 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 16,
     fontFamily: fonts.Medium,
+  },
+
+  disabled: {
+    backgroundColor: '#C4C4C4',
+  },
+
+  disabledText: {
+    color: '#E0E0E0',
   },
 });

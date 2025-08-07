@@ -19,16 +19,18 @@ import apiClient from './../../api/client';
 import { useEffect } from 'react';
 import useAuth from './../../auth/useAuth';
 import { useState } from 'react';
+import TopNavigationHeader from './../../components/Header/TopNavigationHeader';
 
 const MyLibrary = ({ navigation }) => {
   const { t } = useTranslation();
 
   const { user } = useAuth();
-  const [cartItem, setCartItem] = useState();
+  const [cartItem, setCartItem] = useState([]);
+  const [refreshFlag, setRefreshFlag] = useState(false);
 
   const getMyLibraryData = async () => {
     const response = await apiClient.get('/slotcart/get-items', {
-      studentId: user?.id,
+      studentId: user.id,
     });
 
     if (response.ok) {
@@ -36,29 +38,65 @@ const MyLibrary = ({ navigation }) => {
     }
   };
 
+  const removeSingleSession = async id => {
+    const response = await apiClient.delete('/slotcart/remove-slot', {
+      id: id,
+    });
+
+    if (response.ok) {
+      setRefreshFlag(true);
+    }
+  };
+
+  const removeAllSessions = async () => {
+    const response = await apiClient.delete('/slotcart/delete-all', {
+      studentId: user.id,
+    });
+
+    if (response.ok) {
+      setRefreshFlag(true);
+    }
+  };
+
   useEffect(() => {
     getMyLibraryData();
-  }, []);
+  }, [refreshFlag]);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.headerContainer}>
+      <TopNavigationHeader title={t('My_Library')} />
+
+      {cartItem?.length > 0 && (
         <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.iconWrapper}
+          style={{
+            paddingHorizontal: 16,
+            alignItems: 'flex-end',
+            marginVertical: 10,
+          }}
+          onPress={() => removeAllSessions()}
         >
-          <Ionicons name="arrow-back" size={20} color={colors.black} />
+          <Text
+            style={{
+              fontFamily: fonts.SemiBold,
+              textDecorationLine: 'underline',
+            }}
+          >
+            Clear All
+          </Text>
         </TouchableOpacity>
-        <Text style={styles.headerText}>{t('My_Library')}</Text>
-        <View style={styles.iconWrapper} />
-      </View>
+      )}
 
       <View style={styles.mainContent}>
         {cartItem?.length > 0 ? (
           <FlatList
             data={cartItem}
             keyExtractor={item => item._id}
-            renderItem={({ item }) => <MyLibraryCard item={item} />}
+            renderItem={({ item }) => (
+              <MyLibraryCard
+                item={item}
+                removeSingleItem={removeSingleSession}
+              />
+            )}
             contentContainerStyle={{
               gap: 12,
               paddingHorizontal: 10,

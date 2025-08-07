@@ -12,48 +12,20 @@ import {
 import colors from './../../config/colors';
 import { fonts } from './../../config/fonts';
 import { useTranslation } from 'react-i18next';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import MyLibraryCard from './../../components/Cards/MyLibraryCard';
 import Button from './../../components/Buttons/Button';
 import apiClient from './../../api/client';
 import { useEffect } from 'react';
 import useAuth from './../../auth/useAuth';
 import { useState } from 'react';
+import TopNavigationHeader from './../../components/Header/TopNavigationHeader';
 
-const dummyData = [
-  {
-    id: '1',
-    subject: 'Java',
-    title: 'Lecture on Molecules',
-    professor: 'Prof. John Doe',
-    status: 'LIVE',
-    time: '',
-    buttonLabel: 'Join Now',
-  },
-  {
-    id: '2',
-    subject: 'HTML',
-    title: 'Lecture on Molecules',
-    professor: 'Prof. John Doe',
-    status: 'UPCOMING',
-    time: '16 June  |  10:30 AM - 1:30 PM',
-    buttonLabel: 'Register',
-  },
-  {
-    id: '3',
-    subject: 'React Native',
-    title: 'Lecture on Molecules',
-    professor: 'Prof. John Doe',
-    status: 'UPCOMING',
-    time: '16 June  |  10:30 AM - 1:30 PM',
-    buttonLabel: 'Register',
-  },
-];
 const ChildrenParentLibrary = ({ navigation, route }) => {
   const { t } = useTranslation();
   const { student } = route.params;
   const { user } = useAuth();
-  const [cartItem, setCartItem] = useState();
+  const [cartItem, setCartItem] = useState([]);
+  const [refreshFlag, setRefreshFlag] = useState(false);
 
   const getMyLibraryData = async () => {
     const response = await apiClient.get('/slotcart/get-items', {
@@ -65,20 +37,42 @@ const ChildrenParentLibrary = ({ navigation, route }) => {
       setCartItem(response.data.cartItems);
     }
   };
+  const removeSingleSession = async id => {
+    const response = await apiClient.delete('/slotcart/remove-slot', {
+      id: id,
+    });
+
+    if (response.ok) {
+      setRefreshFlag(true);
+    }
+  };
+  const removeAllSessions = async () => {
+    const response = await apiClient.delete('/slotcart/delete-all', {
+      studentId: student?._id,
+    });
+
+    if (response.ok) {
+      setRefreshFlag(true);
+    }
+  };
   useEffect(() => {
     getMyLibraryData();
-  }, []);
+  }, [refreshFlag]);
 
-  const bookSession = async slotId => {
+  const bookSession = async items => {
+    const slotItems = items.map(item => item?.slot?._id);
+
+    const payload = {
+      slotItems,
+      studentId: items[0]?.student?._id,
+      parentId: items[0]?.parent?._id,
+    };
+
     try {
-      const response = await apiClient.post('/booking/book-session', {
-        parentId: user.id,
-        studentId: student?._id,
-        slotId: slotId,
-      });
+      const response = await apiClient.post('/booking/book-session', payload);
 
       if (response.ok) {
-        console.log('Session booked successfully');
+        // console.log('Sessions booked successfully');
       } else {
         console.log('Booking failed:', response.data);
       }
@@ -88,25 +82,39 @@ const ChildrenParentLibrary = ({ navigation, route }) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.headerContainer}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.iconWrapper}
-        >
-          <Ionicons name="arrow-back" size={20} color={colors.black} />
-        </TouchableOpacity>
-        <Text style={styles.headerText}>{t('My_Library')}</Text>
-        <View style={styles.iconWrapper} />
-      </View>
+    <SafeAreaView style={styles.container}>
+      <TopNavigationHeader title={t('My_Library')} />
 
-      <View style={styles.mainContent}>
+      {cartItem.length > 0 && (
+        <TouchableOpacity
+          style={{
+            paddingHorizontal: 16,
+            alignItems: 'flex-end',
+            marginTop: 10,
+          }}
+          onPress={() => removeAllSessions()}
+        >
+          <Text
+            style={{
+              fontFamily: fonts.SemiBold,
+              textDecorationLine: 'underline',
+            }}
+          >
+            Clear All
+          </Text>
+        </TouchableOpacity>
+      )}
+
+      <View style={styles.flexGrow}>
         {cartItem?.length > 0 ? (
           <FlatList
             data={cartItem}
             keyExtractor={item => item._id}
             renderItem={({ item }) => (
-              <MyLibraryCard item={item} onPress={bookSession} />
+              <MyLibraryCard
+                item={item}
+                removeSingleItem={removeSingleSession}
+              />
             )}
             contentContainerStyle={{
               gap: 12,
@@ -120,23 +128,26 @@ const ChildrenParentLibrary = ({ navigation, route }) => {
             <Text style={styles.emptyText}>{t('No_Items_Found')}</Text>
           </View>
         )}
-
-        <View style={styles.bottomButton}>
-          <Button title={t('proceed_to_book')} />
-        </View>
       </View>
+
+      {cartItem.length > 0 && (
+        <View style={styles.bottomButton}>
+          <Button
+            title={t('proceed_to_book')}
+            onPress={() => {
+              if (cartItem?.length > 0) {
+                bookSession(cartItem);
+              }
+            }}
+          />
+        </View>
+      )}
     </SafeAreaView>
   );
 };
 
 export default ChildrenParentLibrary;
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-    paddingHorizontal: 20,
-  },
-
   headerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -163,15 +174,19 @@ const styles = StyleSheet.create({
     left: 16,
     right: 16,
   },
-  mainContent: {
-    flex: 1,
-    justifyContent: 'space-between',
-    paddingBottom: 60,
-  },
 
+  container: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
+  flexGrow: {
+    flex: 1,
+    paddingTop: 15,
+  },
   bottomButton: {
     paddingHorizontal: 16,
-    paddingTop: 10,
+    paddingVertical: 5,
+    backgroundColor: colors.background,
   },
 
   emptyState: {
