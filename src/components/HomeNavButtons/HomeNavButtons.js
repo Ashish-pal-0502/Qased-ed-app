@@ -19,6 +19,7 @@ const HomeNavButtons = () => {
       title: t('Need a hand with homework ?'),
       subtitle: t('Ask a Teacher now'),
       bgColor: '#F9F5FF',
+      type: 'homework',
     },
     {
       id: 2,
@@ -26,6 +27,7 @@ const HomeNavButtons = () => {
       title: t('Get latest exam feedback'),
       subtitle: t('View Details'),
       bgColor: '#EDFCF2',
+      type: 'exam-feedback',
     },
     {
       id: 3,
@@ -33,6 +35,7 @@ const HomeNavButtons = () => {
       title: t('Want a Quiz recap ?'),
       subtitle: t('Get doubts solved'),
       bgColor: '#FEEEFC',
+      type: 'quiz',
     },
     {
       id: 4,
@@ -40,8 +43,11 @@ const HomeNavButtons = () => {
       title: t('Want to attend lectures'),
       subtitle: t('Join a session now'),
       bgColor: '#FEF3F2',
+      type: null,
     },
   ];
+
+  // "homework", "exam-feedback", "quiz"
 
   return (
     <View style={styles.container}>
@@ -54,6 +60,9 @@ const HomeNavButtons = () => {
               if (!user) {
                 navigation.navigate('Login');
               } else {
+                navigation.navigate('HomeWithoutLoginDropdown', {
+                  type: item.type,
+                });
               }
             }}
           >

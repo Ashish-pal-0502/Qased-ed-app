@@ -85,6 +85,7 @@ const dummyData = [
 const InstructorDetails = ({ navigation }) => {
   const route = useRoute();
   const { instructor, type } = route.params;
+
   const { t } = useTranslation();
   const [selectedView, setSelectedView] = useState('about');
   const tabs = ['about', 'sessions', 'review'];
@@ -115,7 +116,10 @@ const InstructorDetails = ({ navigation }) => {
             />
           </View>
 
-          {type === 'online' && (
+          {(type === 'online' ||
+            type === 'homework' ||
+            type === 'exam-feedback' ||
+            type === 'quiz') && (
             <View style={styles.sessionRow2}>
               <View style={{ flex: 1, marginRight: 6 }}>
                 <TouchableOpacity
@@ -123,6 +127,8 @@ const InstructorDetails = ({ navigation }) => {
                   onPress={() =>
                     navigation.navigate('ScheduleScreen', {
                       teacherId: instructor?._id,
+                      type: type,
+                      mode: 'group',
                     })
                   }
                 >
@@ -138,6 +144,8 @@ const InstructorDetails = ({ navigation }) => {
                   onPress={() =>
                     navigation.navigate('ScheduleScreen', {
                       teacherId: instructor?._id,
+                      type: type,
+                      mode: 'single',
                     })
                   }
                 >
@@ -153,7 +161,12 @@ const InstructorDetails = ({ navigation }) => {
             <View style={styles.sessionRow2}>
               <TouchableOpacity
                 style={styles.privateSession}
-                onPress={() => navigation.navigate('ScheduleScreen')}
+                onPress={() =>
+                  navigation.navigate('ScheduleScreen', {
+                    type: type,
+                    mode: 'offline',
+                  })
+                }
               >
                 <Text style={styles.privateSessionText}>
                   {t('Select slot')}

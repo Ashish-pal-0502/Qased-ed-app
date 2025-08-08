@@ -11,38 +11,18 @@ import { fonts } from './../../config/fonts';
 import LearningPackageCard from './../Cards/LearningPackageCard';
 import colors from './../../config/colors';
 import apiClient from './../../api/client';
-import { useEffect } from 'react';
-
-const learningPackages = [
-  {
-    id: '1',
-    plan: 'Basic Plan',
-    professor: 'Prof. John Doe',
-    price: 'QAR 85',
-    sessions: 'For 10 sessions',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod...',
-    image:
-      'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8aG90ZWwlMjByb29tfGVufDB8fDB8fHww',
-    bestValue: true,
-  },
-  {
-    id: '2',
-    plan: 'Advanced Plan',
-    professor: 'Prof. Jane Smith',
-    price: 'QAR 150',
-    sessions: 'For 20 sessions',
-    description: 'Dolor sit amet, consectetur adipiscing elit...',
-    image:
-      'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8aG90ZWwlMjByb29tfGVufDB8fDB8fHww',
-  },
-];
+import { useEffect, useState } from 'react';
 
 const LearningPackages = () => {
   const { t } = useTranslation();
+  const [packages, setPackages] = useState([]);
 
   const getLearningPackages = async () => {
     const response = await apiClient.get('/slot/get-package-slot');
+
+    if (response.ok) {
+      setPackages(response.data.packages);
+    }
   };
 
   useEffect(() => {
@@ -59,8 +39,8 @@ const LearningPackages = () => {
       </View>
 
       <FlatList
-        data={learningPackages}
-        keyExtractor={item => item.id}
+        data={packages}
+        keyExtractor={item => item._id}
         renderItem={({ item }) => <LearningPackageCard item={item} />}
         horizontal
         showsHorizontalScrollIndicator={false}

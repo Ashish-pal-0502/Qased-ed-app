@@ -1,19 +1,13 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  ImageBackground,
-  TouchableOpacity,
-} from 'react-native';
-import { useTranslation } from 'react-i18next';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { fonts } from './../../config/fonts';
 import colors from './../../config/colors';
+import { useTranslation } from 'react-i18next';
 import Icon from 'react-native-vector-icons/Feather';
 
-const MyLibraryCard = ({ isJoin, item, removeSingleItem, isDelete }) => {
+const PackageSlotCard = ({ item }) => {
   const { t } = useTranslation();
+  const isLive = item.status === 'LIVE';
 
   return (
     <View style={styles.card}>
@@ -26,74 +20,59 @@ const MyLibraryCard = ({ isJoin, item, removeSingleItem, isDelete }) => {
 
       <View style={styles.infoContainer}>
         <View style={styles.headerRow}>
-          <Text style={styles.professor}>
-            PROF. {item?.slotInfo?.slot?.teacher?.name}{' '}
-          </Text>
-          {isDelete && (
-            <TouchableOpacity onPress={() => removeSingleItem(item?._id)}>
-              <Icon name="x" size={16} color="#7F56D9" />
-            </TouchableOpacity>
-          )}
+          <Text style={styles.professor}>Prof. {item?.teacher?.name}</Text>
         </View>
 
-        <Text style={styles.title} numberOfLines={1}>
-          {item?.slotInfo?.slot?.name}
+        <Text style={styles.title}>{item?.name}</Text>
+        <Text style={styles.time}>
+          {isLive ? (
+            <Text style={styles.live}>
+              <Text style={styles.dot}>● </Text>
+              LIVE NOW
+            </Text>
+          ) : (
+            <Text style={styles.time}>
+              {new Date(item?.startTime).toLocaleTimeString([], {
+                hour: '2-digit',
+                minute: '2-digit',
+              })}
+              {' To '}
+              {new Date(item?.endTime).toLocaleTimeString([], {
+                hour: '2-digit',
+                minute: '2-digit',
+              })}
+            </Text>
+          )}
         </Text>
 
-        {item?.slotInfo?.slotType === 'Slot' && (
-          <Text style={styles.time}>
-            {new Date(item?.slotInfo?.slot?.startTime).toLocaleTimeString([], {
-              hour: '2-digit',
-              minute: '2-digit',
-            })}
-            {' To '}
-            {new Date(item?.slotInfo?.slot?.endTime).toLocaleTimeString([], {
-              hour: '2-digit',
-              minute: '2-digit',
-            })}
-          </Text>
-        )}
-
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          <View style={styles.footerRow}>
-            <View style={styles.avatars}>
-              <Image
-                source={{
-                  uri: 'https://randomuser.me/api/portraits/women/1.jpg',
-                }}
-                style={[styles.avatar, { zIndex: 2 }]}
-              />
-              <Image
-                source={{
-                  uri: 'https://randomuser.me/api/portraits/women/2.jpg',
-                }}
-                style={[styles.avatar, { marginLeft: -6, zIndex: 3 }]}
-              />
-            </View>
-
-            <View style={styles.tag}>
-              <Text style={styles.tagText}>+3 already registered</Text>
-            </View>
+        <View style={styles.footerRow}>
+          <View style={styles.avatars}>
+            <Image
+              source={{
+                uri: 'https://randomuser.me/api/portraits/women/1.jpg',
+              }}
+              style={[styles.avatar, { zIndex: 2 }]}
+            />
+            <Image
+              source={{ uri: 'https://randomuser.me/api/portraits/men/2.jpg' }}
+              style={[styles.avatar, { marginLeft: -6, zIndex: 3 }]}
+            />
           </View>
-          {isJoin && (
-            <View style={styles.join}>
-              <Text style={styles.joinText}>Join Now</Text>
-            </View>
-          )}
+
+          <View style={styles.tag}>
+            <Text style={styles.tagText}>+3 already registered</Text>
+          </View>
+
+          <View style={styles.join}>
+            <Text style={styles.joinText}>{t('joinnow')}</Text>
+          </View>
         </View>
       </View>
     </View>
   );
 };
 
-export default MyLibraryCard;
-
+export default PackageSlotCard;
 const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
@@ -101,9 +80,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     alignItems: 'center',
-    height: 102,
+    height: 110,
     borderWidth: 1,
     borderColor: '#D4D2E3',
+    marginBottom: 10,
   },
   thumbnail: {
     width: 120,
@@ -136,9 +116,18 @@ const styles = StyleSheet.create({
     fontFamily: fonts.Medium,
     color: '#919191',
   },
+  live: {
+    fontSize: 10,
+    color: '#F22E32',
+    fontFamily: fonts.Medium,
+  },
+  dot: {
+    fontSize: 12,
+  },
   footerRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginTop: 6,
   },
   avatars: {
     flexDirection: 'row',
@@ -168,10 +157,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 5,
     borderRadius: 30,
+    marginLeft: 'auto',
   },
   joinText: {
     fontSize: 10,
     fontFamily: fonts.Medium,
     color: colors.white,
+  },
+  time: {
+    fontSize: 10,
+    fontFamily: fonts.Medium,
+    color: '#919191',
   },
 });

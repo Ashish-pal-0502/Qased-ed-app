@@ -20,7 +20,12 @@ const LearningPackageCard = ({ item }) => {
   return (
     <View style={styles.card}>
       <View style={styles.imageWrapper}>
-        <Image source={{ uri: item.image }} style={styles.image} />
+        <Image
+          source={{
+            uri: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8aG90ZWwlMjByb29tfGVufDB8fDB8fHww',
+          }}
+          style={styles.image}
+        />
         {item.bestValue && (
           <View style={styles.bestValueTag}>
             <Image
@@ -34,22 +39,30 @@ const LearningPackageCard = ({ item }) => {
       <View style={styles.details}>
         <View style={styles.rowBetween}>
           <View>
-            <Text style={styles.plan}>{item.plan}</Text>
-            <Text style={styles.professor}>{item.professor}</Text>
+            <Text style={styles.plan}>{item?.name}</Text>
+            <Text style={styles.professor}>{item?.teacher?.name}</Text>
           </View>
           <View style={{ alignItems: 'flex-end' }}>
-            <Text style={styles.price}>{item.price}</Text>
-            <Text style={styles.sessions}>{item.sessions}</Text>
+            <Text style={styles.price}>QAR {item?.price}</Text>
+            <Text style={styles.sessions}>
+              For {item?.slots?.length} Sessions
+            </Text>
           </View>
         </View>
 
-        <Text style={styles.description}>{item.description}</Text>
+        <Text style={styles.description}>
+          {item?.description || 'Description'}
+        </Text>
 
         <View style={styles.rowBetween}>
           <TouchableOpacity>
             <Text
               style={styles.moreDetails}
-              onPress={() => navigation.navigate('LearningPackagesScreen')}
+              onPress={() =>
+                navigation.navigate('LearningPackagesScreen', {
+                  packageDetails: item,
+                })
+              }
             >
               {t('view_more_details')} &gt;
             </Text>

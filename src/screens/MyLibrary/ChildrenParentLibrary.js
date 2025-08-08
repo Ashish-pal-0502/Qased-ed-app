@@ -19,8 +19,11 @@ import { useEffect } from 'react';
 import useAuth from './../../auth/useAuth';
 import { useState } from 'react';
 import TopNavigationHeader from './../../components/Header/TopNavigationHeader';
+import Toast from 'react-native-toast-message';
+import { useNavigation } from '@react-navigation/native';
 
-const ChildrenParentLibrary = ({ navigation, route }) => {
+const ChildrenParentLibrary = ({ route }) => {
+  const navigation = useNavigation();
   const { t } = useTranslation();
   const { student } = route.params;
   const { user } = useAuth();
@@ -60,10 +63,23 @@ const ChildrenParentLibrary = ({ navigation, route }) => {
   }, [refreshFlag]);
 
   const bookSession = async items => {
-    const slotItems = items.map(item => item?.slot?._id);
+    const slotItems = [];
+    const packagesIds = [];
+
+    items.forEach(item => {
+      const type = item?.slotInfo?.slotType;
+      const id = item?.slotInfo?.slot?._id;
+
+      if (type === 'SlotPackage') {
+        packagesIds.push(id);
+      } else if (type === 'Slot') {
+        slotItems.push(id);
+      }
+    });
 
     const payload = {
       slotItems,
+      packagesIds,
       studentId: items[0]?.student?._id,
       parentId: items[0]?.parent?._id,
     };
@@ -72,7 +88,14 @@ const ChildrenParentLibrary = ({ navigation, route }) => {
       const response = await apiClient.post('/booking/book-session', payload);
 
       if (response.ok) {
-        // console.log('Sessions booked successfully');
+        Toast.show({
+          type: 'customToast',
+          text1: 'Logout success',
+          text2: response?.data?.message || 'Booking success!',
+          position: 'bottom',
+          visibilityTime: 2000,
+        });
+        navigation.replace('HomeScreen');
       } else {
         console.log('Booking failed:', response.data);
       }
@@ -114,6 +137,7 @@ const ChildrenParentLibrary = ({ navigation, route }) => {
               <MyLibraryCard
                 item={item}
                 removeSingleItem={removeSingleSession}
+                isDelete
               />
             )}
             contentContainerStyle={{

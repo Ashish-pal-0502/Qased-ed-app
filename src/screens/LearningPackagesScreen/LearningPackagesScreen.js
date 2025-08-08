@@ -13,41 +13,40 @@ import { fonts } from './../../config/fonts';
 import colors from './../../config/colors';
 import TopNavigationHeader from './../../components/Header/TopNavigationHeader';
 import { useTranslation } from 'react-i18next';
-import ScheduleCard from './../../components/Cards/ScheduleCard';
+
 import Button from './../../components/Buttons/Button';
+import PackageSlotCard from './../../components/Cards/PackageSlotCard';
+import useAuth from './../../auth/useAuth';
+import apiClient from './../../api/client';
 
-const dummyData = [
-  {
-    id: '1',
-    subject: 'Java',
-    title: 'Lecture on Molecules',
-    professor: 'Prof. John Doe',
-    status: 'LIVE',
-    time: '',
-    buttonLabel: 'Join Now',
-  },
-  {
-    id: '2',
-    subject: 'HTML',
-    title: 'Lecture on Molecules',
-    professor: 'Prof. John Doe',
-    status: 'UPCOMING',
-    time: '16 June  |  10:30 AM - 1:30 PM',
-    buttonLabel: 'Register',
-  },
-  {
-    id: '3',
-    subject: 'React Native',
-    title: 'Lecture on Molecules',
-    professor: 'Prof. John Doe',
-    status: 'UPCOMING',
-    time: '16 June  |  10:30 AM - 1:30 PM',
-    buttonLabel: 'Register',
-  },
-];
+const LearningPackagesScreen = ({ navigation, route }) => {
+  const { packageDetails } = route.params;
+  const { user } = useAuth();
 
-const LearningPackagesScreen = ({ navigation }) => {
   const { t } = useTranslation();
+
+  const handleAddSlot = async () => {
+    const response = await apiClient.post('/slotcart/add-slot', {
+      slotInfos: [
+        {
+          slot: packageDetails?._id,
+          slotType: 'SlotPackage',
+        },
+      ],
+      studentId: user.id,
+      parentId: user.parentId,
+    });
+
+    if (response.ok) {
+      navigation.replace('MyLibrary');
+    }
+
+    if (response.ok) {
+    } else {
+      Alert.alert('Failed to Add slot. Please try again.');
+      console.log(response.problem);
+    }
+  };
   return (
     <SafeAreaView style={styles.container}>
       <TopNavigationHeader title={t('Packages')} />
@@ -61,13 +60,15 @@ const LearningPackagesScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.content}>
-        <Text style={styles.planName}>Plan Name</Text>
+        <Text style={styles.planName}>{packageDetails?.name}</Text>
 
         <View style={styles.priceRow}>
-          <Text style={styles.price}>QAR 100</Text>
-          <Text style={styles.discount}>35% Off</Text>
+          <Text style={styles.price}>QAR {packageDetails?.price}</Text>
+          {/* <Text style={styles.discount}>35% Off</Text> */}
         </View>
-        <Text style={styles.perSession}>Per 10 sessions</Text>
+        <Text style={styles.perSession}>
+          Per {packageDetails?.slots?.length} sessions
+        </Text>
 
         <TouchableOpacity style={styles.professorCard}>
           <Image
@@ -77,7 +78,9 @@ const LearningPackagesScreen = ({ navigation }) => {
             style={styles.professorImage}
           />
           <View style={styles.professorInfo}>
-            <Text style={styles.professorName}>Prof. Mary Doe</Text>
+            <Text style={styles.professorName}>
+              Prof. {packageDetails?.teacher?.name}
+            </Text>
             <Text style={styles.professorSubject}>Chemistry Professor</Text>
           </View>
           <Ionicons name="chevron-forward" size={20} color={colors.black} />
@@ -91,17 +94,19 @@ const LearningPackagesScreen = ({ navigation }) => {
         <Text style={styles.sectionTitle}>{t('sessions')}</Text>
 
         <FlatList
-          data={dummyData}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => <ScheduleCard item={item} />}
+          data={packageDetails?.slots}
+          keyExtractor={item => item._id}
+          renderItem={({ item }) => <PackageSlotCard item={item} />}
           contentContainerStyle={{}}
           showsVerticalScrollIndicator={false}
         />
       </View>
 
-      <TouchableOpacity style={styles.footerButton}>
-        <Button title={t('add_to_library')} />
-      </TouchableOpacity>
+      {user?.type === 'Student' && (
+        <TouchableOpacity style={styles.footerButton}>
+          <Button title={t('add_to_library')} onPress={handleAddSlot} />
+        </TouchableOpacity>
+      )}
     </SafeAreaView>
   );
 };

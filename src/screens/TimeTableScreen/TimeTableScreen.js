@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -12,62 +12,25 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import colors from './../../config/colors';
 import { fonts } from './../../config/fonts';
 import { useTranslation } from 'react-i18next';
-import MyLibraryCard from './../../components/Cards/MyLibraryCard';
 import useAuth from './../../auth/useAuth';
 import LoginViewButton from './../../components/NotLoginButton/LoginViewButton';
+import apiClient from './../../api/client';
+import TimeTableCard from './../../components/Cards/TimeTableCard';
 
 const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday'];
 
 const TimeTableScreen = ({ navigation }) => {
+  const getUTCMidnight = date => {
+    const d = new Date(date);
+    d.setUTCHours(0, 0, 0, 0);
+    return d;
+  };
   const { t } = useTranslation();
   const { user } = useAuth();
 
+  const [sessions, setSessions] = useState([]);
   const [selectedView, setSelectedView] = useState('Daily');
-  const [currentDate, setCurrentDate] = useState(new Date());
-
-  const dummyData = {
-    Monday: [
-      {
-        id: '1',
-        subject: 'Java',
-        title: 'Lecture on Atoms',
-        professor: 'PROF. MARY DOE',
-        status: 'LIVE',
-        time: '11:00 AM TO 12:00 PM',
-      },
-      {
-        id: '2',
-        subject: 'Java',
-        title: 'Lecture on Atoms',
-        professor: 'PROF. MARY DOE',
-        status: 'REGISTERED',
-        time: '11:00 AM TO 12:00 PM',
-      },
-    ],
-    Tuesday: [
-      {
-        id: '3',
-        subject: 'Java',
-        title: 'Lecture on Atoms',
-        professor: 'PROF. MARY DOE',
-        status: 'LIVE',
-        time: '11:00 AM TO 12:00 PM',
-      },
-      {
-        id: '4',
-        subject: 'Java',
-        title: 'Lecture on Atoms',
-        professor: 'PROF. MARY DOE',
-        status: 'REGISTERED',
-        time: '11:00 AM TO 12:00 PM',
-      },
-    ],
-    Wednesday: [],
-    Thursday: [],
-    Friday: [],
-    Saturday: [],
-    Sunday: [],
-  };
+  const [currentDate, setCurrentDate] = useState(getUTCMidnight(new Date()));
 
   const getFormattedDate = date => {
     const options = { weekday: 'long', day: 'numeric', month: 'long' };
@@ -76,10 +39,9 @@ const TimeTableScreen = ({ navigation }) => {
 
   const moveDate = direction => {
     const newDate = new Date(currentDate);
-    newDate.setDate(currentDate.getDate() + direction);
-    setCurrentDate(newDate);
+    newDate.setUTCDate(newDate.getUTCDate() + direction);
+    setCurrentDate(getUTCMidnight(newDate));
   };
-
   const renderDateNavigation = () => (
     <View style={styles.dateContainer}>
       <TouchableOpacity
@@ -102,6 +64,35 @@ const TimeTableScreen = ({ navigation }) => {
     </View>
   );
 
+  const groupSessionsByDay = sessionsList => {
+    const days = [
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+      'Sunday',
+    ];
+    const grouped = days.reduce((acc, day) => {
+      acc[day] = [];
+      return acc;
+    }, {});
+
+    sessionsList.forEach(session => {
+      const dayName = new Date(session.date).toLocaleDateString('en-US', {
+        weekday: 'long',
+      });
+      if (grouped[dayName]) {
+        grouped[dayName].push(session);
+      }
+    });
+
+    return grouped;
+  };
+
+  const weeklyData = groupSessionsByDay(sessions);
+
   const renderWeeklySchedule = () => (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -113,9 +104,9 @@ const TimeTableScreen = ({ navigation }) => {
       {weekDays.map(day => (
         <View key={day} style={{ marginBottom: 24, gap: 10 }}>
           <Text style={styles.weekSectionTitle}>{day}</Text>
-          {dummyData[day] && dummyData[day].length > 0 ? (
-            dummyData[day].map(item => (
-              <MyLibraryCard key={item.id} item={item} />
+          {weeklyData[day] && weeklyData[day].length > 0 ? (
+            weeklyData[day].map(item => (
+              <TimeTableCard key={item._id} item={item} />
             ))
           ) : (
             <Text style={styles.emptyText}>No lectures</Text>
@@ -123,6 +114,25 @@ const TimeTableScreen = ({ navigation }) => {
         </View>
       ))}
     </ScrollView>
+  );
+
+  const getMyBookings = async () => {
+    const response = await apiClient.get('/booking/get-upcoming-sessions', {
+      userId: user?.id,
+      date: currentDate.toISOString(),
+    });
+
+    if (response.ok) {
+      setSessions(response.data.sessions);
+    }
+  };
+
+  useEffect(() => {
+    getMyBookings();
+  }, [currentDate]);
+
+  const selectedDaySessions = sessions.filter(
+    session => session.date === currentDate.toISOString(),
   );
 
   if (!user) {
@@ -186,19 +196,33 @@ const TimeTableScreen = ({ navigation }) => {
       {selectedView === 'Daily' ? (
         <>
           {renderDateNavigation()}
-          <FlatList
-            data={dummyData[getFormattedDate(currentDate).split(',')[0]] || []}
-            keyExtractor={item => item.id}
-            renderItem={({ item }) => (
-              <MyLibraryCard isJoin={true} item={item} />
-            )}
-            contentContainerStyle={{
-              gap: 12,
-              paddingHorizontal: 16,
-              paddingBottom: 16,
-            }}
-            showsVerticalScrollIndicator={false}
-          />
+
+          {selectedDaySessions?.length > 0 ? (
+            <FlatList
+              data={selectedDaySessions}
+              keyExtractor={item => item._id}
+              renderItem={({ item }) => (
+                <TimeTableCard isJoin={true} item={item} />
+              )}
+              contentContainerStyle={{
+                gap: 12,
+                paddingHorizontal: 16,
+                paddingBottom: 16,
+              }}
+              showsVerticalScrollIndicator={false}
+            />
+          ) : (
+            <Text
+              style={{
+                textAlign: 'center',
+                marginTop: 20,
+                fontSize: 16,
+                color: 'gray',
+              }}
+            >
+              No sessions available
+            </Text>
+          )}
         </>
       ) : (
         renderWeeklySchedule()

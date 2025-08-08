@@ -12,7 +12,7 @@ import { fonts } from './../../config/fonts';
 import colors from './../../config/colors';
 import Icon from 'react-native-vector-icons/Feather';
 
-const MyLibraryCard = ({ isJoin, item, removeSingleItem, isDelete }) => {
+const TimeTableCard = ({ isJoin, item, removeSingleItem, isDelete }) => {
   const { t } = useTranslation();
 
   return (
@@ -26,9 +26,7 @@ const MyLibraryCard = ({ isJoin, item, removeSingleItem, isDelete }) => {
 
       <View style={styles.infoContainer}>
         <View style={styles.headerRow}>
-          <Text style={styles.professor}>
-            PROF. {item?.slotInfo?.slot?.teacher?.name}{' '}
-          </Text>
+          <Text style={styles.professor}>PROF. {item?.teacher?.name} </Text>
           {isDelete && (
             <TouchableOpacity onPress={() => removeSingleItem(item?._id)}>
               <Icon name="x" size={16} color="#7F56D9" />
@@ -36,23 +34,19 @@ const MyLibraryCard = ({ isJoin, item, removeSingleItem, isDelete }) => {
           )}
         </View>
 
-        <Text style={styles.title} numberOfLines={1}>
-          {item?.slotInfo?.slot?.name}
-        </Text>
+        <Text style={styles.title}>{item?.name}</Text>
 
-        {item?.slotInfo?.slotType === 'Slot' && (
-          <Text style={styles.time}>
-            {new Date(item?.slotInfo?.slot?.startTime).toLocaleTimeString([], {
-              hour: '2-digit',
-              minute: '2-digit',
-            })}
-            {' To '}
-            {new Date(item?.slotInfo?.slot?.endTime).toLocaleTimeString([], {
-              hour: '2-digit',
-              minute: '2-digit',
-            })}
-          </Text>
-        )}
+        <Text style={styles.time}>
+          {new Date(item?.startTime).toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+          })}
+          {' To '}
+          {new Date(item?.endTime).toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+          })}
+        </Text>
 
         <View
           style={{
@@ -92,7 +86,7 @@ const MyLibraryCard = ({ isJoin, item, removeSingleItem, isDelete }) => {
   );
 };
 
-export default MyLibraryCard;
+export default TimeTableCard;
 
 const styles = StyleSheet.create({
   card: {

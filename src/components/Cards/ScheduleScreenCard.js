@@ -25,7 +25,7 @@ const ScheduleScreenCard = ({ selected = false, item, onPress }) => {
       </View>
 
       <View style={styles.textWrapper}>
-        <Text style={styles.className}>{'Subject name - sst'}</Text>
+        <Text style={styles.className}>{item?.name}</Text>
         <Text style={styles.description}>{formattedTime}</Text>
       </View>
 

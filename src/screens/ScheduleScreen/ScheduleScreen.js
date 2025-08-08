@@ -21,7 +21,8 @@ import { useNavigation } from '@react-navigation/native';
 import TopNavigationHeader from './../../components/Header/TopNavigationHeader';
 
 const ScheduleScreen = ({ route }) => {
-  const { teacherId } = route.params;
+  const { teacherId, mode, type, sessionPurpose } = route.params;
+
   const navigation = useNavigation();
   const { t } = useTranslation();
   const [availableSlots, setAvailableSlots] = useState([]);
@@ -33,8 +34,6 @@ const ScheduleScreen = ({ route }) => {
   const [selectedDate, setSelectedDate] = useState('');
   const { user } = useAuth();
 
-  console.log(selectedDate);
-
   const generateDays = (count = 30) => {
     const options = { weekday: 'short' };
     const today = new Date();
@@ -43,6 +42,8 @@ const ScheduleScreen = ({ route }) => {
     for (let i = 0; i < count; i++) {
       const current = new Date();
       current.setDate(today.getDate() + i - 1);
+      current.setUTCHours(0, 0, 0, 0); //
+
       result.push({
         date: current.getDate().toString(),
         day: current.toLocaleDateString('en-US', options).toUpperCase(),
@@ -83,10 +84,10 @@ const ScheduleScreen = ({ route }) => {
   const getAvailableSlots = async () => {
     const response = await apiClient.get('/slot/get-available-slots', {
       teacherId: teacherId,
-      // date: selectedDate,
-      type: 'group', // send type me group or single
-      mode: 'offline', // mode me offline online
-      sessionPurpose: 'exam-feedback',
+      date: selectedDate,
+      type: mode, // send type me group or single
+      mode: type, // mode me offline online
+      sessionPurpose: sessionPurpose, // other three buttons name
     });
 
     if (response.ok) {
@@ -94,8 +95,12 @@ const ScheduleScreen = ({ route }) => {
     }
   };
   const handleAddSlot = async () => {
+    const slotInfosArray = selectedIds.map(id => ({
+      slot: id,
+      slotType: 'Slot',
+    }));
     const response = await apiClient.post('/slotcart/add-slot', {
-      slotIds: selectedIds,
+      slotInfos: slotInfosArray,
       studentId: user.id,
       parentId: user.parentId,
     });
@@ -105,7 +110,6 @@ const ScheduleScreen = ({ route }) => {
     }
 
     if (response.ok) {
-      console.log(response.data);
     } else {
       Alert.alert('Failed to Add slot. Please try again.');
       console.log(response.problem);
@@ -113,8 +117,11 @@ const ScheduleScreen = ({ route }) => {
   };
 
   useEffect(() => {
-    generateDays();
     getAvailableSlots();
+  }, [selectedDate]);
+
+  useEffect(() => {
+    generateDays();
   }, []);
 
   const handlePrev = () => {
@@ -175,7 +182,7 @@ const ScheduleScreen = ({ route }) => {
         >
           <View style={{ marginTop: 20 }}>
             {availableSlots && availableSlots.length > 0 ? (
-              availableSlots.map(item => (
+              availableSlots?.map(item => (
                 <View key={item._id} style={{ marginBottom: 12 }}>
                   <ScheduleScreenCard
                     item={item}
@@ -184,7 +191,7 @@ const ScheduleScreen = ({ route }) => {
                       if (selectedIds.includes(item._id)) {
                         setSelectedIds(prev =>
                           prev.filter(id => id !== item._id),
-                        ); // deselect
+                        );
                       } else {
                         setSelectedIds(prev => [...prev, item._id]);
                       }

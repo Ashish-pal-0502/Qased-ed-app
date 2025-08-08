@@ -95,6 +95,7 @@ const MyLibrary = ({ navigation }) => {
               <MyLibraryCard
                 item={item}
                 removeSingleItem={removeSingleSession}
+                isDelete
               />
             )}
             contentContainerStyle={{
